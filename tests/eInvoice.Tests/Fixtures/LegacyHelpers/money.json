@@ -1,0 +1,194 @@
+[
+  {
+    "amount": 0,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "Kh\u00F4ng \u0111\u1ED3ng"
+  },
+  {
+    "amount": 0,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "Kh\u00F4ng \u0111\u1ED3ng"
+  },
+  {
+    "amount": 1,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u1ED9t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 1,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u1ED9t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 5,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "N\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 5,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "N\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 10,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u01B0\u1EDDi \u0111\u1ED3ng"
+  },
+  {
+    "amount": 10,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u01B0\u1EDDi \u0111\u1ED3ng"
+  },
+  {
+    "amount": 15,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u01B0\u1EDDi l\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 15,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u01B0\u1EDDi l\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 21,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "Hai m\u01B0\u01A1i m\u1ED1t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 21,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "Hai m\u01B0\u01A1i m\u1ED1t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 25,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "Hai m\u01B0\u01A1i l\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 25,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "Hai m\u01B0\u01A1i l\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 101,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u1ED9t tr\u0103m linh m\u1ED9t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 101,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u1ED9t tr\u0103m l\u1EBB m\u1ED9t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 105,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u1ED9t tr\u0103m linh n\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 105,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u1ED9t tr\u0103m l\u1EBB n\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 1001,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u1ED9t ngh\u00ECn kh\u00F4ng tr\u0103m linh m\u1ED9t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 1001,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u1ED9t ngh\u00ECn kh\u00F4ng tr\u0103m l\u1EBB m\u1ED9t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 1000001,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u1ED9t tri\u1EC7u kh\u00F4ng tr\u0103m linh m\u1ED9t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 1000001,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u1ED9t tri\u1EC7u  kh\u00F4ng tr\u0103m l\u1EBB m\u1ED9t \u0111\u1ED3ng"
+  },
+  {
+    "amount": 1234567890,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u1ED9t t\u1EF7 hai tr\u0103m ba m\u01B0\u01A1i b\u1ED1n tri\u1EC7u n\u0103m tr\u0103m s\u00E1u m\u01B0\u01A1i b\u1EA3y ngh\u00ECn t\u00E1m tr\u0103m ch\u00EDn m\u01B0\u01A1i \u0111\u1ED3ng"
+  },
+  {
+    "amount": 1234567890,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u1ED9t t\u1EF7 hai tr\u0103m ba m\u01B0\u01A1i t\u01B0 tri\u1EC7u n\u0103m tr\u0103m s\u00E1u m\u01B0\u01A1i b\u1EA3y ngh\u00ECn t\u00E1m tr\u0103m ch\u00EDn m\u01B0\u01A1i \u0111\u1ED3ng"
+  },
+  {
+    "amount": -125,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "\u00C2m M\u1ED9t tr\u0103m hai m\u01B0\u01A1i l\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": -125,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "\u00C2m M\u1ED9t tr\u0103m hai m\u01B0\u01A1i l\u0103m \u0111\u1ED3ng"
+  },
+  {
+    "amount": 12.5,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u01B0\u1EDDi hai \u0111\u1ED3ng"
+  },
+  {
+    "amount": 12.5,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u01B0\u1EDDi ba \u0111\u1ED3ng"
+  },
+  {
+    "amount": 12.6,
+    "reader": "decimal",
+    "suffix": " \u0111\u1ED3ng",
+    "expected": "M\u01B0\u1EDDi hai \u0111\u1ED3ng"
+  },
+  {
+    "amount": 12.6,
+    "reader": "sun",
+    "suffix": true,
+    "expected": "M\u01B0\u1EDDi ba \u0111\u1ED3ng"
+  },
+  {
+    "amount": 125,
+    "reader": "decimal",
+    "suffix": " USD",
+    "expected": "M\u1ED9t tr\u0103m hai m\u01B0\u01A1i l\u0103m USD"
+  },
+  {
+    "amount": 125,
+    "reader": "sun",
+    "suffix": false,
+    "expected": "M\u1ED9t tr\u0103m hai m\u01B0\u01A1i l\u0103m"
+  }
+]

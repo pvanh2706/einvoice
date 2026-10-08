@@ -1,0 +1,10 @@
+# Nhật ký checkpoint
+
+## 2026-10-08 — P0 và kiểm tra kết nối MISA
+
+- Branch `rewrite/foundation`, baseline code cũ `66a9c74`.
+- Chốt C#, tên eInvoice, hợp đồng PMS mới, HTTP 4xx/5xx + JSON, API key có site scope/HTTPS, MISA đầu tiên.
+- Hoàn thành P0, auth/site scope và MISA health-check; xem STATUS.
+- Verify Release: 100 test passed, 0 warning/error; fake HTTP, chưa UAT.
+- Tiếp theo: bảng variant MISA → GetInvoiceFormSerial (90s, token v3, double-encoded response) → token biên lai/cache concurrency → mapping phát hành.
+- Không sửa code cũ, không push/deploy, không gọi API production.

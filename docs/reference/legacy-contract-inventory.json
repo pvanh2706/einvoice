@@ -1,0 +1,540 @@
+{
+  "baselineCommit": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "actions": [
+    {
+      "name": "DELETE",
+      "value": -1
+    },
+    {
+      "name": "LOGIN",
+      "value": 0
+    },
+    {
+      "name": "FORM_SERIAL",
+      "value": 1
+    },
+    {
+      "name": "CREATED",
+      "value": 2
+    },
+    {
+      "name": "CHANGE",
+      "value": 3
+    },
+    {
+      "name": "PUBLISH",
+      "value": 4
+    },
+    {
+      "name": "CREATED_AND_PUBLISH",
+      "value": 5
+    },
+    {
+      "name": "VOID",
+      "value": 6
+    },
+    {
+      "name": "ADJUST_INCREASE",
+      "value": 7
+    },
+    {
+      "name": "ADJUST_DECREASE",
+      "value": 8
+    },
+    {
+      "name": "ADJUST_INFOR",
+      "value": 9
+    },
+    {
+      "name": "REPLACE",
+      "value": 10
+    },
+    {
+      "name": "DOWNLOAD_PDF",
+      "value": 11
+    },
+    {
+      "name": "CONVERT_FOR_STORE",
+      "value": 12
+    },
+    {
+      "name": "GET_INFO_BY_TAXCODE",
+      "value": 14
+    },
+    {
+      "name": "ADJUST",
+      "value": 15
+    },
+    {
+      "name": "SENDEMAIL",
+      "value": 16
+    },
+    {
+      "name": "CREATED_AND_PUBLISH_MULTI",
+      "value": 17
+    },
+    {
+      "name": "DRAFT",
+      "value": 18
+    },
+    {
+      "name": "PREVIEW",
+      "value": 19
+    },
+    {
+      "name": "HEALTH_CHECK",
+      "value": 20
+    },
+    {
+      "name": "SEARCH_BY_ID",
+      "value": 21
+    },
+    {
+      "name": "GET_INVOICE",
+      "value": 22
+    },
+    {
+      "name": "DOWNLOAD_PDF_INV_DRAFT",
+      "value": 23
+    },
+    {
+      "name": "GET_SERIAL_CERT_INFO",
+      "value": 24
+    },
+    {
+      "name": "SEND_INVOICE_CQT",
+      "value": 25
+    },
+    {
+      "name": "GET_STATUS_INVOICE",
+      "value": 26
+    },
+    {
+      "name": "GET_XML_INVOICE_HASH",
+      "value": 27
+    },
+    {
+      "name": "SEND_INVOICE_CQT_USB_TOKEN",
+      "value": 28
+    },
+    {
+      "name": "GET_XML_INVOICE",
+      "value": 29
+    },
+    {
+      "name": "CREATE_AND_PUBLISH_INVOICE_XML",
+      "value": 30
+    },
+    {
+      "name": "EDIT_DRAFT",
+      "value": 31
+    }
+  ],
+  "providers": [
+    {
+      "name": "VNPT",
+      "value": 1,
+      "supportedActions": [
+        "ADJUST_DECREASE",
+        "ADJUST_INCREASE",
+        "ADJUST_INFOR",
+        "CREATED_AND_PUBLISH",
+        "CREATED_AND_PUBLISH_MULTI",
+        "DELETE",
+        "DOWNLOAD_PDF",
+        "DOWNLOAD_PDF_INV_DRAFT",
+        "DRAFT",
+        "FORM_SERIAL",
+        "GET_STATUS_INVOICE",
+        "HEALTH_CHECK",
+        "PREVIEW",
+        "PUBLISH",
+        "REPLACE",
+        "SEARCH_BY_ID",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/VnptAppService.cs"
+    },
+    {
+      "name": "MINVOICE",
+      "value": 2,
+      "supportedActions": [
+        "ADJUST",
+        "CHANGE",
+        "CREATED",
+        "CREATED_AND_PUBLISH",
+        "DELETE",
+        "DOWNLOAD_PDF",
+        "FORM_SERIAL",
+        "GET_INFO_BY_TAXCODE",
+        "GET_INVOICE",
+        "HEALTH_CHECK",
+        "LOGIN",
+        "PUBLISH",
+        "REPLACE",
+        "SENDEMAIL",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/MinvoiceAppService.cs"
+    },
+    {
+      "name": "SUN",
+      "value": 3,
+      "supportedActions": [
+        "ADJUST_DECREASE",
+        "ADJUST_INCREASE",
+        "CREATED_AND_PUBLISH",
+        "DOWNLOAD_PDF",
+        "DOWNLOAD_PDF_INV_DRAFT",
+        "DRAFT",
+        "HEALTH_CHECK",
+        "PREVIEW",
+        "REPLACE",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/SunAppService.cs"
+    },
+    {
+      "name": "VIETTEL",
+      "value": 4,
+      "supportedActions": [
+        "ADJUST_DECREASE",
+        "ADJUST_INCREASE",
+        "ADJUST_INFOR",
+        "CREATED_AND_PUBLISH",
+        "CREATED_AND_PUBLISH_MULTI",
+        "DOWNLOAD_PDF",
+        "DRAFT",
+        "HEALTH_CHECK",
+        "LOGIN",
+        "PREVIEW",
+        "REPLACE",
+        "SEARCH_BY_ID",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/ViettelAppService.cs"
+    },
+    {
+      "name": "VNPT_V5",
+      "value": 5,
+      "supportedActions": [
+        "ADJUST",
+        "ADJUST_DECREASE",
+        "ADJUST_INCREASE",
+        "ADJUST_INFOR",
+        "CREATED",
+        "CREATED_AND_PUBLISH",
+        "CREATED_AND_PUBLISH_MULTI",
+        "DELETE",
+        "DOWNLOAD_PDF",
+        "DOWNLOAD_PDF_INV_DRAFT",
+        "DRAFT",
+        "EDIT_DRAFT",
+        "FORM_SERIAL",
+        "GET_SERIAL_CERT_INFO",
+        "GET_STATUS_INVOICE",
+        "HEALTH_CHECK",
+        "PREVIEW",
+        "PUBLISH",
+        "REPLACE",
+        "SEND_INVOICE_CQT",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/VnptV5AppService.cs"
+    },
+    {
+      "name": "MISA",
+      "value": 6,
+      "supportedActions": [
+        "ADJUST",
+        "ADJUST_DECREASE",
+        "ADJUST_INCREASE",
+        "ADJUST_INFOR",
+        "CREATED_AND_PUBLISH",
+        "CREATED_AND_PUBLISH_MULTI",
+        "CREATE_AND_PUBLISH_INVOICE_XML",
+        "DOWNLOAD_PDF",
+        "FORM_SERIAL",
+        "GET_STATUS_INVOICE",
+        "GET_XML_INVOICE",
+        "GET_XML_INVOICE_HASH",
+        "HEALTH_CHECK",
+        "LOGIN",
+        "PREVIEW",
+        "REPLACE",
+        "SEND_INVOICE_CQT",
+        "SEND_INVOICE_CQT_USB_TOKEN",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/MisaAppService.cs"
+    },
+    {
+      "name": "CYBER_BILL",
+      "value": 7,
+      "supportedActions": [
+        "ADJUST",
+        "CHANGE",
+        "CREATED",
+        "CREATED_AND_PUBLISH",
+        "DELETE",
+        "DOWNLOAD_PDF",
+        "HEALTH_CHECK",
+        "LOGIN",
+        "PUBLISH",
+        "REPLACE",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/CyberbillAppService.cs"
+    },
+    {
+      "name": "FAST",
+      "value": 8,
+      "supportedActions": [
+        "ADJUST_DECREASE",
+        "ADJUST_INCREASE",
+        "ADJUST_INFOR",
+        "CREATED_AND_PUBLISH",
+        "CREATED_AND_PUBLISH_MULTI",
+        "DOWNLOAD_PDF",
+        "DOWNLOAD_PDF_INV_DRAFT",
+        "DRAFT",
+        "HEALTH_CHECK",
+        "LOGIN",
+        "PREVIEW",
+        "REPLACE",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/FastAppService.cs"
+    },
+    {
+      "name": "EASY_INVOICE",
+      "value": 9,
+      "supportedActions": [
+        "ADJUST_DECREASE",
+        "ADJUST_INCREASE",
+        "ADJUST_INFOR",
+        "CREATED",
+        "CREATED_AND_PUBLISH",
+        "DELETE",
+        "DOWNLOAD_PDF",
+        "DRAFT",
+        "HEALTH_CHECK",
+        "LOGIN",
+        "PREVIEW",
+        "PUBLISH",
+        "REPLACE",
+        "VOID"
+      ],
+      "implementationStatus": "not-implemented",
+      "source": "src/ezInvoice.Application/Services/ThirdPartyServices/EasyInvoiceAppService.cs"
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "MinvoiceLogin",
+      "legacyMethod": "MinvoiceLogin",
+      "legacyParameters": "MinvoiceLoginRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "HealthCheck",
+      "legacyMethod": "HealthCheck",
+      "legacyParameters": "HealthyCheckRequest heathyCheckRequest"
+    },
+    {
+      "method": "POST",
+      "path": "Login",
+      "legacyMethod": "Login",
+      "legacyParameters": ""
+    },
+    {
+      "method": "POST",
+      "path": "Create",
+      "legacyMethod": "Create",
+      "legacyParameters": "PmsCreateInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "Draft",
+      "legacyMethod": "Draft",
+      "legacyParameters": "PmsCreateInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "Preview",
+      "legacyMethod": "Preview",
+      "legacyParameters": "PMSAdjustReplaceInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "Change",
+      "legacyMethod": "Change",
+      "legacyParameters": "PMSAdjustReplaceInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "Delete",
+      "legacyMethod": "Delete",
+      "legacyParameters": "DeleteInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "Publish",
+      "legacyMethod": "Publish",
+      "legacyParameters": "VoidInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "MinvoiceGetTaxCodeInfo",
+      "legacyMethod": "MinvoiceGetTaxCodeInfo",
+      "legacyParameters": "GetTaxCodeInfoRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "ReplaceInvoice",
+      "legacyMethod": "ReplaceInvoice",
+      "legacyParameters": "PMSAdjustReplaceInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "AdjustIncreaseInvoice",
+      "legacyMethod": "AdjustIncreaseInvoice",
+      "legacyParameters": "PMSAdjustReplaceInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "AdjustInvoice",
+      "legacyMethod": "AdjustInvoice",
+      "legacyParameters": "PMSAdjustReplaceInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "AdjustDecreaseInvoice",
+      "legacyMethod": "AdjustDecreaseInvoice",
+      "legacyParameters": "PMSAdjustReplaceInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "AdjustInforInvoice",
+      "legacyMethod": "AdjustInforInvoice",
+      "legacyParameters": "PMSAdjustReplaceInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "VoidInvoice",
+      "legacyMethod": "VoidInvoice",
+      "legacyParameters": "VoidInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "DownloadPDF",
+      "legacyMethod": "DownloadPDF",
+      "legacyParameters": "PmsDownloadPDFRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "CreateAndPublishInvoice",
+      "legacyMethod": "CreateAndPublishInvoice",
+      "legacyParameters": "PmsCreateInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "CreateAndPublishMultiInvoice",
+      "legacyMethod": "CreateAndPublishMultiInvoice",
+      "legacyParameters": "List<PmsCreateInvoiceRequest> request"
+    },
+    {
+      "method": "GET",
+      "path": "FormSerials",
+      "legacyMethod": "FormSerials",
+      "legacyParameters": ""
+    },
+    {
+      "method": "POST",
+      "path": "FormSerialByType",
+      "legacyMethod": "FormSerialByType",
+      "legacyParameters": "PmsGetFormSerialRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "SendEmail",
+      "legacyMethod": "SendEmail",
+      "legacyParameters": "SendEmailRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "SearchById",
+      "legacyMethod": "SearchById",
+      "legacyParameters": "PmsSearchByIdRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "GetInvoice",
+      "legacyMethod": "GetInvoice",
+      "legacyParameters": "PMSGetInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "DownloadPDFInvoiceDraft",
+      "legacyMethod": "DownloadPDFInvoiceDraft",
+      "legacyParameters": "PmsDownloadPDFRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "GetSerialCertInfo",
+      "legacyMethod": "GetSerialCertInfo",
+      "legacyParameters": ""
+    },
+    {
+      "method": "POST",
+      "path": "SendInvoiceCQT",
+      "legacyMethod": "SendInvoiceCQT",
+      "legacyParameters": "SendInvoiceCQT request"
+    },
+    {
+      "method": "POST",
+      "path": "GetStatusInvoice",
+      "legacyMethod": "GetStatusInvoice",
+      "legacyParameters": "SendInvoiceCQT request"
+    },
+    {
+      "method": "POST",
+      "path": "GetXMLHashInvoice",
+      "legacyMethod": "GetXMLHashInvoice",
+      "legacyParameters": "GetXMLHashRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "SendInvoiceCQTUSBToken",
+      "legacyMethod": "SendInvoiceCQTUSBToken",
+      "legacyParameters": "SendInvoiceCQTUSBToken request"
+    },
+    {
+      "method": "POST",
+      "path": "GetXMLInvoice",
+      "legacyMethod": "GetXMLInvoice",
+      "legacyParameters": "PmsCreateInvoiceRequest request"
+    },
+    {
+      "method": "POST",
+      "path": "CreateAndPublishInvoiceXML",
+      "legacyMethod": "GetXMLInvoice",
+      "legacyParameters": "CreateAndPublishInvoiceXML request"
+    },
+    {
+      "method": "POST",
+      "path": "EditDraft",
+      "legacyMethod": "EditDraft",
+      "legacyParameters": "PmsCreateInvoiceRequest request"
+    }
+  ]
+}
