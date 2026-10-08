@@ -5,7 +5,7 @@ using eInvoice.Api.Errors;
 using eInvoice.Api.Security;
 using eInvoice.Core.Configuration;
 using eInvoice.Core.Contracts;
-using eInvoice.Providers.Admin;
+using eInvoice.Providers.Configuration;
 using eInvoice.Providers.Misa;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,21 +53,9 @@ builder.Services.AddSingleton(serviceProvider => new MisaWriteJournal(
 builder.Services.AddHttpClient<IMisaFormSerialClient, MisaFormSerialClient>(client => client.Timeout = TimeSpan.FromSeconds(90))
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
 builder.Services.AddScoped<ISiteConfigurationResolver, SiteConfigurationResolver>();
-builder.Services.AddHttpClient<IAdminClient, AdminClient>(client =>
-{
-    var configuredAddress = builder.Configuration["eInvoiceAdmin:BaseAddress"];
-    if (!string.IsNullOrWhiteSpace(configuredAddress))
-    {
-        if (!Uri.TryCreate(configuredAddress, UriKind.Absolute, out var address) ||
-            address.Scheme is not ("http" or "https") || !string.IsNullOrEmpty(address.UserInfo) ||
-            !string.IsNullOrEmpty(address.Query) || !string.IsNullOrEmpty(address.Fragment))
-        {
-            throw new InvalidOperationException("eInvoiceAdmin:BaseAddress must be an absolute HTTP(S) URL without credentials/query/fragment.");
-        }
-        client.BaseAddress = new Uri(address.AbsoluteUri.TrimEnd('/') + "/");
-    }
-    client.Timeout = TimeSpan.FromSeconds(builder.Configuration.GetValue("eInvoiceAdmin:TimeoutSeconds", 30));
-}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+var siteFile = builder.Configuration["SiteConfiguration:JsonFilePath"] ?? "sites.Local.json";
+builder.Services.AddSingleton<ISiteConfigurationStore>(new JsonSiteConfigurationStore(
+    Path.GetFullPath(siteFile, builder.Environment.ContentRootPath)));
 
 var app = builder.Build();
 app.UseExceptionHandler();

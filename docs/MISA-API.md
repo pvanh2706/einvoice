@@ -92,7 +92,7 @@ Không trả arbitrary message/DescriptionErrorCode từ MISA.
 | 502 | MISA_OPERATION_EMPTY_RESPONSE, MISA_OPERATION_INVALID_RESPONSE, MISA_OPERATION_CONNECTION_ERROR; lỗi token biên lai tương ứng MISA_RECEIPT_* |
 | 504 | MISA_OPERATION_TIMEOUT, MISA_RECEIPT_TIMEOUT |
 
-Auth/site/admin/host allowlist/login v3 vẫn như API-CONTRACT. Provider khác MISA trả 501.
+Auth/site/JSON store/host allowlist/login v3 như API-CONTRACT. Không gọi admin cũ; thiếu file/JSON sai/không đọc được trả 503 SITE_STORE_*, site không tồn tại trả 404. Provider khác MISA trả 501.
 Không dùng EnsureSuccessStatusCode cho MISA; đọc envelope cả trên 4xx/5xx.
 
 Login/đọc/CQT/void timeout 100s; FormSerial GET 90s. Publish/preview/create XML/publish XML giữ timeout vô hạn

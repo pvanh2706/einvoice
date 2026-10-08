@@ -35,12 +35,12 @@ Trạng thái: bộ route MISA tương ứng 19 action dispatcher baseline đã 
 
 Các trường còn lại dùng camelCase từ property C#; giữ tên hiện tại nếu chưa xác minh được ý nghĩa. `SiteConfigInfo`, `PartnerUrl`, `Username2`... tạm giữ nghĩa cũ cho adapter cấu hình; thiết kế cấu hình provider có kiểu sẽ được bổ sung riêng.
 
-Tên/key hợp đồng **admin bên ngoài** cũng được giữ theo dịch vụ đang chạy, ví dụ `SiteId` và `StatusCode`. Đổi tên app không tự đổi hợp đồng của hệ thống khác.
+Nguồn cấu hình server hiện là JSON local theo D019, sau này thay bằng DB riêng qua ISiteConfigurationStore. Client admin cũ chỉ được giữ để đối chiếu baseline, không đăng ký hoặc gọi trong API.
 
 ## Endpoint đã có
 
 - `GET /health/live`: không cần API key, không gọi dịch vụ ngoài; trả `{"service":"eInvoice","status":"alive"}`. Đây là liveness, chưa phải readiness cho mọi provider.
-- `POST /api/eInvoice/health-check`: yêu cầu HTTPS, X-Api-Key, X-Site-Id; body `{}` hoặc `{"requestId":"pms-request-001"}` để lấy config từ admin. Nếu có siteConfigInfo, config request được ưu tiên và ID phải khớp header.
+- `POST /api/eInvoice/health-check`: yêu cầu HTTPS, X-Api-Key, X-Site-Id; body `{}` hoặc `{"requestId":"pms-request-001"}` để lấy config từ JSON server. Nếu có siteConfigInfo, config request được ưu tiên và ID phải khớp header.
 
 Hiện health-check chỉ hỗ trợ MISA (partner 6), dùng token v3 như luồng Login/HealthCheck baseline; chưa kiểm tra riêng token biên lai. Response thành công không trả password/token/config:
 
@@ -63,9 +63,9 @@ requestId response/lỗi là ID server tạo. requestId PMS gửi hiện chưa t
 | 404 | SITE_CONFIGURATION_NOT_FOUND hoặc route không có |
 | 422 | MISA_LOGIN_REJECTED, MISA_ACCOUNT_NOT_AUTHORIZED, MISA_INVALID_CREDENTIALS |
 | 501 | PROVIDER_NOT_IMPLEMENTED (health-check provider khác MISA) |
-| 502 | ADMIN_UNAVAILABLE, MISA_CONNECTION_ERROR, MISA_EMPTY_RESPONSE, MISA_INVALID_RESPONSE |
-| 503 | ADMIN_NOT_CONFIGURED, MISA_ENDPOINT_NOT_ALLOWED |
-| 504 | ADMIN_TIMEOUT, MISA_TIMEOUT |
+| 502 | MISA_CONNECTION_ERROR, MISA_EMPTY_RESPONSE, MISA_INVALID_RESPONSE |
+| 503 | SITE_STORE_NOT_CONFIGURED, SITE_STORE_INVALID_DATA, SITE_STORE_UNAVAILABLE, MISA_ENDPOINT_NOT_ALLOWED |
+| 504 | MISA_TIMEOUT |
 | 500 | EINVOICE_INTERNAL_ERROR; không trả exception/raw provider body |
 
 JSON lỗi (`application/problem+json`) ví dụ:
@@ -91,7 +91,7 @@ Có thể có field chuẩn `type`. Lỗi body do framework có thể dùng HTTP
 
 `invoiceType` mặc định 0 nếu bỏ qua. Vé (1), biên lai (2), null và giá trị khác hiện trả 400 `INVOICE_TYPE_NOT_SUPPORTED`, không gọi admin/provider. MISA partner 6 là provider duy nhất đã port; provider khác trả 501 `PROVIDER_NOT_IMPLEMENTED`.
 
-`siteConfigInfo` tùy chọn mới trên request FormSerial; nếu có, cấu hình request được ưu tiên như health-check, `siteConfigInfo.site.id` phải khớp header. Không có cấu hình request thì lấy từ admin. Năm truy vấn là năm hiện tại theo UTC+7, không có key year do PMS gửi.
+`siteConfigInfo` tùy chọn mới trên request FormSerial; nếu có, cấu hình request được ưu tiên như health-check, `siteConfigInfo.site.id` phải khớp header. Không có cấu hình request thì lấy từ JSON server. Năm truy vấn là năm hiện tại theo UTC+7, không có key year do PMS gửi.
 
 Response 200:
 
@@ -138,4 +138,4 @@ curl --request POST 'https://localhost:7150/api/eInvoice/form-serials' \
   --data-raw '{"invoiceType":0,"requestId":"postman-form-001"}'
 ```
 
-Nếu local chưa có admin/config MISA thì trả 503 ADMIN_NOT_CONFIGURED; test 200 hiện dùng HTTP giả lập, chưa gọi sandbox.
+Local có site mẫu nhưng credential/endpoint trống: health-check trả 400 MISA_CREDENTIALS_REQUIRED; FormSerial kiểm tra endpoint trước nên trả 503 MISA_ENDPOINT_NOT_ALLOWED. Thiếu file JSON trả 503 SITE_STORE_NOT_CONFIGURED. Test 200 dùng HTTP giả lập, chưa gọi sandbox. Setup JSON tại LOCAL-SETUP.

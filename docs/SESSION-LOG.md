@@ -40,3 +40,12 @@
 - Restart localhost:7150 Release, **PID 18912/session 65209**; trusted TLS probe **25 ca đạt**, gồm OpenAPI/capabilities/journal và lỗi auth/config/idempotency dự kiến.
 - Checkpoint: `Complete MISA baseline APIs with token isolation and durable write journal`; xem git log để lấy hash.
 - Tiếp theo: câu trả lời Q008/Q009/Q010 và cấu hình sandbox/UAT từng variant; không port lại bộ MISA. Repo cũ giữ nguyên; chưa push/deploy.
+
+## 2026-10-08 — Bỏ admin cũ, tạm JSON để test
+
+- Người dùng xác nhận D019/Q011: không dùng link admin cũ, tự lưu DB riêng, tạm JSON. Runtime bỏ đăng ký HTTP client/admin error mapping; nguồn cấu hình là JsonSiteConfigurationStore qua ISiteConfigurationStore, giữ config request ưu tiên.
+- JSON server wrapper sites gồm site/extraDataMap, chọn đúng ID, không fallback network/site khác. Đọc lại mỗi lookup; credential đổi dùng ở request sau. JSON sai/ID trùng/thiếu/unavailable phân loại safe JSON, không log nội dung/path/credential.
+- Tạo sites.Local.json ignored từ template, GUID local có sẵn, credential/endpoint trống; giữ API key và không overwrite file site sẵn có. File mẫu commit docs/sites.example.json; update LOCAL-SETUP/API-CONTRACT/Postman/AGENTS. Chưa chọn DB/schema.
+- Thêm 17 test store/API fake HTTP, cả health/forms/document/publish lấy config JSON và không có IAdminClient trong DI. Final verify: **257 test pass, 0 warning/error**. Lần build đầu bị DLL lock do host cũ; đã xác minh/dừng process rồi chạy lại verify thành công.
+- Restart Release https://localhost:7150, **PID 3548/session 81966**. Probe 9 ca dùng public dev certificate localhost làm trust riêng, kiểm tra hostname/TLS bình thường. Health 400 MISA_CREDENTIALS_REQUIRED (file mẫu trống), forms 503 MISA_ENDPOINT_NOT_ALLOWED (endpoint trống); không còn ADMIN_NOT_CONFIGURED và không gọi NCC.
+- Checkpoint: `Use local JSON site configuration with database-ready store interface`. Tiếp theo: người dùng điền sandbox JSON + host allowlist, restart khi thay allowlist, UAT theo variant; Q008/Q009/Q010 vẫn mở. Không sửa repo cũ/push/deploy.

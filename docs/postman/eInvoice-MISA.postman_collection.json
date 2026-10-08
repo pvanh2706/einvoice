@@ -11,7 +11,7 @@
         "method": "GET",
         "header": [],
         "url": "{{baseUrl}}/health/live",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
       }
     },
     {
@@ -20,7 +20,7 @@
         "method": "GET",
         "header": [],
         "url": "{{baseUrl}}/openapi/misa.json",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
       }
     },
     {
@@ -38,7 +38,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/misa/capabilities",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
       }
     },
     {
@@ -60,7 +60,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/health-check",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"requestId\": \"postman-health-001\"\n}",
@@ -91,7 +91,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/form-serials",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoiceType\": 0,\n  \"requestId\": \"postman-form-001\"\n}",
@@ -126,7 +126,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/publish",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"INV-PUBLISH-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"C26TAA\",\n    \"invoiceDate\": \"08/10/2026\",\n    \"customerName\": \"Khách thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"ROOM\",\n      \"itemName\": \"Dịch vụ thử nghiệm\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"serviceCharge\": 0,\n      \"discountAmount\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"08/10/2026\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
@@ -161,7 +161,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/publish-batch",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoices\": [\n    {\n      \"invoice\": {\n        \"invoiceId\": \"INV-BATCH-001\",\n        \"invoiceType\": 0,\n        \"formNo\": \"1\",\n        \"serial\": \"C26TAA\",\n        \"invoiceDate\": \"08/10/2026\",\n        \"customerName\": \"Khách thử nghiệm\",\n        \"currencyCode\": \"VND\",\n        \"exchangeRate\": 1,\n        \"paymentMethod\": \"TM/CK\",\n        \"subAmount\": 100000,\n        \"beforeTaxAmount\": 100000,\n        \"taxRate\": 10,\n        \"taxAmount\": 10000,\n        \"afterTaxAmount\": 110000,\n        \"isMultiVATRate\": false,\n        \"pricePrecision\": 0,\n        \"quantityPrecision\": 0,\n        \"amountPrecision\": 0\n      },\n      \"details\": [\n        {\n          \"itemCode\": \"ROOM\",\n          \"itemName\": \"Dịch vụ thử nghiệm\",\n          \"unitName\": \"Lần\",\n          \"quantity\": 1,\n          \"price\": 100000,\n          \"subAmount\": 100000,\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000,\n          \"afterTaxAmount\": 110000,\n          \"serviceCharge\": 0,\n          \"discountAmount\": 0,\n          \"exciseTaxCharge\": 0,\n          \"itemType\": \"1\",\n          \"transactionDate\": \"08/10/2026\"\n        }\n      ],\n      \"taxSummaries\": [\n        {\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000\n        }\n      ],\n      \"serviceSummaries\": [],\n      \"extraData\": [],\n      \"electronicInvoiceType\": 0\n    },\n    {\n      \"invoice\": {\n        \"invoiceId\": \"INV-BATCH-002\",\n        \"invoiceType\": 0,\n        \"formNo\": \"1\",\n        \"serial\": \"C26TAA\",\n        \"invoiceDate\": \"08/10/2026\",\n        \"customerName\": \"Khách thử nghiệm\",\n        \"currencyCode\": \"VND\",\n        \"exchangeRate\": 1,\n        \"paymentMethod\": \"TM/CK\",\n        \"subAmount\": 100000,\n        \"beforeTaxAmount\": 100000,\n        \"taxRate\": 10,\n        \"taxAmount\": 10000,\n        \"afterTaxAmount\": 110000,\n        \"isMultiVATRate\": false,\n        \"pricePrecision\": 0,\n        \"quantityPrecision\": 0,\n        \"amountPrecision\": 0\n      },\n      \"details\": [\n        {\n          \"itemCode\": \"ROOM\",\n          \"itemName\": \"Dịch vụ thử nghiệm\",\n          \"unitName\": \"Lần\",\n          \"quantity\": 1,\n          \"price\": 100000,\n          \"subAmount\": 100000,\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000,\n          \"afterTaxAmount\": 110000,\n          \"serviceCharge\": 0,\n          \"discountAmount\": 0,\n          \"exciseTaxCharge\": 0,\n          \"itemType\": \"1\",\n          \"transactionDate\": \"08/10/2026\"\n        }\n      ],\n      \"taxSummaries\": [\n        {\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000\n        }\n      ],\n      \"serviceSummaries\": [],\n      \"extraData\": [],\n      \"electronicInvoiceType\": 0\n    }\n  ],\n  \"requestId\": \"postman-batch-001\"\n}",
@@ -192,7 +192,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/preview",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"INV-PUBLISH-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"C26TAA\",\n    \"invoiceDate\": \"08/10/2026\",\n    \"customerName\": \"Khách thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"ROOM\",\n      \"itemName\": \"Dịch vụ thử nghiệm\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"serviceCharge\": 0,\n      \"discountAmount\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"08/10/2026\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
@@ -227,7 +227,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/adjust",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"INV-ADJUST-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"C26TAA\",\n    \"invoiceDate\": \"08/10/2026\",\n    \"customerName\": \"Khách thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"ROOM\",\n      \"itemName\": \"Dịch vụ thử nghiệm\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"serviceCharge\": 0,\n      \"discountAmount\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"08/10/2026\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"INV-ORIGINAL-001\",\n  \"originalProviderInvoiceNumber\": \"000001\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"INV-ORIGINAL-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"1C26TAA\",\n    \"invoiceDate\": \"01/09/2026\"\n  }\n}",
@@ -262,7 +262,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/replace",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"INV-REPLACE-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"C26TAA\",\n    \"invoiceDate\": \"08/10/2026\",\n    \"customerName\": \"Khách thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"ROOM\",\n      \"itemName\": \"Dịch vụ thử nghiệm\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"serviceCharge\": 0,\n      \"discountAmount\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"08/10/2026\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"INV-ORIGINAL-001\",\n  \"originalProviderInvoiceNumber\": \"000001\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"INV-ORIGINAL-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"1C26TAA\",\n    \"invoiceDate\": \"01/09/2026\"\n  }\n}",
@@ -293,7 +293,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/document",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoiceType\": 0,\n  \"electronicInvoiceType\": 0,\n  \"searchCode\": \"{{searchCode}}\",\n  \"typeFileDownload\": \"pdf\"\n}",
@@ -328,7 +328,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/void",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoiceId\": \"INV-PUBLISH-001\",\n  \"invoiceType\": 0,\n  \"providerInvoiceNumber\": \"{{providerInvoiceNumber}}\",\n  \"searchCode\": \"{{searchCode}}\",\n  \"reason\": \"Synthetic cancellation reason\"\n}",
@@ -359,7 +359,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/status",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoiceIds\": [\n    \"INV-PUBLISH-001\"\n  ],\n  \"invoiceType\": 0,\n  \"electronicInvoiceType\": 0\n}",
@@ -394,7 +394,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/tax/send-pending",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"requestId\": \"postman-cqt-pending-001\"\n}",
@@ -429,7 +429,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/xml/create",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"INV-USB-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"C26TAA\",\n    \"invoiceDate\": \"08/10/2026\",\n    \"customerName\": \"Khách thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"ROOM\",\n      \"itemName\": \"Dịch vụ thử nghiệm\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"serviceCharge\": 0,\n      \"discountAmount\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"08/10/2026\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 2\n}",
@@ -460,7 +460,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/xml/hash",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"certBase64\": \"{{certBase64}}\"\n}",
@@ -495,7 +495,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/tax/send-signed",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"messageCode\": \"{{messageCode}}\",\n  \"signatureValue\": \"{{signatureValue}}\"\n}",
@@ -530,7 +530,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/xml/publish",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"invoiceId\": \"INV-USB-001\",\n  \"invoiceType\": 0,\n  \"searchCode\": \"{{searchCode}}\",\n  \"invoiceData\": \"{{signedInvoiceXml}}\"\n}",
@@ -569,7 +569,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/operations/publish/{{idempotencyKey}}",
-        "description": "Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
       }
     }
   ]

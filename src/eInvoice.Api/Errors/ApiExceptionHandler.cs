@@ -1,6 +1,5 @@
 using eInvoice.Core.Configuration;
 using eInvoice.Core.Contracts;
-using eInvoice.Providers.Admin;
 using eInvoice.Providers.Misa;
 using Microsoft.AspNetCore.Diagnostics;
 
@@ -19,13 +18,13 @@ public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : I
             InvoiceRequestException request => (400, request.Code, request.Message),
             InvoiceOperationConflictException conflict => (409, conflict.Code, conflict.Message),
             SiteConfigurationException => (400, "INVALID_SITE_CONFIGURATION", "Invalid site configuration"),
-            AdminLookupException { Failure: AdminFailure.MissingConfiguration } =>
-                (503, "ADMIN_NOT_CONFIGURED", "Admin service is not configured"),
-            AdminLookupException { Failure: AdminFailure.Timeout } =>
-                (504, "ADMIN_TIMEOUT", "Admin service timed out"),
-            AdminLookupException { Failure: AdminFailure.MissingSite } =>
+            SiteStoreException { Failure: SiteStoreFailure.NotConfigured } =>
+                (503, "SITE_STORE_NOT_CONFIGURED", "Site configuration JSON file is not configured"),
+            SiteStoreException { Failure: SiteStoreFailure.NotFound } =>
                 (404, "SITE_CONFIGURATION_NOT_FOUND", "Site configuration was not found"),
-            AdminLookupException => (502, "ADMIN_UNAVAILABLE", "Admin service returned an invalid response"),
+            SiteStoreException { Failure: SiteStoreFailure.InvalidData } =>
+                (503, "SITE_STORE_INVALID_DATA", "Site configuration JSON file is invalid"),
+            SiteStoreException => (503, "SITE_STORE_UNAVAILABLE", "Site configuration store is unavailable"),
             ProviderCallException { Failure: ProviderFailure.Configuration } provider =>
                 (503, provider.Code, "Provider endpoint is not configured"),
             ProviderCallException { Failure: ProviderFailure.InvalidCredentials } provider =>

@@ -6,6 +6,7 @@ using System.Text.Json;
 using eInvoice.Core.Configuration;
 using eInvoice.Core.Contracts;
 using eInvoice.Providers.Misa;
+using eInvoice.Providers.Configuration;
 using eInvoice.Tests.Misa;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -25,6 +26,7 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
     public ConcurrentQueue<string> Logs { get; } = new();
     public Func<ProviderCall, HttpResponseMessage>? Respond { get; set; }
     public Func<SiteInfo?, Guid?, ResolvedSite>? Resolve { get; set; }
+    public string? SiteFilePath { get; init; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -39,8 +41,16 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
         builder.ConfigureLogging(logging => logging.AddProvider(new LogProvider(Logs)));
         builder.ConfigureServices(services =>
         {
-            services.RemoveAll<ISiteConfigurationResolver>();
-            services.AddSingleton<ISiteConfigurationResolver>(new Resolver(this));
+            if (SiteFilePath is null)
+            {
+                services.RemoveAll<ISiteConfigurationResolver>();
+                services.AddSingleton<ISiteConfigurationResolver>(new Resolver(this));
+            }
+            else
+            {
+                services.RemoveAll<ISiteConfigurationStore>();
+                services.AddSingleton<ISiteConfigurationStore>(new JsonSiteConfigurationStore(SiteFilePath));
+            }
             services.RemoveAll<MisaLoginOptions>();
             services.AddSingleton(new MisaLoginOptions { AllowedHosts = ["misa.example.test"] });
             services.RemoveAll<MisaWriteJournal>();
@@ -48,6 +58,7 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
             services.AddHttpClient<MisaLoginClient>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
             services.AddHttpClient<IMisaReceiptLoginClient, MisaReceiptLoginClient>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
             services.AddHttpClient<MisaBusinessTransport>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
+            services.AddHttpClient<IMisaFormSerialClient, MisaFormSerialClient>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
         });
     }
 
@@ -70,6 +81,7 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
     private HttpResponseMessage DefaultResponse(ProviderCall call)
     {
         if (call.Url.EndsWith("auth/token", StringComparison.Ordinal)) return Envelope("synthetic-v3-token");
+        if (call.Url.Contains("/templates?", StringComparison.Ordinal)) return Envelope(Array.Empty<object>());
         if (call.Url.Contains("user/token?", StringComparison.Ordinal)) return Envelope("synthetic-receipt-token");
         if (call.Url.EndsWith("iptemplatepublish", StringComparison.Ordinal))
             return Envelope(new[] { new { TemplateCode = "R26TEST", InvoiceSeries = "C26RAA", InvoiceType = "2" } });

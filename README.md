@@ -11,7 +11,7 @@ Gateway hóa đơn điện tử viết lại bằng C#. Dự án nguồn tại `
 ## Cấu trúc
 
 - `src/eInvoice.Core`: canonical DTO, enum/capability baseline, resolver cấu hình và đọc tiền.
-- `src/eInvoice.Providers`: admin HTTP client, MISA transport/mapping/token/journal, XML và bộ đọc tiền SUN.
+- `src/eInvoice.Providers`: JSON site store, MISA transport/mapping/token/journal, XML và bộ đọc tiền SUN. Client admin cũ chỉ giữ để đối chiếu, không dùng trong API.
 - `src/eInvoice.Api`: host, API key, quyền theo khách sạn, JSON lỗi và endpoint.
 - `tests/eInvoice.Tests`: regression fixture và kiểm thử HTTP giả lập; không gọi admin/provider thật.
 - `docs/reference`: tài liệu lịch sử, inventory và hash nguồn theo commit cố định.

@@ -3,7 +3,7 @@ using eInvoice.Core.Contracts;
 namespace eInvoice.Core.Configuration;
 
 /// <summary>Uses request configuration first, exactly as the legacy GetCompany branch does.</summary>
-public sealed class SiteConfigurationResolver(IAdminClient adminClient) : ISiteConfigurationResolver
+public sealed class SiteConfigurationResolver(ISiteConfigurationStore store) : ISiteConfigurationResolver
 {
     public Task<ResolvedSite> ResolveAsync(SiteInfo? suppliedConfiguration, Guid? siteId,
         CancellationToken cancellationToken = default)
@@ -26,6 +26,6 @@ public sealed class SiteConfigurationResolver(IAdminClient adminClient) : ISiteC
             throw new SiteConfigurationException("A site ID is required when request configuration is absent.");
         }
 
-        return adminClient.GetSiteAsync(siteId.Value, cancellationToken);
+        return store.GetSiteAsync(siteId.Value, cancellationToken);
     }
 }

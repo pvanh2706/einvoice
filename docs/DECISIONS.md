@@ -22,4 +22,6 @@
 | D017 | 2026-10-08 | Cache v3 bounded/single-flight, fingerprint HMAC tách tenant/endpoint/tax/account/credential, expiry UTC theo giới hạn 7 ngày baseline trừ 5 phút; health-check bypass cache. Biên lai chỉ tái sử dụng trong một thao tác vì chưa xác minh expiry liên request. Tắt logger URI chứa query credential. | Bảo toàn credential và kiểm chứng concurrency/invalidation/no-secret logging |
 | D018 | 2026-10-08 | Giữ batch item success/failure và correlation theo invoiceId; chỉ trả symbolic providerCode từ allowlist, không trả raw supplier description. Response thiếu dữ liệu/ID ngoài request trả 502; wire key NCC giữ nguyên. | Hợp đồng rõ nghĩa/an toàn D003, D009; fixture + malformed/partial/error tests |
 
+| D019 | 2026-10-08 | Bỏ dịch vụ admin cũ khỏi API. Cấu hình khách sạn tạm đọc từ JSON server sites.Local.json theo X-Site-Id; sau này DB riêng qua ISiteConfigurationStore. Giữ config request ưu tiên như hợp đồng hiện tại. Không chọn DB/schema lúc này. File thật ignored, lỗi JSON/ID trùng fail closed, không fallback network/site khác; thay credential được đọc ở request sau. | Người dùng: không dùng link admin cũ, sẽ lưu DB riêng, tạm dùng JSON để test |
+
 Mỗi quyết định thay đổi hành vi cũ phải bổ sung lý do, phạm vi ảnh hưởng và cách kiểm thử. Quyết định thuộc nghiệp vụ cần người dùng xác nhận.

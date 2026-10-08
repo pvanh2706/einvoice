@@ -9,7 +9,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 - [x] Trích inventory 33 endpoint, 32 action, 9 provider từ code baseline (capability chưa đồng nghĩa đã implement).
 - [x] Port canonical DTO có tên mới, enum có giá trị số cũ; kiểm thử JSON/default/decimal.
 - [x] Port các helper đọc tiền/XML và đóng băng mẫu từ code cũ bằng công cụ capture offline.
-- [x] Client eInvoiceAdmin async, injectable HTTP, hỗ trợ body UTF-16 cũ, kiểm thử fake HTTP; resolver ưu tiên cấu hình request.
+- [x] JSON site store theo D019, abstraction ISiteConfigurationStore để thay DB riêng; resolver ưu tiên cấu hình request. Client admin baseline chỉ giữ tham chiếu/test, không đăng ký vào API.
 - [x] Host chạy được và health endpoint; endpoint phát hành MISA đã nối adapter và kiểm thử offline ở P1.
 
 ## P1 — Một provider đầy đủ theo từng luồng
@@ -21,7 +21,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 - [x] Dựng interface theo thao tác, context theo tenant, capability rõ ràng và transport test doubles.
 - [x] Provider đầu tiên **MISA**: mapping request/response 19 action baseline, hai hệ credential, đọc/ghi, timeout và journal local chống trùng qua restart.
 - [x] Expose endpoint mới cho những luồng đã hoàn thành; OpenAPI 3.1 + Postman + tài liệu request/response.
-- [x] Kiểm thử payload provider theo 16 fixture độc lập và kiểm thử end-to-end qua HTTP giả lập; tổng 240 test Release đạt.
+- [x] Kiểm thử payload provider theo 16 fixture độc lập và kiểm thử end-to-end qua HTTP giả lập; tổng 257 test Release đạt, gồm 17 ca JSON store/API.
 - [ ] Sandbox/UAT từng variant và xử lý Q008/Q009/Q010 trước khi thay nghiệp vụ/cutover.
 
 ## P2 — Hoàn thành các provider còn lại
@@ -33,7 +33,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | SUN | Chưa | Chưa | Chưa | Chưa | Chưa |
 | VIETTEL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | VNPT_V5 | Chưa | Chưa | Chưa | Chưa | Chưa |
-| MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 240 test toàn solution | Chưa |
+| MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 257 test toàn solution | Chưa |
 | CYBER_BILL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
 | EASY_INVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |

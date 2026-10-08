@@ -23,7 +23,7 @@ def add(name, route, body=None, write=False, method='POST', auth=True):
     if auth: headers += [{'key':'X-Api-Key','value':'{{apiKey}}'},{'key':'X-Site-Id','value':'{{siteId}}'}]
     if write: headers += [{'key':'Idempotency-Key','value':'{{idempotencyKey}}'}]
     request={'method':method,'header':headers,'url':'{{baseUrl}}'+route,
-       'description':'Synthetic example. Configure sandbox/admin locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.'}
+       'description':'Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend.'}
     if body is not None: request['body']={'mode':'raw','raw':json.dumps(body,indent=2,ensure_ascii=False),'options':{'raw':{'language':'json'}}}
     items.append({'name':name,'request':request})
 add('Liveness','/health/live',method='GET',auth=False)

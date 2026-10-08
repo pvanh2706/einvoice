@@ -7,6 +7,7 @@
 - Q004: Provider đầu tiên? **MISA** (D010).
 - Q003: Authentication? **API key theo hệ PMS, giới hạn khách sạn, HTTPS** (D011).
 - Q007: Năm lấy mẫu/ký hiệu MISA theo múi giờ nào? **Cố định UTC+7** (D013).
+- Q011: Không dùng admin cũ; tạm dùng JSON server để test, sau này DB riêng (D019). Site mẫu dùng GUID local có sẵn; credential/hostname sandbox do người dùng điền tại máy.
 
 ## Đang chờ trước khi thay đổi nghiệp vụ/cutover
 
@@ -18,8 +19,6 @@
 - Q006: Môi trường đang chạy sử dụng culture/timezone nào? Các mapping tiền/ngày/epoch cũ còn cần chốt; câu trả lời Q007 chỉ giải quyết năm truy vấn FormSerial.
 
 ## Cần dữ liệu bổ sung trước khi thay production
-
-- Q011 (đã hỏi sau báo lỗi health-check 503): URL admin và SiteId khách sạn dùng để test bản mới. Code cũ cấu hình admin-test.ezinvoice.vn nhưng chưa xác nhận đây là môi trường cần dùng. Local BaseAddress và allowlist MISA vẫn trống; chưa tự sao chép cấu hình cũ hoặc gọi admin/NCC thật. Body direct-config template tại .local/misa-health.direct-config.template.json không chứa credential thật.
 
 - Golden giao dịch đã che (request PMS, request provider, response provider, response PMS), PDF/XML đầy đủ.
 - API/WSDL và sandbox credential từng provider; chuyển qua cấu hình local/secrets, không ghi vào tài liệu Git.

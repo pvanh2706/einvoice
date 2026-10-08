@@ -15,4 +15,5 @@ artifacts/
 **/appsettings.Local.json
 **/appsettings.*.Local.json
 **/secrets.json
+**/sites.Local.json
 __pycache__/

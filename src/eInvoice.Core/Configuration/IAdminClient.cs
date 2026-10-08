@@ -1,6 +1,4 @@
 namespace eInvoice.Core.Configuration;
 
-public interface IAdminClient
-{
-    Task<ResolvedSite> GetSiteAsync(Guid siteId, CancellationToken cancellationToken = default);
-}
+// Retained for baseline transport tests; the API uses ISiteConfigurationStore with a local JSON implementation.
+public interface IAdminClient : ISiteConfigurationStore;
