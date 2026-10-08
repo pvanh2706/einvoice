@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using eInvoice.Api;
 using eInvoice.Api.Errors;
 using eInvoice.Api.Security;
 using eInvoice.Core.Configuration;
@@ -34,8 +35,21 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.NumberHandling = JsonNumberHandling.Strict;
 });
 builder.Services.AddSingleton(builder.Configuration.GetSection("Providers:Misa").Get<MisaLoginOptions>() ?? new MisaLoginOptions());
-builder.Services.AddHttpClient<IMisaLoginClient, MisaLoginClient>(client => client.Timeout = TimeSpan.FromSeconds(100))
+builder.Services.AddSingleton<MisaTokenCache>();
+builder.Services.AddHttpClient<MisaLoginClient>(client => client.Timeout = TimeSpan.FromSeconds(100))
+    .RemoveAllLoggers()
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+builder.Services.AddTransient<IMisaLoginClient, CachedMisaLoginClient>();
+builder.Services.AddHttpClient<IMisaReceiptLoginClient, MisaReceiptLoginClient>(client => client.Timeout = TimeSpan.FromSeconds(100))
+    .RemoveAllLoggers()
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+builder.Services.AddHttpClient<MisaBusinessTransport>(client => client.Timeout = Timeout.InfiniteTimeSpan)
+    .RemoveAllLoggers()
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+builder.Services.AddScoped<IMisaInvoiceService, MisaInvoiceService>();
+builder.Services.AddSingleton(serviceProvider => new MisaWriteJournal(
+    builder.Configuration["Providers:Misa:JournalDirectory"] ?? Path.Combine(AppContext.BaseDirectory, "misa-journal"),
+    serviceProvider.GetRequiredService<TimeProvider>()));
 builder.Services.AddHttpClient<IMisaFormSerialClient, MisaFormSerialClient>(client => client.Timeout = TimeSpan.FromSeconds(90))
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
 builder.Services.AddScoped<ISiteConfigurationResolver, SiteConfigurationResolver>();
@@ -72,6 +86,7 @@ app.UseAuthorization();
 
 // Liveness only. This does not contact admin/providers or claim the invoice adapters are ready.
 app.MapGet("/health/live", () => Results.Ok(new { service = "eInvoice", status = "alive" }));
+app.MapGet("/openapi/misa.json", () => Results.File(Path.Combine(AppContext.BaseDirectory, "openapi.misa.json"), "application/json"));
 
 app.MapPost("/api/eInvoice/health-check", async (ProviderHealthCheckRequest request, HttpContext http,
     ISiteConfigurationResolver resolver, IMisaLoginClient misa) =>
@@ -83,7 +98,7 @@ app.MapPost("/api/eInvoice/health-check", async (ProviderHealthCheckRequest requ
     if (configuration.Site.Partner != 6)
         return Results.Problem(statusCode: 501, title: "This provider is not implemented yet",
             extensions: new Dictionary<string, object?> { ["code"] = "PROVIDER_NOT_IMPLEMENTED", ["requestId"] = http.TraceIdentifier });
-    _ = await misa.AuthenticateAsync(configuration.Site, http.RequestAborted);
+    _ = await misa.CheckConnectionAsync(configuration.Site, http.RequestAborted);
     return Results.Ok(new { provider = "MISA", connected = true, siteId, requestId = http.TraceIdentifier });
 }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
 
@@ -104,6 +119,7 @@ app.MapPost("/api/eInvoice/form-serials", async (GetFormSerialsRequest request, 
     return Results.Ok(new { provider = "MISA", siteId, forms, requestId = http.TraceIdentifier });
 }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
 
+app.MapMisaApi();
 app.Run();
 
 public partial class Program;

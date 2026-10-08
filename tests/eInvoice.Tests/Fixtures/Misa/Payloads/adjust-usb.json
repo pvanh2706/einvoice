@@ -1,0 +1,101 @@
+[
+  {
+    "RefID": "INV-001",
+    "InvSeries": "C26TAA",
+    "InvoiceName": "Hóa đơn giá trị gia tăng",
+    "InvDate": "2026-10-08",
+    "CurrencyCode": "VND",
+    "ExchangeRate": 1.0,
+    "PaymentMethodName": "TM/CK",
+    "BuyerCode": "CUSTOMER-001",
+    "BuyerLegalName": "Synthetic customer",
+    "BuyerTaxCode": null,
+    "BuyerAddress": "Synthetic address",
+    "BuyerFullName": "Khách thử nghiệm",
+    "BuyerBankAccount": null,
+    "BuyerBankName": null,
+    "BuyerPhoneNumber": null,
+    "BuyerEmail": null,
+    "BuyerIDNumber": null,
+    "BuyerPassport": null,
+    "BuyerBudgetCode": null,
+    "TotalSaleAmountOC": 228.400,
+    "TotalSaleAmount": 228.400,
+    "TotalDiscountAmount": 17.575,
+    "TotalDiscountAmountOC": 17.575,
+    "TotalAmountWithoutVATOC": 245.975,
+    "TotalAmountWithoutVAT": 245.975,
+    "TotalVATAmountOC": 24.5975,
+    "TotalVATAmount": 24.5975,
+    "TotalAmountOC": 270.5725,
+    "TotalAmount": 270.5725,
+    "TotalAmountInWords": "Hai trăm bảy mươi đồng",
+    "OriginalInvoiceDetail": [
+      {
+        "ItemType": 1,
+        "LineNumber": 1,
+        "SortOrder": 1,
+        "ItemName": "Dịch vụ thử nghiệm",
+        "UnitName": "Lần",
+        "Quantity": 2.5,
+        "UnitPrice": 98.39,
+        "DiscountRate": 7.0,
+        "DiscountAmountOC": 18.0,
+        "DiscountAmount": 18.0,
+        "AmountOC": 251.0,
+        "Amount": 251.0,
+        "AmountWithoutVATOC": 245.975,
+        "AmountWithoutVAT": 245.975,
+        "AmountAfterTax": 270.5725,
+        "VATRateName": "10%",
+        "VATAmountOC": 24.5975,
+        "VATAmount": 24.5975,
+        "ServiceFeeRate": 5.0,
+        "ServiceAmount": 12.55,
+        "ServiceAmountOC": 12.55,
+        "ItemCode": "ROOM",
+        "UnitPriceAfterExciseVAT": 245.975,
+        "CustomField2Detail": "08/10/2026",
+        "CustomField1Detail": "100.4",
+        "ExciseTaxRate": 0.0,
+        "ExciseTaxAmountOC": 0.0,
+        "ExciseTaxAmount": 0.0,
+        "TaxReduction43Amount": 0.0,
+        "TaxReduction43AmountOC": 0.0,
+        "CustomField3Detail": "245.98"
+      }
+    ],
+    "TaxRateInfo": [
+      {
+        "VATRateName": "10%",
+        "AmountWithoutVATOC": 245.975,
+        "VATAmountOC": 24.5975
+      }
+    ],
+    "FeeInfo": [
+      {
+        "FeeName": "5%",
+        "FeeAmountOC": 12.55
+      }
+    ],
+    "OptionUserDefined": {
+      "MainCurrency": "VND",
+      "UnitPriceOCDecimalDigits": "2",
+      "UnitPriceDecimalDigits": "2",
+      "QuantityDecimalDigits": "2",
+      "AmountDecimalDigits": "2",
+      "AmountOCDecimalDigits": "2",
+      "CoefficientDecimalDigits": "0",
+      "ExchangRateDecimalDigits": "0"
+    },
+    "IsTicket": false,
+    "ReferenceType": 2,
+    "OrgInvoiceType": 1,
+    "OrgInvTemplateNo": "1",
+    "OrgInvSeries": "C25TAA",
+    "OrgInvNo": "0000123",
+    "OrgInvDate": "2026-09-01",
+    "SellerShopCode": null,
+    "SellerShopName": null
+  }
+]

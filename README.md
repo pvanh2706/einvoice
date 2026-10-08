@@ -2,7 +2,7 @@
 
 Gateway hóa đơn điện tử viết lại bằng C#. Dự án nguồn tại `D:\Code\25.ezInvoice` được dùng để đối chiếu, không sửa trong quá trình viết lại.
 
-**Trạng thái: nền tảng, kiểm tra kết nối và lấy mẫu/ký hiệu hóa đơn MISA. Chưa hoàn thành các luồng phát hành hóa đơn; chưa được xác nhận để thay production.**
+**Trạng thái: nền tảng và bộ API MISA tương ứng 19 action đang có trong code cũ. Đã kiểm thử offline; chưa sandbox/UAT hoặc xác nhận thay production. Các cải tiến nghiệp vụ đang chờ giữ baseline.**
 
 ## Tiếp tục phiên làm việc
 
@@ -11,11 +11,12 @@ Gateway hóa đơn điện tử viết lại bằng C#. Dự án nguồn tại `
 ## Cấu trúc
 
 - `src/eInvoice.Core`: canonical DTO, enum/capability baseline, resolver cấu hình và đọc tiền.
-- `src/eInvoice.Providers`: admin HTTP client, MISA login/FormSerial transport, XML và bộ đọc tiền SUN.
+- `src/eInvoice.Providers`: admin HTTP client, MISA transport/mapping/token/journal, XML và bộ đọc tiền SUN.
 - `src/eInvoice.Api`: host, API key, quyền theo khách sạn, JSON lỗi và endpoint.
 - `tests/eInvoice.Tests`: regression fixture và kiểm thử HTTP giả lập; không gọi admin/provider thật.
 - `docs/reference`: tài liệu lịch sử, inventory và hash nguồn theo commit cố định.
 - `tools/LegacyFixtureCapture`: chụp mẫu tiền/XML từ helper cũ, hoàn toàn offline; không nằm trong solution runtime.
+- `tools/MisaFixtureCapture`: frozen mapper baseline để capture payload MISA độc lập với runtime mới.
 
 ## Build và kiểm thử
 
@@ -42,6 +43,8 @@ Endpoint hiện có:
 - `GET /health/live`: kiểm tra tiến trình.
 - `POST /api/eInvoice/health-check`: xác thực và kiểm tra kết nối MISA; không trả token/credential.
 - `POST /api/eInvoice/form-serials`: lấy mẫu/ký hiệu MISA cho `invoiceType: 0`, năm hiện tại theo UTC+7.
+- Bộ route publish/batch/preview/adjust/replace/document/void/status/CQT/USB: [MISA-API](docs/MISA-API.md).
+- `GET /openapi/misa.json`: schema để import Postman; [collection synthetic](docs/postman/eInvoice-MISA.postman_collection.json).
 
 Hợp đồng mới, JSON mẫu và mã lỗi: [API-CONTRACT](docs/API-CONTRACT.md). Các route/key cũ không được hỗ trợ.
 

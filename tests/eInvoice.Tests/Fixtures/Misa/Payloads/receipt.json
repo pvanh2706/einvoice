@@ -1,0 +1,67 @@
+{
+  "InvoiceDataList": [
+    {
+      "RefID": "INV-001",
+      "InvoiceType": "2",
+      "TemplateCode": "R26TEST",
+      "InvoiceSeries": "C26RAA",
+      "CurrencyCode": "VND",
+      "AdjustmentType": 1,
+      "PaymentMethodName": "TM/CK",
+      "SellerTaxCode": "TEST-TAX",
+      "SellerLegalName": "Synthetic hotel",
+      "SellerAddressLine": "Synthetic address",
+      "SellerBankAccount": null,
+      "SellerBankName": null,
+      "BuyerLegalName": null,
+      "BuyerDisplayName": "Khách thử nghiệm",
+      "BuyerTaxCode": null,
+      "BuyerAddressLine": "Synthetic address",
+      "BuyerPhoneNumber": null,
+      "BuyerEmail": null,
+      "BuyerBankAccount": null,
+      "BuyerBankName": null,
+      "ExchangeRate": 1.0,
+      "VatPercentage": 10.0,
+      "TotalAmountWithoutVAT": 245.975,
+      "TotalVATAmount": 24.5975,
+      "TotalAmountWithVAT": 270.5725,
+      "TotalAmountWithVATInWords": "Hai trăm bảy mươi đồng",
+      "DiscountAmount": 0.0,
+      "TotalAmountWithVATFrn": 0.0,
+      "IsSendEmail": false,
+      "ReceiverName": "",
+      "ReceiverEmail": null,
+      "InvDate": "2026-10-08T00:00:00+07:00",
+      "AccountObjectCode": "CUSTOMER-001",
+      "OriginalInvoiceDetail": [
+        {
+          "LineNumber": 1,
+          "ItemCode": "Dịch vụ thử nghiệm",
+          "ItemName": "Dịch vụ thử nghiệm",
+          "UnitName": "Lần",
+          "Quantity": 2,
+          "Amount": 270.5725,
+          "VatPercentage": 10.0,
+          "VatAmount": 24.5975,
+          "UnitPrice": 100.4,
+          "Promotion": false
+        }
+      ],
+      "OptionUserDefined": {
+        "MainCurrency": "VND",
+        "UnitPriceOCDecimalDigits": "2",
+        "UnitPriceDecimalDigits": "2",
+        "QuantityDecimalDigits": "2"
+      },
+      "ReceiptName": null,
+      "BuyerIDNumber": null,
+      "BuyerPassport": null,
+      "BuyerBudgetCode": null,
+      "SellerShopCode": null,
+      "SellerShopName": null
+    }
+  ],
+  "userName": "synthetic-receipt-user",
+  "passWord": "synthetic-receipt-secret"
+}

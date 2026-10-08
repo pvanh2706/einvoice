@@ -26,3 +26,17 @@
 - Restart local https://localhost:7150: API PID 2404/session 85073; probe thực tế 200/401/403/400/503 đúng kỳ vọng. Collection Postman bổ sung 2 request FormSerial; key không đổi và không commit.
 - Checkpoint: `Implement MISA form serial lookup with scoped API and UTC+7 year`.
 - Tiếp theo: token biên lai + ngăn log credential query → token cache v3/biên lai phân tách tenant, single-flight/UTC expiry → fixture mapping phát hành.
+
+## 2026-10-08 — Hoàn thiện bộ API MISA baseline
+
+- Theo yêu cầu làm tới khi hoàn thành bộ API MISA: port đủ 19 action sống vào 15 POST route, hai hệ token, HSM/MTT/MTT HSM/vé/biên lai/USB, mapping request/response và capability route thực tế.
+- Token v3 cache phân tách tenant/credential với HMAC, single-flight/expiry UTC/invalidation; biên lai token trong một thao tác; health-check login mới. Không log URI credential.
+- Journal local durable Idempotency-Key/claims/replay qua restart; pending/unknown chặn retry. Validation/login/template lookup thất bại trước business POST giải phóng reservation.
+- Thêm frozen baseline mapper độc lập và 16 payload fixture tổng hợp. Response correlation/partial batch/supplier code allowlist và validation có fake HTTP/API tests.
+- Q008/Q009/Q010 đã hỏi, chưa có câu trả lời. Giữ công thức/culture/date/routing baseline; HSM CQT được port tên tax/send-pending theo phạm vi hàng đợi thật của provider. Không thay nghiệp vụ phụ thuộc câu trả lời và không gọi thật.
+- OpenAPI 3.1 (18 paths, 37 schemas), Postman 19 request, MISA-API/runbook. Environment local giữ key cũ, thêm biến; credential/journal/.local không commit.
+- Rà soát cuối: phase khóa điều chỉnh theo nhánh NCC thực tế kể cả mode USB/serial MTT; hủy khóa theo định danh NCC; journal hỏng báo pending và không cho retry.
+- Verify Release cuối: **240 test passed, 0 warning/error**, không skip. Chưa admin/MISA thật, chưa sandbox/UAT/cutover.
+- Restart localhost:7150 Release, **PID 18912/session 65209**; trusted TLS probe **25 ca đạt**, gồm OpenAPI/capabilities/journal và lỗi auth/config/idempotency dự kiến.
+- Checkpoint: `Complete MISA baseline APIs with token isolation and durable write journal`; xem git log để lấy hash.
+- Tiếp theo: câu trả lời Q008/Q009/Q010 và cấu hình sandbox/UAT từng variant; không port lại bộ MISA. Repo cũ giữ nguyên; chưa push/deploy.

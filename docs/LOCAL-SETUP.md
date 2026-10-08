@@ -53,4 +53,12 @@ Ví dụ **placeholder**, không phải key hay cấu hình chạy thật:
 
 API key hiện giới hạn client/site; quyền chi tiết theo action, throttling, lưu trữ key tập trung và quy trình cấp phát production còn nằm trong kế hoạch vận hành.
 
+MISA write yêu cầu Idempotency-Key. Cấu hình `Providers:Misa:JournalDirectory` vào thư mục bền, ví dụ
+`D:\Code\40.eInvoice\.local\misa-journal` trên máy này; không xóa journal khi rebuild/restart.
+Thông tin replay/pending, expiry token và các credential khác nhau nằm trong [MISA-API](MISA-API.md).
+Import collection docs/postman/eInvoice-MISA.postman_collection.json với environment local đang có.
+Thêm biến idempotencyKey cố định cho lần test, searchCode/providerInvoiceNumber/certBase64/messageCode/signatureValue/signedInvoiceXml khi cần.
+Không dùng {{$guid}} để thay key mỗi lần retry. Muốn test 200 thực tế cần site/credential/host sandbox;
+local hiện thiếu admin nên body hợp lệ vẫn có thể trả 503. Không đổi cấu hình sang production để vượt lỗi này.
+
 Nguồn hướng dẫn: [OWASP REST Security](https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html). API key là thông tin bí mật xác thực service; HTTPS và kiểm tra quyền site vẫn bắt buộc.

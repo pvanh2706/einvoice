@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace eInvoice.Providers.Misa;
 
 public sealed class MisaFormSerialClient(HttpClient httpClient, IMisaLoginClient login,
-    MisaLoginOptions options, TimeProvider timeProvider) : IMisaFormSerialClient
+    MisaLoginOptions options, TimeProvider timeProvider, MisaTokenCache? tokenCache = null) : IMisaFormSerialClient
 {
     public async Task<IReadOnlyList<FormSerialResponse>> GetAsync(SiteConfiguration site,
         CancellationToken cancellationToken = default)
@@ -27,10 +27,19 @@ public sealed class MisaFormSerialClient(HttpClient httpClient, IMisaLoginClient
             using var response = await httpClient.SendAsync(request, cancellationToken);
             // Preserve MISA's business envelope even when HTTP status is 4xx/5xx.
             var body = await response.Content.ReadAsStringAsync(cancellationToken);
-            if (string.IsNullOrEmpty(body))
-                throw new ProviderCallException(ProviderFailure.EmptyResponse, "MISA_FORM_SERIAL_EMPTY_RESPONSE",
-                    "MISA returned an empty form/serial response.");
-            return Parse(body);
+            try
+            {
+                if (string.IsNullOrEmpty(body))
+                    throw new ProviderCallException(ProviderFailure.EmptyResponse, "MISA_FORM_SERIAL_EMPTY_RESPONSE",
+                        "MISA returned an empty form/serial response.");
+                return Parse(body);
+            }
+            catch (ProviderCallException ex)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || MisaErrorCodes.IsTokenError(ex.SupplierCode))
+                    tokenCache?.Invalidate(site, false, options.ApplicationId);
+                throw;
+            }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch (OperationCanceledException ex)
@@ -59,7 +68,8 @@ public sealed class MisaFormSerialClient(HttpClient httpClient, IMisaLoginClient
         if (envelope is null || envelope.Errors is null) throw InvalidResponse();
         if (!envelope.Success || envelope.Errors.Count != 0 || !string.IsNullOrEmpty(envelope.ErrorCode))
             throw new ProviderCallException(ProviderFailure.Rejected, "MISA_FORM_SERIAL_REJECTED",
-                "MISA rejected the form/serial request.");
+                "MISA rejected the form/serial request.")
+                { SupplierCode = MisaErrorCodes.Safe(envelope.ErrorCode ?? envelope.Errors.FirstOrDefault()) };
         if (string.IsNullOrWhiteSpace(envelope.Data)) throw InvalidResponse();
 
         JToken data;

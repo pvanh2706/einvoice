@@ -16,4 +16,5 @@ public sealed class ProviderCallException(ProviderFailure failure, string code, 
 {
     public ProviderFailure Failure { get; } = failure;
     public string Code { get; } = code;
+    public string? SupplierCode { get; init; }
 }

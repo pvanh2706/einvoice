@@ -10,7 +10,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 - [x] Port canonical DTO có tên mới, enum có giá trị số cũ; kiểm thử JSON/default/decimal.
 - [x] Port các helper đọc tiền/XML và đóng băng mẫu từ code cũ bằng công cụ capture offline.
 - [x] Client eInvoiceAdmin async, injectable HTTP, hỗ trợ body UTF-16 cũ, kiểm thử fake HTTP; resolver ưu tiên cấu hình request.
-- [x] Host chạy được và health endpoint; chưa expose endpoint phát hành khi adapter chưa được port.
+- [x] Host chạy được và health endpoint; endpoint phát hành MISA đã nối adapter và kiểm thử offline ở P1.
 
 ## P1 — Một provider đầy đủ theo từng luồng
 
@@ -18,10 +18,11 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 - [x] API key + quyền theo site + rotation/expiry/HTTPS, kiểm thử header/body không thể đổi site.
 - [x] MISA kiểm tra kết nối qua login transport; kiểm thử payload/lỗi fake HTTP.
 - [x] Lập bảng variant baseline MISA; port FormSerial (90s, token v3, UTC+7), fixture và endpoint mới có site scope.
-- [ ] Dựng interface theo thao tác, context theo tenant, capability rõ ràng và transport test doubles.
-- [ ] Provider đầu tiên **MISA**: mapping request/response, credential, đọc/ghi, timeout và khóa chống trùng.
-- [ ] Expose endpoint mới cho những luồng đã hoàn thành; mô tả OpenAPI + ví dụ request/response.
-- [ ] Kiểm thử payload provider theo fixture và kiểm thử end-to-end qua HTTP giả lập.
+- [x] Dựng interface theo thao tác, context theo tenant, capability rõ ràng và transport test doubles.
+- [x] Provider đầu tiên **MISA**: mapping request/response 19 action baseline, hai hệ credential, đọc/ghi, timeout và journal local chống trùng qua restart.
+- [x] Expose endpoint mới cho những luồng đã hoàn thành; OpenAPI 3.1 + Postman + tài liệu request/response.
+- [x] Kiểm thử payload provider theo 16 fixture độc lập và kiểm thử end-to-end qua HTTP giả lập; tổng 240 test Release đạt.
+- [ ] Sandbox/UAT từng variant và xử lý Q008/Q009/Q010 trước khi thay nghiệp vụ/cutover.
 
 ## P2 — Hoàn thành các provider còn lại
 
@@ -32,7 +33,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | SUN | Chưa | Chưa | Chưa | Chưa | Chưa |
 | VIETTEL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | VNPT_V5 | Chưa | Chưa | Chưa | Chưa | Chưa |
-| MISA | Login + FormSerial | Login v3 + GET templates | Login fake + FormSerial fixture + helper | Health-check + FormSerial | Chưa |
+| MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 240 test toàn solution | Chưa |
 | CYBER_BILL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
 | EASY_INVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |
@@ -40,7 +41,8 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 ## P3 — Vận hành và thay thế
 
 - [ ] Log có correlation và che credential, metrics/time từng chặng, log search API và catalogue còn dùng.
-- [ ] Token/cache phân tách tenant + concurrency tests; culture/timezone theo quyết định đã chốt.
+- [x] Token v3/cache phân tách tenant + concurrency/invalidation tests; token biên lai dùng trong thao tác, health-check login mới.
+- [ ] Culture/timezone ngoài năm FormSerial và routing MTT/batch chờ Q008/Q009; giữ công thức tiền/thuế baseline.
 - [ ] Kiểm thử tích hợp sandbox, dữ liệu production đã che và PDF/XML đầy đủ.
 - [ ] Shadow chỉ dựng payload, kế hoạch routing/rollback theo provider, runbook cấu hình.
 - [ ] Người dùng xác nhận cutover. Đây là bước riêng sau khi triển khai và kiểm chứng xong.

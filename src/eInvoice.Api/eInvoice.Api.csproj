@@ -9,5 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\eInvoice.Core\eInvoice.Core.csproj" />
     <ProjectReference Include="..\eInvoice.Providers\eInvoice.Providers.csproj" />
+    <Content Include="..\..\docs\openapi.misa.json" Link="openapi.misa.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

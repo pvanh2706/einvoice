@@ -2,75 +2,70 @@
 
 Ngày cập nhật: **2026-10-08**, Asia/Bangkok.
 
-## Mục tiêu
+## Mục tiêu và checkpoint
 
-Viết lại gateway hóa đơn bằng C# trong repo này, tên eInvoice, chỉ hợp đồng PMS mới, giữ key/payload provider. Xem AGENTS.md và DECISIONS.md.
-
-## Phiên hiện tại
+Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, giữ key/payload provider. Quyền và quy tắc nằm trong AGENTS.md, DECISIONS.md; không phụ thuộc lịch sử chat.
 
 - Branch: `rewrite/foundation`.
-- Checkpoint nền tảng: **`9316ec3`**. Checkpoint code mới: commit `Implement MISA form serial lookup with scoped API and UTC+7 year` cùng phiên cập nhật này; lấy hash bằng `git log -1 --oneline`.
 - Baseline repo cũ: `66a9c742d0f6fb692d339076e6cd82780e3476be` tại `D:\Code\25.ezInvoice`.
-- **P0 hoàn thành; P1 có kiểm tra kết nối và mẫu/ký hiệu MISA. Chưa phải bản thay thế production.**
-- Đã chốt hợp đồng mới, HTTP 4xx/5xx + JSON lỗi, API key theo hệ PMS/site scope/HTTPS; MISA đầu tiên.
+- Checkpoint nền tảng `9316ec3`, FormSerial `92f9063`.
+- Checkpoint phiên này: `Complete MISA baseline APIs with token isolation and durable write journal`; lấy hash bằng `git log -1 --oneline`.
+- **Bộ API MISA tương ứng toàn bộ 19 action sống baseline đã triển khai và kiểm thử offline. Sandbox/UAT/cutover chưa thực hiện.**
+- P0 hoàn thành; P1 MISA code/fixture/HTTP giả lập hoàn thành, kiểm chứng thực tế còn chờ.
 
-## Đã làm
+## Đã hoàn thành
 
-- Khởi tạo solution và project .NET 10 với SDK 10.0.401.
-- Lưu quy tắc, kế hoạch và quyết định để tiếp tục giữa các phiên.
-- Snapshot docs lịch sử, hash nguồn và inventory: 33 endpoint, 32 action (không số 13), 9 provider.
-- Canonical DTO với key mới; decimal/default/nullable giữ baseline; JSON strict phía PMS, serialization riêng phía provider.
-- Capability catalog là baseline, không đồng nghĩa adapter mới đã hoàn thành.
-- Hai bộ đọc tiền, ba serializer XML; fixture offline 32 ca tiền và 9 ca XML từ helper cũ.
-- Admin client async với JSON UTF-16/external SiteId; resolver ưu tiên config request; phân loại lỗi/network/cancellation.
-- API key hash SHA-256, expiry/rotation, quyền theo site; chặn site khác qua header/body, yêu cầu HTTPS.
-- MISA login v3 stateless: giữ key/header/UTF-8; đọc lỗi cả trên 4xx/5xx; host allowlist; không redirect/bypass TLS/retry.
-- GET /health/live và POST /api/eInvoice/health-check; health-check MISA không trả credential/token.
-- JSON Problem Details với code/requestId và HTTP status phù hợp.
-- Bảng variant MISA baseline tại MISA-VARIANTS: single/batch, hóa đơn/vé/biên lai, HSM/MTT/USB; ghi rõ nhánh thiếu và lỗi định tuyến batch chưa tự sửa.
-- MISA FormSerial GET templates: login v3 stateless, CompanyTaxCode/Bearer, timeout GET 90s (login 100s riêng), body lỗi 4xx/5xx và response double-encoded.
-- Năm FormSerial cố định UTC+7 theo người dùng (D013). Giải mã JSON hợp lệ trước fallback ba Replace cũ để giữ quote/backslash tên mẫu (D014).
-- Mapping mẫu giữ lọc kế thừa, thứ tự, tên tối đa 40 ký tự UTF-16, trạng thái, BusinessAreas 34 và default 0/null chưa được provider gán.
-- POST /api/eInvoice/form-serials: invoiceType mặc định 0; loại khác trả 400; config request tùy chọn được kiểm tra site scope; lỗi JSON an toàn.
-- Fixture FormSerial tổng hợp + fake HTTP/API integration tests; có UTC+7 year boundary, timeout/caller cancellation, no retry và hai site đồng thời.
+- Solution Core/Providers/Api/Tests .NET 10, SDK/package lock, script verify; snapshot nguồn/inventory 33 endpoint, 32 action, 9 provider.
+- Canonical camelCase DTO mới, decimal/default/nullable baseline, JSON PMS strict và wire serialization riêng. Hai helper đọc tiền, ba serializer XML có fixture độc lập.
+- Admin client async UTF-16, resolver ưu tiên config request; API key hash, expiry/rotation/HTTPS/site scope ở header và body; HTTP 4xx/5xx + JSON lỗi an toàn.
+- MISA login v3 và biên lai, HTTPS/host allowlist/no redirect. Query token biên lai escape đúng; tắt HttpClient logger chứa credential và kiểm thử không rò query/password.
+- Cache v3 single-flight, tenant/endpoint/tax/account/credential fingerprint HMAC, bounded capacity, UTC expiry/invalidation; health-check luôn login mới. Biên lai tái sử dụng token trong một thao tác, chưa cache liên request vì expiry chưa xác minh.
+- FormSerial UTC+7 year (D013), parsing JSON hợp lệ trước fallback legacy (D014); lọc/default/name/status giữ baseline.
+- 15 POST route: health-check, form-serials, publish, publish-batch, preview, adjust, replace, document, void, status, tax/send-pending, xml/create, xml/hash, tax/send-signed, xml/publish. HSM/MTT/MTT HSM/vé/biên lai/USB theo nhánh baseline.
+- GET capabilities có đúng 19 action và route tương ứng; GET operations tra cứu journal; GET /openapi/misa.json và liveness. Xem MISA-API.md, openapi.misa.json, docs/postman.
+- Validation đầu vào/response, correlation invoiceId, batch partial errors, symbolic providerCode allowlist; giữ key NCC kể cả ezInvoiceID. Không tự retry ghi; token expired chỉ invalidates cho request sau.
+- Journal local bền qua restart: Idempotency-Key, request fingerprint, claims site/invoice/phase, replay completed, chặn key/body mismatch và pending/unknown. Lỗi trước business POST giải phóng reservation; đã dispatch thì giữ pending. Chưa có reset/reconcile tự động, chưa dùng chung nhiều server.
+- Frozen mapper độc lập trong tools/MisaFixtureCapture; 16 payload tổng hợp từ baseline cố định, culture invariant và máy UTC+7. Không thay expected theo runtime để làm test qua. Không phải golden production.
+- OpenAPI 3.1: 18 paths, 37 schemas; Postman 19 request + template environment không credential; MISA-API/LOCAL-SETUP mô tả hợp đồng và trình tự USB.
 
-## Kiểm thử gần nhất
+## Kiểm chứng gần nhất
 
-`powershell -NoProfile -File scripts/verify.ps1`: **PASS**, Release **0 warning, 0 error**, **151 test passed**, không skip. Debug cũng 151 test passed.
+`powershell -NoProfile -File scripts/verify.ps1`: **PASS**, Release **0 warning, 0 error**, **240 test passed**, không skip.
 
-Probe HTTPS local sau restart: liveness 200; health-check 401/403/503; FormSerial 401/403/400/503 đúng kỳ vọng. TLS localhost được xác minh, không dùng bỏ kiểm tra certificate.
+Bao phủ payload fixture, API thật qua HTTP giả lập, credential/token separation, no-secret logging, concurrency/cancellation/invalidation, journal replay/restart/duplicate, partial batch, lỗi/response sai/site scope và đối chiếu OpenAPI/capabilities với route thực tế.
 
-Fake HTTP/synthetic data; chưa gọi admin/MISA thật, chưa sandbox/UAT. Fixture helper không phải golden transaction production. Repo cũ giữ nguyên thay đổi local trước phiên này. Chưa push/deploy.
+Probe HTTPS local sau restart: **25 ca đạt** — 200/401/403/400/503 đúng kỳ vọng, 19 action capabilities, OpenAPI 18 paths và journal not-found. TLS localhost được xác minh, không bỏ kiểm tra certificate.
 
-## Chưa làm
+Chưa gọi admin/MISA thật, chưa sandbox/UAT. Repo cũ giữ nguyên thay đổi local trước phiên này. Chưa push/deploy.
 
-- MISA token cache/biên lai, phát hành/batch/preview/adjust/replace/PDF/void/CQT/USB. Mỗi FormSerial hiện login mới, chưa cache token.
-- 8 provider còn lại, OpenAPI đầy đủ, API log/catalogue.
-- Logging correlation/requestId PMS, metrics/throttling và config/forwarded proxy headers production.
-- Golden giao dịch thực tế, culture/timezone và quyết định các bẫy tiền/thuế/TLS.
+## Chưa làm và quyết định đang chờ
 
-## Bước tiếp theo nếu phiên bị ngắt
+- Q008: invariant culture và UTC+7 cho ngày/ticks ngoài năm FormSerial. Hiện giữ công thức, culture và DateTime.Now của mapper baseline.
+- Q009: định tuyến MTT/batch dựa trên electronicInvoiceType rõ ràng. Hiện giữ điều kiện baseline; mode 4 cần serial MTT, batch không tự sửa dispatcher cũ. Xem MISA-VARIANTS.
+- Q010: giữ hay giới hạn CQT HSM. Chức năng baseline được port với tên tax/send-pending, không nhận invoiceIds vì provider gửi hàng đợi đang chờ. Không coi im lặng là duyệt thay nghiệp vụ.
+- Sandbox/UAT từng variant, golden đã che, token receipt expiry, quantity biên lai int, USB correlation/thứ tự và batch partial errors.
+- 8 provider còn lại; log/catalogue còn dùng, correlation requestId PMS, metrics/throttling/proxy và cấu hình production.
+- Storage/reconcile kết quả ghi chưa xác định và kế hoạch thay thế/rollback trước cutover.
 
-1. Đọc AGENTS, DECISIONS, QUESTIONS, PLAN, docs/MISA.md; kiểm tra git status.
-2. Đọc MISA-VARIANTS và sổ bẫy F12/F24. FormSerial đã hoàn thành, không port lại.
-3. Port **token biên lai**: GET PartnerUrl2 + user/token, query appid=site GUID/taxcode/Username/Password; header CompanyTaxcode=site GUID; parse envelope, timeout và cancellation. Body publish dùng Username2/Password2 riêng, chưa expose publish. Đọc đầy đủ baseline trước khi chọn expiry/error behavior.
-4. Ngăn HttpClient/proxy phía ứng dụng log URI chứa credential trước khi gọi token biên lai; test ghi log không lộ query/password, giữ HTTPS/host allowlist/no redirect.
-5. Dựng token cache v3/biên lai tách biệt theo site/endpoint/account/credential version; single-flight, UTC expiry/invalidation, không giữ password plaintext trong key; test concurrency và hai tenant trước luồng phát hành.
-6. Hỏi culture/timezone và quy tắc tiền chưa rõ trước khi thay mapping tiền/ngày khác; D013 chỉ áp dụng năm FormSerial. Không tự retry thao tác ghi.
-7. Chạy verify; cập nhật STATUS/PLAN/SESSION-LOG và checkpoint cục bộ.
+## Bước tiếp theo khi tiếp tục
+
+1. Đọc AGENTS, STATUS, PLAN, DECISIONS, QUESTIONS, MISA-API, MISA-VARIANTS; kiểm tra git status/branch/log. Bộ MISA đã port, không làm lại.
+2. Xử lý câu trả lời Q008/Q009/Q010 nếu có. Các thay đổi phụ thuộc chưa được duyệt; tiếp tục phần độc lập, giữ baseline nếu chưa có câu trả lời.
+3. Cấu hình admin/site hoặc siteConfigInfo và endpoint/host/credential **sandbox** trong local ignored config. Không yêu cầu gửi bí mật vào chat/Git. Site phải thuộc API key và khớp header/body/admin.
+4. UAT đọc (health/forms/preview/status/document) trước, rồi các thao tác ghi sandbox đã được cho phép. Ghi payload/response đã che và xác minh USB/batch/biên lai. Không gọi production hoặc tự reset pending để retry.
+5. Nếu triển khai nhiều instance: thay journal local bằng storage có transaction/unique claims và cơ chế reconcile được thống nhất; làm runbook cutover riêng.
+6. Khi có thay đổi code: chạy verify, cập nhật tài liệu và checkpoint Git cục bộ.
+
+## API local/Postman hiện tại
+
+- `https://localhost:7150`, loopback, Release; **API PID 18912, exec session 65209**. Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json.
+- Key client postman-local, site tổng hợp `11111111-1111-1111-1111-111111111111`, hết hạn cuối 2026-10-09 UTC+7. Key gốc chỉ ở .local; server giữ hash trong appsettings.Local.json (ignored).
+- Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json` (19 request). Key đã giữ nguyên, thêm biến còn thiếu. Bản công khai/template tại docs/postman không chứa key.
+- JournalDirectory local là `D:\Code\40.eInvoice\.local\misa-journal`, không xóa khi build/restart. Key idempotency phải ổn định khi retry cùng body; không sinh key mới để vượt pending.
+- Chưa cấu hình admin/MISA: request nghiệp vụ có auth/header hợp lệ trả 503 ADMIN_NOT_CONFIGURED. Đây không phải kết quả kiểm thử sandbox thành công.
+- Chạy lại khi process đã dừng: `dotnet run --project src/eInvoice.Api -c Release --no-build --no-restore --no-launch-profile --urls https://localhost:7150`.
+- .local/probe-api.py chỉ probe host chưa cấu hình admin, có guard và dùng TLS trusted. .local/probe-results.json lưu 25 kết quả; không gọi NCC.
 
 ## Lưu ý
 
-- Không chạy lại bootstrap trong .local để ghi đè code đã phát triển; file đó không thuộc Git.
-- Capture inventory/helper có chủ đích; không tự nâng baseline/thay expected output để làm test qua.
-- TLS mặc định được kiểm tra; hỏi ngoại lệ khi có endpoint cụ thể; không yêu cầu credential thật gửi trong chat/Git.
-
-## Chạy local để thử Postman — 2026-10-08
-
-- Release build lại: 0 warning/error; API được khởi chạy tại `https://localhost:7150`, chỉ loopback.
-- Process cũ PID 6036 đã dừng sau kiểm tra executable; bản FormSerial hiện chạy **PID 2404, session exec 85073**. Kiểm tra process và listener trước khi dừng/chạy lại; PID có thể được tái sử dụng.
-- Key thử theo client `postman-local`, site synthetic `11111111-1111-1111-1111-111111111111`, hết hạn cuối ngày 2026-10-09 (UTC+7). Key gốc chỉ nằm trong `.local`, hash trong appsettings.Local.json; không commit.
-- Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json`. Environment có baseUrl/apiKey/siteId. Collection hiện 6 request, bổ sung FormSerial invoiceType 0 (503 nếu chưa config) và 1 (400).
-- HTTP thực tế đã kiểm tra: liveness 200, thiếu key 401, site khác 403, key hợp lệ + chưa cấu hình admin 503 ADMIN_NOT_CONFIGURED.
-- Chưa có endpoint/credential admin hoặc MISA thật; không coi 503 là lỗi build. Muốn thử kết nối MISA thật cần cấu hình local/host allowlist/credential sandbox.
-- Chạy lại bằng `dotnet run --project src/eInvoice.Api -c Release --no-build --no-restore --no-launch-profile --urls https://localhost:7150` khi process đã dừng.
+Không chạy lại bootstrap/port/freeze để ghi đè code hoặc capture lại expected từ runtime. Giữ baseline/manifest. TLS mặc định được kiểm tra; chỉ xem xét ngoại lệ khi có endpoint cụ thể. Không đưa credential/dữ liệu thật vào Git.

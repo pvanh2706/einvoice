@@ -1,4 +1,5 @@
 using eInvoice.Core.Configuration;
+using eInvoice.Core.Contracts;
 using eInvoice.Providers.Admin;
 using eInvoice.Providers.Misa;
 using Microsoft.AspNetCore.Diagnostics;
@@ -15,6 +16,8 @@ public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : I
         var (status, code, title) = exception switch
         {
             BadHttpRequestException badRequest => (badRequest.StatusCode, "INVALID_REQUEST", "Invalid request body"),
+            InvoiceRequestException request => (400, request.Code, request.Message),
+            InvoiceOperationConflictException conflict => (409, conflict.Code, conflict.Message),
             SiteConfigurationException => (400, "INVALID_SITE_CONFIGURATION", "Invalid site configuration"),
             AdminLookupException { Failure: AdminFailure.MissingConfiguration } =>
                 (503, "ADMIN_NOT_CONFIGURED", "Admin service is not configured"),
@@ -38,11 +41,14 @@ public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : I
         // Record the category and ID. Exception messages/response bodies may contain credentials.
         logger.LogError("Request {RequestId} failed with {Code} ({ExceptionType}).",
             context.TraceIdentifier, code, exception.GetType().Name);
-        await Results.Problem(statusCode: status, title: title, extensions: new Dictionary<string, object?>
+        var extensions = new Dictionary<string, object?>
         {
             ["code"] = code,
             ["requestId"] = context.TraceIdentifier,
-        }).ExecuteAsync(context);
+        };
+        if (exception is ProviderCallException { SupplierCode: not null } providerError)
+            extensions["providerCode"] = providerError.SupplierCode;
+        await Results.Problem(statusCode: status, title: title, extensions: extensions).ExecuteAsync(context);
         return true;
     }
 }

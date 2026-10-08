@@ -1,8 +1,8 @@
 # Hợp đồng PMS mới — eInvoice
 
-Trạng thái: DTO nền tảng, kiểm tra kết nối và mẫu/ký hiệu MISA. Chưa expose luồng phát hành/điều chỉnh/PDF/USB. OpenAPI đầy đủ sẽ bổ sung cùng từng luồng.
+Trạng thái: bộ route MISA tương ứng 19 action dispatcher baseline đã triển khai và kiểm thử offline. Sandbox/UAT chưa thực hiện. Phạm vi/validation/response/timeout/idempotency: [MISA-API](MISA-API.md); schema [OpenAPI](openapi.misa.json).
 
-- Base route dự kiến: `/api/eInvoice`.
+- Base route: `/api/eInvoice`.
 - Chỉ tên mới, không alias route/key lịch sử.
 - JSON camelCase. Các key provider được định nghĩa trong model provider riêng; không dùng naming policy của API để serialize provider.
 - Giá trị số partner/action/loại hóa đơn được giữ theo baseline; action 13 không tồn tại.
@@ -126,7 +126,7 @@ Lỗi auth/site/admin/login giữ bảng trên. Lỗi riêng FormSerial:
 | 502 | MISA_FORM_SERIAL_EMPTY_RESPONSE, MISA_FORM_SERIAL_INVALID_RESPONSE, MISA_FORM_SERIAL_CONNECTION_ERROR |
 | 504 | MISA_FORM_SERIAL_TIMEOUT |
 
-Timeout 90 giây áp dụng GET templates sau login; login tối đa 100 giây riêng. Chưa có token cache, mỗi lần lấy mẫu đăng nhập mới. Không trả raw response/token/credential trong JSON lỗi/thành công.
+Timeout 90 giây áp dụng GET templates sau login; login tối đa 100 giây riêng. Token v3 có cache theo site/endpoint/tax/account/credential, single-flight và expiry UTC; health-check luôn đăng nhập mới. Không trả raw response/token/credential trong JSON lỗi/thành công. Xem MISA-API về invalidation và giới hạn token biên lai.
 
 Import cURL trong Postman với environment local đang có (`apiKey`, `siteId`):
 
