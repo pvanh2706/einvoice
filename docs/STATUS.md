@@ -9,6 +9,7 @@ Viết lại gateway hóa đơn bằng C# trong repo này, tên eInvoice, chỉ 
 ## Phiên hiện tại
 
 - Branch: `rewrite/foundation`.
+- Code checkpoint đã kiểm chứng: **`9316ec3`** (`Initialize eInvoice foundation and authenticated MISA connection check`). Commit tiếp theo chỉ ghi nhận bàn giao phiên.
 - Baseline repo cũ: `66a9c742d0f6fb692d339076e6cd82780e3476be` tại `D:\Code\25.ezInvoice`.
 - **P0 hoàn thành; P1 mới có kiểm tra kết nối MISA. Chưa phải bản thay thế production.**
 - Đã chốt hợp đồng mới, HTTP 4xx/5xx + JSON lỗi, API key theo hệ PMS/site scope/HTTPS; MISA đầu tiên.

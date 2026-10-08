@@ -3,6 +3,7 @@
 ## 2026-10-08 — P0 và kiểm tra kết nối MISA
 
 - Branch `rewrite/foundation`, baseline code cũ `66a9c74`.
+- Code checkpoint: `9316ec3` — Initialize eInvoice foundation and authenticated MISA connection check.
 - Chốt C#, tên eInvoice, hợp đồng PMS mới, HTTP 4xx/5xx + JSON, API key có site scope/HTTPS, MISA đầu tiên.
 - Hoàn thành P0, auth/site scope và MISA health-check; xem STATUS.
 - Verify Release: 100 test passed, 0 warning/error; fake HTTP, chưa UAT.
