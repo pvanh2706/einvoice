@@ -55,3 +55,13 @@ Fake HTTP/synthetic data; chưa gọi admin/MISA thật, chưa sandbox/UAT. Fixt
 - Không chạy lại bootstrap trong .local để ghi đè code đã phát triển; file đó không thuộc Git.
 - Capture inventory/helper có chủ đích; không tự nâng baseline/thay expected output để làm test qua.
 - TLS mặc định được kiểm tra; hỏi ngoại lệ khi có endpoint cụ thể; không yêu cầu credential thật gửi trong chat/Git.
+
+## Chạy local để thử Postman — 2026-10-08
+
+- Release build lại: 0 warning/error; API được khởi chạy tại `https://localhost:7150`, chỉ loopback.
+- Process API ở thời điểm chạy: PID 6036, launcher/session exec 78509. Kiểm tra process và listener trước khi dừng/chạy lại; PID có thể được tái sử dụng.
+- Key thử theo client `postman-local`, site synthetic `11111111-1111-1111-1111-111111111111`, hết hạn cuối ngày 2026-10-09 (UTC+7). Key gốc chỉ nằm trong `.local`, hash trong appsettings.Local.json; không commit.
+- Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json`. Environment có baseUrl/apiKey/siteId.
+- HTTP thực tế đã kiểm tra: liveness 200, thiếu key 401, site khác 403, key hợp lệ + chưa cấu hình admin 503 ADMIN_NOT_CONFIGURED.
+- Chưa có endpoint/credential admin hoặc MISA thật; không coi 503 là lỗi build. Muốn thử kết nối MISA thật cần cấu hình local/host allowlist/credential sandbox.
+- Chạy lại bằng `dotnet run --project src/eInvoice.Api -c Release --no-build --no-restore --no-launch-profile --urls https://localhost:7150` khi process đã dừng.
