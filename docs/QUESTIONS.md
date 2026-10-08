@@ -19,6 +19,8 @@
 
 ## Cần dữ liệu bổ sung trước khi thay production
 
+- Q011 (đã hỏi sau báo lỗi health-check 503): URL admin và SiteId khách sạn dùng để test bản mới. Code cũ cấu hình admin-test.ezinvoice.vn nhưng chưa xác nhận đây là môi trường cần dùng. Local BaseAddress và allowlist MISA vẫn trống; chưa tự sao chép cấu hình cũ hoặc gọi admin/NCC thật. Body direct-config template tại .local/misa-health.direct-config.template.json không chứa credential thật.
+
 - Golden giao dịch đã che (request PMS, request provider, response provider, response PMS), PDF/XML đầy đủ.
 - API/WSDL và sandbox credential từng provider; chuyển qua cấu hình local/secrets, không ghi vào tài liệu Git.
 - Xác nhận ý nghĩa SubAmount, BeforeTaxAmount, AfterTaxAmount, ServiceCharge; những mục giữ/sửa trong sổ bẫy.

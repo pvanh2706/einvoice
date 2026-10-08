@@ -58,6 +58,8 @@ Chưa gọi admin/MISA thật, chưa sandbox/UAT. Repo cũ giữ nguyên thay đ
 
 ## API local/Postman hiện tại
 
+Người dùng báo health-check trả ADMIN_NOT_CONFIGURED. Đã xác minh BaseAddress local và MISA host allowlist trống, body mẫu chỉ requestId. Đang chờ Q011 URL admin/SiteId; không coi URL lịch sử là môi trường đã duyệt. Đã tạo .local/misa-health.direct-config.template.json để điền cấu hình trực tiếp khi không dùng admin. Không thay runtime hoặc gọi thật trong bước chẩn đoán này; PID/session dưới đây là thông tin lần chạy trước, cần kiểm tra lại khi tiếp tục.
+
 - `https://localhost:7150`, loopback, Release; **API PID 18912, exec session 65209**. Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json.
 - Key client postman-local, site tổng hợp `11111111-1111-1111-1111-111111111111`, hết hạn cuối 2026-10-09 UTC+7. Key gốc chỉ ở .local; server giữ hash trong appsettings.Local.json (ignored).
 - Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json` (19 request). Key đã giữ nguyên, thêm biến còn thiếu. Bản công khai/template tại docs/postman không chứa key.
