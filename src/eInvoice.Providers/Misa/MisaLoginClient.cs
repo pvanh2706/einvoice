@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace eInvoice.Providers.Misa;
 
-/// <summary>Stateless first MISA operation. Invoice/receipt transports and token caching are separate pending work.</summary>
+/// <summary>Stateless MISA v3 login. Receipt authentication and token caching are separate pending work.</summary>
 public sealed class MisaLoginClient(HttpClient httpClient, MisaLoginOptions options) : IMisaLoginClient
 {
     public async Task<string> AuthenticateAsync(SiteConfiguration site, CancellationToken cancellationToken = default)
@@ -13,16 +13,10 @@ public sealed class MisaLoginClient(HttpClient httpClient, MisaLoginOptions opti
             string.IsNullOrWhiteSpace(site.Password))
             throw new ProviderCallException(ProviderFailure.InvalidCredentials, "MISA_CREDENTIALS_REQUIRED",
                 "MISA tax number, username and password are required.");
-        if (!Uri.TryCreate(site.PartnerUrl, UriKind.Absolute, out var address) || address.Scheme != "https" ||
-            !site.PartnerUrl.EndsWith("/", StringComparison.Ordinal) ||
-            !string.IsNullOrEmpty(address.UserInfo) || !string.IsNullOrEmpty(address.Query) ||
-            !string.IsNullOrEmpty(address.Fragment) ||
-            !options.AllowedHosts.Contains(address.Host, StringComparer.OrdinalIgnoreCase))
-            throw new ProviderCallException(ProviderFailure.Configuration, "MISA_ENDPOINT_NOT_ALLOWED",
-                "MISA requires an HTTPS endpoint on the configured host allowlist.");
+        var baseUrl = MisaEndpoints.RequireBaseUrl(site, options);
 
         // Concatenation deliberately preserves legacy base URL semantics. Do not rewrite provider keys.
-        var endpoint = new Uri(site.PartnerUrl + "auth/token", UriKind.Absolute);
+        var endpoint = new Uri(baseUrl + "auth/token", UriKind.Absolute);
         using var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
         request.Headers.Add("CompanyTaxcode", site.TaxNumber);
         request.Content = new StringContent(JsonConvert.SerializeObject(new

@@ -1,6 +1,6 @@
 # Hợp đồng PMS mới — eInvoice
 
-Trạng thái: DTO nền tảng và kiểm tra kết nối MISA. Chưa expose luồng phát hành/điều chỉnh/PDF/USB. OpenAPI đầy đủ sẽ bổ sung cùng từng luồng.
+Trạng thái: DTO nền tảng, kiểm tra kết nối và mẫu/ký hiệu MISA. Chưa expose luồng phát hành/điều chỉnh/PDF/USB. OpenAPI đầy đủ sẽ bổ sung cùng từng luồng.
 
 - Base route dự kiến: `/api/eInvoice`.
 - Chỉ tên mới, không alias route/key lịch sử.
@@ -80,3 +80,62 @@ JSON lỗi (`application/problem+json`) ví dụ:
 ```
 
 Có thể có field chuẩn `type`. Lỗi body do framework có thể dùng HTTP_400; lỗi bắt bởi exception handler dùng INVALID_REQUEST.
+
+## Lấy mẫu/ký hiệu MISA
+
+`POST /api/eInvoice/form-serials`, HTTPS, X-Api-Key và X-Site-Id như health-check.
+
+```json
+{"invoiceType":0,"requestId":"pms-form-001"}
+```
+
+`invoiceType` mặc định 0 nếu bỏ qua. Vé (1), biên lai (2), null và giá trị khác hiện trả 400 `INVOICE_TYPE_NOT_SUPPORTED`, không gọi admin/provider. MISA partner 6 là provider duy nhất đã port; provider khác trả 501 `PROVIDER_NOT_IMPLEMENTED`.
+
+`siteConfigInfo` tùy chọn mới trên request FormSerial; nếu có, cấu hình request được ưu tiên như health-check, `siteConfigInfo.site.id` phải khớp header. Không có cấu hình request thì lấy từ admin. Năm truy vấn là năm hiện tại theo UTC+7, không có key year do PMS gửi.
+
+Response 200:
+
+```json
+{
+  "provider":"MISA",
+  "siteId":"11111111-1111-1111-1111-111111111111",
+  "forms":[{
+    "invoiceName":"Hóa đơn thử nghiệm",
+    "formNo":"1",
+    "serial":"C26TAA",
+    "quantity":0,
+    "fromNo":0,
+    "toNo":0,
+    "currentNo":0,
+    "status":1,
+    "startDate":null,
+    "isMultipleTaxRates":true
+  }],
+  "requestId":"server-correlation-id"
+}
+```
+
+`forms` giữ thứ tự, bỏ mẫu kế thừa. `invoiceName` tối đa 40 ký tự UTF-16; `status` 1 sử dụng, 0 ngừng sử dụng; `isMultipleTaxRates` theo BusinessAreas 34. MISA baseline không gán quantity/fromNo/toNo/currentNo/startDate nên vẫn 0/null, không thể suy ra số lượng hóa đơn từ các trường này. Không có mẫu hợp lệ: 200 với forms rỗng.
+
+Lỗi auth/site/admin/login giữ bảng trên. Lỗi riêng FormSerial:
+
+| HTTP | Code |
+|---|---|
+| 400 | INVOICE_TYPE_NOT_SUPPORTED |
+| 422 | MISA_FORM_SERIAL_REJECTED |
+| 502 | MISA_FORM_SERIAL_EMPTY_RESPONSE, MISA_FORM_SERIAL_INVALID_RESPONSE, MISA_FORM_SERIAL_CONNECTION_ERROR |
+| 504 | MISA_FORM_SERIAL_TIMEOUT |
+
+Timeout 90 giây áp dụng GET templates sau login; login tối đa 100 giây riêng. Chưa có token cache, mỗi lần lấy mẫu đăng nhập mới. Không trả raw response/token/credential trong JSON lỗi/thành công.
+
+Import cURL trong Postman với environment local đang có (`apiKey`, `siteId`):
+
+```bash
+curl --request POST 'https://localhost:7150/api/eInvoice/form-serials' \
+  --header 'Content-Type: application/json' \
+  --header 'X-Api-Key: {{apiKey}}' \
+  --header 'X-Site-Id: {{siteId}}' \
+  --data-raw '{"invoiceType":0,"requestId":"postman-form-001"}'
+```
+
+Nếu local chưa có admin/config MISA thì trả 503 ADMIN_NOT_CONFIGURED; test 200 hiện dùng HTTP giả lập, chưa gọi sandbox.

@@ -36,6 +36,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.AddSingleton(builder.Configuration.GetSection("Providers:Misa").Get<MisaLoginOptions>() ?? new MisaLoginOptions());
 builder.Services.AddHttpClient<IMisaLoginClient, MisaLoginClient>(client => client.Timeout = TimeSpan.FromSeconds(100))
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+builder.Services.AddHttpClient<IMisaFormSerialClient, MisaFormSerialClient>(client => client.Timeout = TimeSpan.FromSeconds(90))
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
 builder.Services.AddScoped<ISiteConfigurationResolver, SiteConfigurationResolver>();
 builder.Services.AddHttpClient<IAdminClient, AdminClient>(client =>
 {
@@ -83,6 +85,23 @@ app.MapPost("/api/eInvoice/health-check", async (ProviderHealthCheckRequest requ
             extensions: new Dictionary<string, object?> { ["code"] = "PROVIDER_NOT_IMPLEMENTED", ["requestId"] = http.TraceIdentifier });
     _ = await misa.AuthenticateAsync(configuration.Site, http.RequestAborted);
     return Results.Ok(new { provider = "MISA", connected = true, siteId, requestId = http.TraceIdentifier });
+}).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
+
+app.MapPost("/api/eInvoice/form-serials", async (GetFormSerialsRequest request, HttpContext http,
+    ISiteConfigurationResolver resolver, IMisaFormSerialClient misa) =>
+{
+    if (request.InvoiceType != 0)
+        return Results.Problem(statusCode: 400, title: "Form/serial lookup currently supports invoiceType 0 only",
+            extensions: new Dictionary<string, object?> { ["code"] = "INVOICE_TYPE_NOT_SUPPORTED", ["requestId"] = http.TraceIdentifier });
+    var siteId = (Guid)http.Items[SiteAuthorizationFilter.ContextKey]!;
+    var configuration = await resolver.ResolveAsync(request.SiteConfigInfo, siteId, http.RequestAborted);
+    if (configuration.Site.Id != siteId)
+        throw new SiteConfigurationException("Resolved site configuration does not match the authorized site.");
+    if (configuration.Site.Partner != 6)
+        return Results.Problem(statusCode: 501, title: "This provider is not implemented yet",
+            extensions: new Dictionary<string, object?> { ["code"] = "PROVIDER_NOT_IMPLEMENTED", ["requestId"] = http.TraceIdentifier });
+    var forms = await misa.GetAsync(configuration.Site, http.RequestAborted);
+    return Results.Ok(new { provider = "MISA", siteId, forms, requestId = http.TraceIdentifier });
 }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
 
 app.Run();

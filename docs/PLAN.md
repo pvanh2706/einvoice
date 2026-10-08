@@ -17,6 +17,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 - [x] Chốt API/authentication/status/provider đầu tiên (D002, D009, D010, D011).
 - [x] API key + quyền theo site + rotation/expiry/HTTPS, kiểm thử header/body không thể đổi site.
 - [x] MISA kiểm tra kết nối qua login transport; kiểm thử payload/lỗi fake HTTP.
+- [x] Lập bảng variant baseline MISA; port FormSerial (90s, token v3, UTC+7), fixture và endpoint mới có site scope.
 - [ ] Dựng interface theo thao tác, context theo tenant, capability rõ ràng và transport test doubles.
 - [ ] Provider đầu tiên **MISA**: mapping request/response, credential, đọc/ghi, timeout và khóa chống trùng.
 - [ ] Expose endpoint mới cho những luồng đã hoàn thành; mô tả OpenAPI + ví dụ request/response.
@@ -31,7 +32,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | SUN | Chưa | Chưa | Chưa | Chưa | Chưa |
 | VIETTEL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | VNPT_V5 | Chưa | Chưa | Chưa | Chưa | Chưa |
-| MISA | Login payload | Login v3 | Login fake + helper | Health-check | Chưa |
+| MISA | Login + FormSerial | Login v3 + GET templates | Login fake + FormSerial fixture + helper | Health-check + FormSerial | Chưa |
 | CYBER_BILL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
 | EASY_INVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |
