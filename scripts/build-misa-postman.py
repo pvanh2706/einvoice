@@ -57,11 +57,12 @@ items[-1]['event']=[{'listen':'prerequest','script':{'type':'text/javascript','e
     "pm.request.body.update(JSON.stringify(body));"
 ]}}]
 add('Read publish attempt/result','/api/eInvoice/operations/publish/{{idempotencyKey}}',method='GET')
+add('Read prior attempt by invoice ID','/api/eInvoice/invoice-attempts?invoiceId={{invoiceId}}&phase=publish',method='GET')
 collection={'info':{'name':'eInvoice MISA API','schema':'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',
-    'description':'Synthetic requests. Default local installation returns 503 until admin/MISA sandbox is configured. Write journal must persist across restarts.'},'item':items}
+    'description':'Synthetic requests. Configure local JSON and MISA sandbox first. Read invoice-attempts to inspect a previous write without resending. Write journal must persist across restarts.'},'item':items}
 (target/'eInvoice-MISA.postman_collection.json').write_text(json.dumps(collection,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 values={'baseUrl':'https://localhost:7150','apiKey':'','siteId':'11111111-1111-1111-1111-111111111111','idempotencyKey':'postman-request-001',
-        'searchCode':'','providerInvoiceNumber':'','certBase64':'','messageCode':'','signatureValue':'','signedInvoiceXml':''}
+        'searchCode':'','providerInvoiceNumber':'','certBase64':'','messageCode':'','signatureValue':'','signedInvoiceXml':'','invoiceId':'INV-PUBLISH-001'}
 environment={'name':'eInvoice MISA template - set secrets locally','values':[{'key':key,'value':value,'enabled':True,'type':'secret' if key=='apiKey' else 'default'} for key,value in values.items()],
              '_postman_variable_scope':'environment'}
 (target/'eInvoice-MISA.environment.template.json').write_text(json.dumps(environment,indent=2)+'\n',encoding='utf-8')

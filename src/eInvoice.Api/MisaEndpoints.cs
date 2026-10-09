@@ -50,6 +50,12 @@ internal static class MisaApiEndpoints
             var siteId = (Guid)http.Items[SiteAuthorizationFilter.ContextKey]!;
             return Results.Ok(await journal.StatusAsync(siteId, operation, idempotencyKey, http.RequestAborted));
         }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
+
+        app.MapGet("/api/eInvoice/invoice-attempts", async (string invoiceId, string? phase, HttpContext http, MisaWriteJournal journal) =>
+        {
+            var siteId = (Guid)http.Items[SiteAuthorizationFilter.ContextKey]!;
+            return Results.Ok(await journal.InvoiceStatusAsync(siteId, invoiceId, phase ?? "publish", http.RequestAborted));
+        }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
     }
 
     private static IReadOnlyList<string> Claims(CreateInvoiceRequest request, string phase) =>
@@ -83,7 +89,7 @@ internal static class MisaApiEndpoints
             else
             {
                 result = await journal.ExecuteAsync(siteId, operation.Replace('/', '-'), idempotencyKey!, request!, claims(request),
-                    () => execute(service, configuration, request, http.RequestAborted), http.RequestAborted);
+                    () => execute(service, configuration, request, http.RequestAborted), http.RequestAborted, http.TraceIdentifier);
             }
             return Results.Ok(new { provider = "MISA", siteId, data = result, requestId = http.TraceIdentifier });
         }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();

@@ -60,6 +60,11 @@ Thêm biến idempotencyKey cố định cho lần test, searchCode/providerInvo
 Không dùng {{$guid}} để thay key mỗi lần retry. Muốn test 200 thực tế cần site/credential/host sandbox;
 Local JSON hiện chỉ chứa site mẫu, credential trống: health-check trả 400 MISA_CREDENTIALS_REQUIRED tới khi điền tài khoản sandbox. Không đổi cấu hình sang production để vượt lỗi này.
 
+Nếu publish trả MISA_INVOICE_ALREADY_ATTEMPTED: đọc previousAttempt/attemptStatusUrl hoặc
+`GET /api/eInvoice/invoice-attempts?invoiceId={{invoiceId}}&phase=publish` với cùng key/site auth.
+Collection có request tra cứu theo invoiceId; đặt biến invoiceId ở environment. Không tự đổi key hoặc xóa journal.
+Lỗi mới được lưu lastError đã lọc; record trước khi có diagnostics không thể khôi phục message quá khứ.
+
 ## Cấu hình khách sạn bằng JSON
 
 Không còn gọi dịch vụ admin cũ. Copy [sites.example.json](sites.example.json) tới

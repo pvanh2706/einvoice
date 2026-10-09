@@ -17,4 +17,7 @@ public sealed class ProviderCallException(ProviderFailure failure, string code, 
     public ProviderFailure Failure { get; } = failure;
     public string Code { get; } = code;
     public string? SupplierCode { get; init; }
+    public string? SupplierMessage { get; init; }
+    public int? SupplierHttpStatus { get; internal set; }
+    public eInvoice.Core.Contracts.InvoiceAttemptInfo? Attempt { get; internal set; }
 }

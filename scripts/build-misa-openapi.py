@@ -37,10 +37,19 @@ def nullable_string(): return {'type':['string','null']}
 schemas['InvoiceResult'] = {'type':'object','properties':{
     'invoiceId':{'type':'string'},'providerInvoiceNumber':nullable_string(),'transactionId':nullable_string(),
     'searchCode':nullable_string(),'taxAuthorityCode':nullable_string(),'invoiceData':nullable_string(),
-    'isSuccess':{'type':'boolean'},'providerErrorCode':nullable_string()}}
+    'isSuccess':{'type':'boolean'},'providerErrorCode':nullable_string(),'providerMessage':nullable_string()}}
 schemas['InvoiceDocumentResult'] = {'type':'object','properties':{'content':{'type':'string'},'format':{'type':'string','enum':['base64','url']}}}
 schemas['InvoiceStatusResult'] = {'type':'object','properties':{'invoiceId':{'type':'string'},'taxAuthorityStatus':{'type':'integer'}}}
 schemas['InvoiceHashResult'] = {'type':'object','properties':{'messageCode':nullable_string(),'messageHash':nullable_string()}}
+schemas['InvoiceAttemptError'] = {'type':'object','properties':{
+    'source':{'type':'string','enum':['gateway','provider']},'code':{'type':'string'},
+    'providerCode':nullable_string(),'providerMessage':nullable_string(),'providerHttpStatus':{'type':['integer','null']}}}
+schemas['InvoiceAttemptInfo'] = {'type':'object','properties':{
+    'attemptId':nullable_string(),'operation':nullable_string(),'idempotencyKey':nullable_string(),
+    'state':{'type':'string','enum':['not-found','pending','completed']},
+    'updatedAtUtc':{'type':['string','null'],'format':'date-time'},'result':{},
+    'lastError':{'anyOf':[{'$ref':'#/components/schemas/InvoiceAttemptError'},{'type':'null'}]},
+    'originalRequestId':nullable_string(),'requiresReconciliation':{'type':'boolean'},'canRetry':{'type':['boolean','null']}}}
 def array_of(name): return {'type':'array','items':{'$ref':'#/components/schemas/'+name}}
 def success_schema(route):
     common={'provider':{'type':'string','enum':['MISA']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
@@ -57,7 +66,10 @@ def success_schema(route):
     return {'type':'object','properties':common}
 schemas['ProblemDetails'] = {'type':'object','properties':{
     'type':{'type':'string'},'title':{'type':'string'},'status':{'type':'integer'},
-    'code':{'type':'string'},'providerCode':{'type':'string'},'requestId':{'type':'string'},'traceId':{'type':'string'}},'required':['status','code','requestId']}
+    'code':{'type':'string'},'providerCode':{'type':'string'},'providerMessage':{'type':'string'},
+    'providerHttpStatus':{'type':'integer'},'errorSource':{'type':'string','enum':['gateway','provider']},
+    'previousAttempt':{'$ref':'#/components/schemas/InvoiceAttemptInfo'},'attempt':{'$ref':'#/components/schemas/InvoiceAttemptInfo'},
+    'attemptStatusUrl':{'type':'string'},'requestId':{'type':'string'},'traceId':{'type':'string'}},'required':['status','code','requestId']}
 problem = {'description':'JSON error; no raw provider response or credential.',
            'content':{'application/problem+json':{'schema':{'$ref':'#/components/schemas/ProblemDetails'}}}}
 site_header = {'name':'X-Site-Id','in':'header','required':True,'schema':{'type':'string','format':'uuid'}}
@@ -96,7 +108,16 @@ paths['/api/eInvoice/operations/{operation}/{idempotencyKey}'] = {'get':{
     'security':[{'ApiKey':[]}],'parameters':[site_header,
         {'name':'operation','in':'path','required':True,'schema':{'type':'string'},'description':'Route slug: publish, publish-batch, xml-create, xml-publish, tax-send-signed, adjust, replace, void.'},
         {'name':'idempotencyKey','in':'path','required':True,'schema':{'type':'string'}}],
-    'responses':{'200':{'description':'state: not-found/pending/completed, updatedAtUtc, result.'},'400':problem,'401':problem,'403':problem}
+    'responses':{'200':{'description':'Attempt state/result and sanitized last error. Legacy records may have no key or error.',
+                       'content':{'application/json':{'schema':{'$ref':'#/components/schemas/InvoiceAttemptInfo'}}}},'400':problem,'401':problem,'403':problem}
+}}
+paths['/api/eInvoice/invoice-attempts'] = {'get':{
+    'operationId':'misa_invoice_attempt','tags':['MISA'],'summary':'Read site-scoped invoice claim without sending to MISA.',
+    'security':[{'ApiKey':[]}],'parameters':[site_header,
+        {'name':'invoiceId','in':'query','required':True,'schema':{'type':'string','maxLength':256}},
+        {'name':'phase','in':'query','schema':{'type':'string','enum':['publish','xml-create'],'default':'publish'}}],
+    'responses':{'200':{'description':'Pending/completed/not-found. Never authorizes a blind write retry.',
+                       'content':{'application/json':{'schema':{'$ref':'#/components/schemas/InvoiceAttemptInfo'}}}},'400':problem,'401':problem,'403':problem}
 }}
 paths['/health/live'] = {'get':{'operationId':'liveness','responses':{'200':{'description':'Process is alive; no provider call.'}}}}
 paths['/api/eInvoice/misa/capabilities'] = {'get':{'operationId':'misa_implemented_capabilities','security':[{'ApiKey':[]}],

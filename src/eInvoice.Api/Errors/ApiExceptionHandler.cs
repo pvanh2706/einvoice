@@ -47,7 +47,37 @@ public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : I
         };
         if (exception is ProviderCallException { SupplierCode: not null } providerError)
             extensions["providerCode"] = providerError.SupplierCode;
+        if (exception is ProviderCallException providerFailure)
+        {
+            if (providerFailure.SupplierMessage is not null) extensions["providerMessage"] = providerFailure.SupplierMessage;
+            if (providerFailure.SupplierHttpStatus is not null) extensions["providerHttpStatus"] = providerFailure.SupplierHttpStatus;
+            if (providerFailure.Attempt is not null)
+            {
+                extensions["attempt"] = providerFailure.Attempt;
+                if (OperationStatusUrl(providerFailure.Attempt) is { } url) extensions["attemptStatusUrl"] = url;
+            }
+            extensions["errorSource"] = providerFailure.Failure is ProviderFailure.Configuration or ProviderFailure.InvalidCredentials ? "gateway" : "provider";
+        }
+        if (exception is InvoiceOperationConflictException conflictDetail)
+        {
+            extensions["errorSource"] = "gateway";
+            if (conflictDetail.PreviousAttempt is not null)
+            {
+                extensions["previousAttempt"] = conflictDetail.PreviousAttempt;
+                if (OperationStatusUrl(conflictDetail.PreviousAttempt) is { } url) extensions["attemptStatusUrl"] = url;
+            }
+            if (conflictDetail.InvoiceClaim is { } claim)
+            {
+                var colon = claim.IndexOf(':');
+                if (colon > 0 && claim[..colon] is "publish" or "xml-create")
+                    extensions["attemptStatusUrl"] = "/api/eInvoice/invoice-attempts?invoiceId=" + Uri.EscapeDataString(claim[(colon + 1)..]) + "&phase=" + claim[..colon];
+            }
+        }
         await Results.Problem(statusCode: status, title: title, extensions: extensions).ExecuteAsync(context);
         return true;
     }
+
+    private static string? OperationStatusUrl(InvoiceAttemptInfo attempt) =>
+        attempt.Operation is null || attempt.IdempotencyKey is null ? null :
+            "/api/eInvoice/operations/" + Uri.EscapeDataString(attempt.Operation) + "/" + Uri.EscapeDataString(attempt.IdempotencyKey);
 }

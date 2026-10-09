@@ -5,7 +5,7 @@ namespace eInvoice.Providers.Misa;
 
 internal static class MisaResultMapper
 {
-    internal static IReadOnlyList<InvoiceResult> Published(string? data, IReadOnlyList<string> requestedIds, int invoiceType, bool batch)
+    internal static IReadOnlyList<InvoiceResult> Published(string? data, IReadOnlyList<string> requestedIds, int invoiceType, bool batch, SiteConfiguration? site = null)
     {
         var results = invoiceType switch
         {
@@ -15,7 +15,8 @@ internal static class MisaResultMapper
             1 => MisaBusinessTransport.ReadArray<CreateTicketResponseModel>(data, legacyEscapes: true)
                 .Select(item => Item(item.RefID, item.InvNo, item.TransactionID, null, null, null, item.ErrorCode)).ToList(),
             _ => MisaBusinessTransport.ReadArray<InvoiceResponseModel>(data)
-                .Select(item => Item(item.RefID, item.InvNo, item.TransactionID, item.TransactionID, item.InvCode, item.InvoiceData, item.ErrorCode)).ToList(),
+                .Select(item => Item(item.RefID, item.InvNo, item.TransactionID, item.TransactionID, item.InvCode, item.InvoiceData, item.ErrorCode,
+                    description: item.DescriptionErrorCode, site: site)).ToList(),
         };
         if (results.Count == 0) throw MisaBusinessTransport.InvalidResponse();
         if (results.Any(item => item.IsSuccess && string.IsNullOrEmpty(item.ProviderInvoiceNumber) &&
@@ -28,17 +29,18 @@ internal static class MisaResultMapper
             throw MisaBusinessTransport.InvalidResponse();
         if (!batch && !results[0].IsSuccess)
             throw new ProviderCallException(ProviderFailure.Rejected, "MISA_INVOICE_REJECTED", "MISA rejected the invoice.")
-                { SupplierCode = results[0].ProviderErrorCode };
+                { SupplierCode = results[0].ProviderErrorCode, SupplierMessage = results[0].ProviderMessage };
         return results;
     }
 
     private static InvoiceResult Item(string? id, string? number, string? transactionId, string? searchCode,
-        string? taxCode, string? xml, string? errorCode, bool allowDuplicate = false)
+        string? taxCode, string? xml, string? errorCode, bool allowDuplicate = false, string? description = null, SiteConfiguration? site = null)
     {
         var success = string.IsNullOrEmpty(errorCode) || (allowDuplicate && errorCode == "InvalidDuplicateRefID" && !string.IsNullOrEmpty(number));
         // Only known symbolic supplier codes cross the API boundary; arbitrary text stays private.
         var safeCode = MisaErrorCodes.Safe(errorCode);
-        return new(id ?? "", number, transactionId, searchCode, taxCode, xml, success, safeCode);
+        return new(id ?? "", number, transactionId, searchCode, taxCode, xml, success, safeCode,
+            success ? null : MisaErrorMessage.Sanitize(description, site));
     }
 
     internal static InvoiceDocumentResult Document(string? data)

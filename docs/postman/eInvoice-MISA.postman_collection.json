@@ -2,7 +2,7 @@
   "info": {
     "name": "eInvoice MISA API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Synthetic requests. Default local installation returns 503 until admin/MISA sandbox is configured. Write journal must persist across restarts."
+    "description": "Synthetic requests. Configure local JSON and MISA sandbox first. Read invoice-attempts to inspect a previous write without resending. Write journal must persist across restarts."
   },
   "item": [
     {
@@ -569,6 +569,24 @@
           }
         ],
         "url": "{{baseUrl}}/api/eInvoice/operations/publish/{{idempotencyKey}}",
+        "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
+      }
+    },
+    {
+      "name": "Read prior attempt by invoice ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/invoice-attempts?invoiceId={{invoiceId}}&phase=publish",
         "description": "Synthetic example. Configure sites.Local.json and MISA sandbox host allowlist locally first. Keep key/body identical on retry; investigate pending/unknown before any resend."
       }
     }

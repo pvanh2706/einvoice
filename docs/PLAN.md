@@ -21,7 +21,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 - [x] Dựng interface theo thao tác, context theo tenant, capability rõ ràng và transport test doubles.
 - [x] Provider đầu tiên **MISA**: mapping request/response 19 action baseline, hai hệ credential, đọc/ghi, timeout và journal local chống trùng qua restart.
 - [x] Expose endpoint mới cho những luồng đã hoàn thành; OpenAPI 3.1 + Postman + tài liệu request/response.
-- [x] Kiểm thử payload provider theo 16 fixture độc lập và kiểm thử end-to-end qua HTTP giả lập; tổng 257 test Release đạt, gồm 17 ca JSON store/API.
+- [x] Kiểm thử payload provider theo 16 fixture độc lập và kiểm thử end-to-end qua HTTP giả lập; tổng 268 test Release đạt, gồm JSON store/API và durable diagnostics/redaction/lookup.
 - [ ] Sandbox/UAT từng variant và xử lý Q008/Q009/Q010 trước khi thay nghiệp vụ/cutover.
 
 ## P2 — Hoàn thành các provider còn lại
@@ -33,7 +33,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | SUN | Chưa | Chưa | Chưa | Chưa | Chưa |
 | VIETTEL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | VNPT_V5 | Chưa | Chưa | Chưa | Chưa | Chưa |
-| MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 257 test toàn solution | Chưa |
+| MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 268 test toàn solution; health-check thật 200, publish diagnostic bị khóa | Chưa |
 | CYBER_BILL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
 | EASY_INVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |

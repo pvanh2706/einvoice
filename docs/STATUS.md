@@ -11,6 +11,7 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 - Checkpoint nền tảng `9316ec3`, FormSerial `92f9063`.
 - Checkpoint phiên này: `Complete MISA baseline APIs with token isolation and durable write journal`; lấy hash bằng `git log -1 --oneline`.
 - Cập nhật mới nhất D019: `Use local JSON site configuration with database-ready store interface`; lấy hash bằng git log. Người dùng bỏ admin cũ, tạm JSON, sau này DB riêng.
+- Cập nhật diagnostics D020: `Expose sanitized MISA errors and persist invoice attempt diagnostics`; xem git log. Publish lỗi mới có message/status, journal lưu lỗi và 409 có previousAttempt/link tra cứu. Không thay cơ chế chặn retry.
 - **Bộ API MISA tương ứng toàn bộ 19 action sống baseline đã triển khai và kiểm thử offline. Sandbox/UAT/cutover chưa thực hiện.**
 - P0 hoàn thành; P1 MISA code/fixture/HTTP giả lập hoàn thành, kiểm chứng thực tế còn chờ.
 
@@ -24,14 +25,14 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 - FormSerial UTC+7 year (D013), parsing JSON hợp lệ trước fallback legacy (D014); lọc/default/name/status giữ baseline.
 - 15 POST route: health-check, form-serials, publish, publish-batch, preview, adjust, replace, document, void, status, tax/send-pending, xml/create, xml/hash, tax/send-signed, xml/publish. HSM/MTT/MTT HSM/vé/biên lai/USB theo nhánh baseline.
 - GET capabilities có đúng 19 action và route tương ứng; GET operations tra cứu journal; GET /openapi/misa.json và liveness. Xem MISA-API.md, openapi.misa.json, docs/postman.
-- Validation đầu vào/response, correlation invoiceId, batch partial errors, symbolic providerCode allowlist; giữ key NCC kể cả ezInvoiceID. Không tự retry ghi; token expired chỉ invalidates cho request sau.
+- Validation đầu vào/response, correlation invoiceId, batch partial errors, symbolic providerCode allowlist; giữ key NCC kể cả ezInvoiceID. Business lỗi có providerMessage đã che credential và providerHttpStatus; journal lưu lastError/key/operation/requestId gốc, GET invoice-attempts và 409 previousAttempt. Không tự retry ghi; token expired chỉ invalidates cho request sau.
 - Journal local bền qua restart: Idempotency-Key, request fingerprint, claims site/invoice/phase, replay completed, chặn key/body mismatch và pending/unknown. Lỗi trước business POST giải phóng reservation; đã dispatch thì giữ pending. Chưa có reset/reconcile tự động, chưa dùng chung nhiều server.
 - Frozen mapper độc lập trong tools/MisaFixtureCapture; 16 payload tổng hợp từ baseline cố định, culture invariant và máy UTC+7. Không thay expected theo runtime để làm test qua. Không phải golden production.
-- OpenAPI 3.1: 18 paths, 37 schemas; Postman 19 request + template environment không credential; MISA-API/LOCAL-SETUP mô tả hợp đồng và trình tự USB.
+- OpenAPI 3.1: 19 paths, 39 schemas; Postman 20 request + template environment không credential; MISA-API/LOCAL-SETUP mô tả hợp đồng/diagnostics và trình tự USB.
 
 ## Kiểm chứng gần nhất
 
-`powershell -NoProfile -File scripts/verify.ps1`: **PASS**, Release **0 warning, 0 error**, **257 test passed**, không skip. Có 17 ca JSON store/API mới: đọc đúng tenant, thay credential không restart, file thiếu/sai/ID trùng, cancellation, các route không gọi admin và lỗi an toàn.
+`powershell -NoProfile -File scripts/verify.ps1`: **PASS**, Release **0 warning, 0 error**, **268 test passed**, không skip. Có 11 ca diagnostics mới: supplier message/status, redaction và không lưu token/raw exception, lỗi qua restart/site/phase isolation, record cũ không bịa lỗi/key, batch item message, 409 không replay và auth/parameter lookup.
 
 Bao phủ payload fixture, API thật qua HTTP giả lập, credential/token separation, no-secret logging, concurrency/cancellation/invalidation, journal replay/restart/duplicate, partial batch, lỗi/response sai/site scope và đối chiếu OpenAPI/capabilities với route thực tế.
 
@@ -59,11 +60,13 @@ Test suite vẫn dùng fake HTTP. Ngày 2026-10-09 đã thử riêng health-chec
 
 ## API local/Postman hiện tại
 
+Ngày 2026-10-09 người dùng báo publish 409 khi đổi key. Đã đọc claim/record legacy (pending, không lỗi/key gốc) và đối chiếu hash để nhận diện key gốc; chi tiết request/result chỉ lưu .local, không commit. Đã tái hiện curl bị chặn 409 sau khi xác minh claim pending, không liên hệ MISA/phát hành lại. Lookup invoice-attempts 200 pending, requiresReconciliation=true, canRetry=false. Không xóa/migrate record cũ hoặc tự mở khóa. Chưa thể khôi phục response NCC quá khứ; đã hỏi người dùng nếu còn response đầu tiên, không chặn phần code độc lập.
+
 Đã xử lý ADMIN_NOT_CONFIGURED bằng chuyển sang JSON theo D019; không gọi admin. Ngày 2026-10-09 người dùng đã điền thông tin nhưng health-check trả MISA_ENDPOINT_NOT_ALLOWED: URL HTTPS/trailing slash hợp lệ, allowlist local trống. Đã thêm đúng testapi.meinvoice.vn vào Providers:Misa:AllowedHosts, giữ nguyên các cấu hình khác/journal, restart Release. Health-check thật qua API local trả HTTP 200, provider=MISA, connected=true. Các kết quả credential/endpoint trống bên dưới là probe lịch sử ngày 2026-10-08, không phải trạng thái file hiện tại. Sửa nội dung JSON được đọc ở request tiếp theo, sửa allowlist/path/API key cần restart.
 
-- `https://localhost:7150`, loopback, Release; **API PID 14168, exec session 81336** (restart 2026-10-09 sau sửa allowlist). Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json; kết quả health-check rút gọn tại .local/misa-health-allowlist-result.json, không lưu token/credential/raw body.
+- `https://localhost:7150`, loopback, Release; **API PID 14072, exec session 95101** (restart 2026-10-09 sau diagnostics). Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json; kết quả diagnostic rút gọn tại .local/publish-diagnostic-result.json, không lưu token/credential/raw body.
 - Key client postman-local, site tổng hợp `11111111-1111-1111-1111-111111111111`, hết hạn cuối 2026-10-09 UTC+7. Key gốc chỉ ở .local; server giữ hash trong appsettings.Local.json (ignored).
-- Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json` (19 request). Key đã giữ nguyên, thêm biến còn thiếu. Bản công khai/template tại docs/postman không chứa key.
+- Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json` (20 request). Key đã giữ nguyên, thêm biến invoiceId và request tra cứu invoice-attempts. Bản công khai/template tại docs/postman không chứa key.
 - JournalDirectory local là `D:\Code\40.eInvoice\.local\misa-journal`, không xóa khi build/restart. Key idempotency phải ổn định khi retry cùng body; không sinh key mới để vượt pending.
 - Probe trước khi người dùng điền thông tin (2026-10-08): JSON site được đọc đúng, health-check trả 400 MISA_CREDENTIALS_REQUIRED. Không phải kết quả kiểm thử sandbox thành công. Thiếu file/sai JSON trả SITE_STORE_*, không trả ADMIN_*.
 - Chạy lại khi process đã dừng: `dotnet run --project src/eInvoice.Api -c Release --no-build --no-restore --no-launch-profile --urls https://localhost:7150`.

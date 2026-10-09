@@ -63,3 +63,12 @@
 - Thêm đúng hostname người dùng đã cấu hình vào appsettings.Local.json (ignored), giữ các trường khác. Restart host sau xác minh executable: PID 14168/session 81336.
 - Thử lại riêng POST /api/eInvoice/health-check qua HTTPS local: **200, provider=MISA, connected=true**. Đã liên hệ endpoint MISA do người dùng cấu hình; không gọi phát hành/hủy/CQT/email hoặc nghiệp vụ khác.
 - Không thay runtime code, không xóa journal. Last verify vẫn 257 test đạt; UAT các luồng còn lại vẫn chưa thực hiện.
+
+## 2026-10-09 — Chẩn đoán publish và lưu lỗi NCC
+
+- Người dùng cung cấp curl publish bị MISA_INVOICE_ALREADY_ATTEMPTED. Đọc journal site/invoice claim: prior pending, legacy không lưu key/operation/lỗi. Đối chiếu hash nhận diện key gốc khác key curl; không sửa record/claim, không gửi lại NCC.
+- Thêm GET invoice-attempts theo site/invoiceId/phase; 409 có errorSource gateway, previousAttempt, attemptStatusUrl. Record mới lưu key/operation/requestId/lastError; đọc cũ nullable, pending vẫn khóa.
+- D020: business envelope/item invoice 0 trả providerMessage từ field xác định sau redaction và providerHttpStatus; không trả raw envelope/Data lỗi, không lưu token/exception message. Batch có message item lỗi. HTTP supplier 200 vẫn có thể business 422.
+- Verify Release **268 test passed, 0 warning/error**, 11 ca mới. Giữ financial fixture và retry behavior. Lookup không gọi NCC; metadata/key cùng site, phase tách biệt, pending survives restart.
+- Restart local **PID 14072/session 95101**. Tái hiện request được cung cấp sau guard prior pending: 409 gateway + previousAttempt/link; GET invoice-attempts 200 pending. Không có provider write/reconcile/reset thực tế, chỉ lỗi mock trong tests; giữ journal/user credential ngoài Git.
+- Checkpoint `Expose sanitized MISA errors and persist invoice attempt diagnostics`. Tiếp theo: nếu người dùng còn response cũ thì đối chiếu; đối soát MISA trước quyết định gửi lại. Response cũ đã bỏ không thể khôi phục từ hash. Các quyết định Q008/Q009/Q010 vẫn mở.

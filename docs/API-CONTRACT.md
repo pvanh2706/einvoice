@@ -8,6 +8,7 @@ Trạng thái: bộ route MISA tương ứng 19 action dispatcher baseline đã 
 - Giá trị số partner/action/loại hóa đơn được giữ theo baseline; action 13 không tồn tại.
 - Tiền giữ decimal; không chuyển float/double. Nullable/default có trong code cũ được giữ để chưa tự quyết nghiệp vụ.
 - HTTP 4xx/5xx theo lỗi; JSON lỗi theo Problem Details, bổ sung `code` và `requestId`.
+- Lỗi MISA business có providerCode/providerMessage đã lọc/providerHttpStatus nếu có; 409 của journal có previousAttempt và attemptStatusUrl. Xem MISA-API về tra cứu theo invoiceId và giữ lỗi qua restart. Không trả raw response/credential.
 - Authentication: X-Api-Key; site scope: X-Site-Id; yêu cầu HTTPS. Body config phải trùng site được cấp quyền.
 - JSON input phân biệt casing, từ chối key không biết/key cũ và chuỗi thay cho số. Validation nghiệp vụ sẽ bổ sung theo từng provider/luồng.
 

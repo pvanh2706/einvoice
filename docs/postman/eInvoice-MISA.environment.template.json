@@ -60,6 +60,12 @@
       "value": "",
       "enabled": true,
       "type": "default"
+    },
+    {
+      "key": "invoiceId",
+      "value": "INV-PUBLISH-001",
+      "enabled": true,
+      "type": "default"
     }
   ],
   "_postman_variable_scope": "environment"

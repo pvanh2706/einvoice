@@ -75,7 +75,7 @@ public sealed class MisaInvoiceService(MisaBusinessTransport transport, TimeProv
             path = isMtt && mode != 4 || mode == 3 ? EndpointApi.CREATE_AND_PUBLISH_INVOICE_MTT : EndpointApi.CREATE_AND_PUBLISH_INVOICE_HSM;
         }
         var data = await transport.SendAsync(site.Site, path, payload, invoiceType == 2, true, cancellationToken, receiptToken);
-        return MisaResultMapper.Published(data, inputs.Select(item => item.Invoice!.InvoiceId!).ToList(), invoiceType, batch);
+        return MisaResultMapper.Published(data, inputs.Select(item => item.Invoice!.InvoiceId!).ToList(), invoiceType, batch, site.Site);
     }
 
     public async Task<InvoiceDocumentResult> PreviewAsync(ResolvedSite site, AdjustOrReplaceInvoiceRequest request, CancellationToken cancellationToken)
@@ -114,7 +114,7 @@ public sealed class MisaInvoiceService(MisaBusinessTransport transport, TimeProv
             path = EndpointApi.CREATE_AND_PUBLISH_INVOICE_HSM;
         }
         var data = await transport.SendAsync(site.Site, path, payload, false, true, cancellationToken);
-        return MisaResultMapper.Published(data, [request.Invoice.InvoiceId!], 0, false);
+        return MisaResultMapper.Published(data, [request.Invoice.InvoiceId!], 0, false, site.Site);
     }
 
     public async Task<InvoiceDocumentResult> DownloadAsync(ResolvedSite site, DownloadPdfRequest request, CancellationToken cancellationToken)
@@ -172,7 +172,7 @@ public sealed class MisaInvoiceService(MisaBusinessTransport transport, TimeProv
         RequireNormal(request.Invoice!.InvoiceType);
         var payload = Map(() => MisaRequestMapper.ConvertGetXMLInvoiceRequest(Context(site, Clone(request))));
         var data = await transport.SendAsync(site.Site, EndpointApi.CREATE_INVOICE_USB_TOKEN, payload, false, true, cancellationToken);
-        return MisaResultMapper.Published(data, [request.Invoice.InvoiceId!], 0, false);
+        return MisaResultMapper.Published(data, [request.Invoice.InvoiceId!], 0, false, site.Site);
     }
 
     public async Task<IReadOnlyList<InvoiceHashResult>> HashAsync(ResolvedSite site, GetXmlHashRequest request, CancellationToken cancellationToken)
@@ -201,7 +201,7 @@ public sealed class MisaInvoiceService(MisaBusinessTransport transport, TimeProv
         MisaRequestValidation.Require(request.InvoiceData, "invoiceData");
         var payload = Map(() => MisaRequestMapper.ConvertCreateAndPublishInvoiceXMLRequest(Context(site, request)));
         var data = await transport.SendAsync(site.Site, EndpointApi.CREATE_AND_PUBLISH_INVOICE_USB_TOKEN, payload, false, true, cancellationToken);
-        return MisaResultMapper.Published(data, [request.InvoiceId!], 0, false);
+        return MisaResultMapper.Published(data, [request.InvoiceId!], 0, false, site.Site);
     }
 
     private MisaMappingContext Context(ResolvedSite site, object request, InvoiceAction action = InvoiceAction.CreateAndPublish) => new()

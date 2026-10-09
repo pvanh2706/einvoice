@@ -29,10 +29,12 @@ public sealed class MisaBusinessTransport(HttpClient httpClient, IMisaLoginClien
             if (body is not null) request.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             if (body is not null) MisaWriteJournal.MarkDispatched();
             using var response = await httpClient.SendAsync(request, timeout.Token);
+            MisaWriteJournal.MarkResponse((int)response.StatusCode, token);
             var responseBody = await response.Content.ReadAsStringAsync(timeout.Token);
-            try { return ReadEnvelope(responseBody); }
+            try { return ReadEnvelope(responseBody, site, token); }
             catch (ProviderCallException ex)
             {
+                ex.SupplierHttpStatus = (int)response.StatusCode;
                 // Invalidate for the next call only. Never replay a write after authentication/transport failure.
                 if (!receipt && (response.StatusCode == HttpStatusCode.Unauthorized || MisaErrorCodes.IsTokenError(ex.SupplierCode)))
                     cache.Invalidate(site, false, options.ApplicationId);
@@ -51,7 +53,7 @@ public sealed class MisaBusinessTransport(HttpClient httpClient, IMisaLoginClien
         catch (FormatException ex) { throw InvalidResponse(ex); }
     }
 
-    internal static string? ReadEnvelope(string body)
+    internal static string? ReadEnvelope(string body, SiteConfiguration? site = null, string? token = null)
     {
         if (string.IsNullOrEmpty(body))
             throw new ProviderCallException(ProviderFailure.EmptyResponse, "MISA_OPERATION_EMPTY_RESPONSE", "MISA returned an empty operation response.");
@@ -61,7 +63,10 @@ public sealed class MisaBusinessTransport(HttpClient httpClient, IMisaLoginClien
             if (result is null) throw InvalidResponse();
             if (!result.Success || !string.IsNullOrEmpty(result.ErrorCode) || result.Errors?.Count > 0)
                 throw new ProviderCallException(ProviderFailure.Rejected, "MISA_OPERATION_REJECTED", "MISA rejected the operation.")
-                { SupplierCode = MisaErrorCodes.Safe(result.ErrorCode ?? result.Errors?.FirstOrDefault()) };
+                {
+                    SupplierCode = MisaErrorCodes.Safe(result.ErrorCode ?? result.Errors?.FirstOrDefault()),
+                    SupplierMessage = MisaErrorMessage.Sanitize(result.DescriptionErrorCode ?? result.ErrorMessage ?? result.Message, site, token),
+                };
             return result.Data;
         }
         catch (JsonException ex) { throw InvalidResponse(ex); }
@@ -97,5 +102,8 @@ public sealed class MisaBusinessTransport(HttpClient httpClient, IMisaLoginClien
         [JsonProperty("Data")] public string? Data { get; set; }
         [JsonProperty("ErrorCode")] public string? ErrorCode { get; set; }
         [JsonProperty("Errors")] public List<string>? Errors { get; set; }
+        [JsonProperty("DescriptionErrorCode")] public string? DescriptionErrorCode { get; set; }
+        [JsonProperty("ErrorMessage")] public string? ErrorMessage { get; set; }
+        [JsonProperty("Message")] public string? Message { get; set; }
     }
 }

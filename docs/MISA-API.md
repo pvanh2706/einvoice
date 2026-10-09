@@ -29,6 +29,8 @@ giữ quy tắc trong API-CONTRACT. JSON input strict: camelCase, không nhận 
 - `GET /api/eInvoice/misa/capabilities`: danh sách action/route đã implement, cần key/site; không gọi MISA.
 - `GET /api/eInvoice/operations/{operation}/{idempotencyKey}`: đọc journal của site được cấp quyền, không gọi MISA.
   Slug operation dùng dấu `-` thay `/`, ví dụ `xml-create`, `xml-publish`, `tax-send-signed`, `tax-send-pending`.
+- `GET /api/eInvoice/invoice-attempts?invoiceId=...&phase=publish`: tra cứu claim của invoice trong site được cấp quyền,
+  không cần biết key gốc và không gọi MISA. Phase chỉ `publish` hoặc `xml-create` (mặc định publish).
 - `GET /openapi/misa.json`: OpenAPI public chứa schema/example metadata, không chứa cấu hình/key/token.
 - `GET /health/live`: liveness.
 
@@ -82,7 +84,21 @@ PMS phải theo dõi status/hoàn tất các bước ký tương ứng.
 ## Lỗi và timeout
 
 JSON Problem Details có code/requestId; providerCode chỉ có khi mã supplier đã qua allowlist.
-Không trả arbitrary message/DescriptionErrorCode từ MISA.
+Theo yêu cầu chẩn đoán 2026-10-09, business error mới có thêm `errorSource`, `providerMessage`, `providerHttpStatus`,
+`attempt` và `attemptStatusUrl` khi có dữ liệu tương ứng. Message lấy từ trường lỗi DescriptionErrorCode/ErrorMessage/Message
+của envelope, hoặc DescriptionErrorCode của item hóa đơn 0; che username/password/token đã biết, bearer và cặp key bí mật,
+loại structured JSON/XML/HTML, control characters và giới hạn độ dài. Không trả raw envelope, Data lỗi, header/token hoặc request.
+Batch item lỗi có thêm providerMessage đã lọc; vẫn phải kiểm tra từng isSuccess. Không thay supplier wire key.
+
+`providerHttpStatus` là HTTP **MISA trả về**, có thể 200 dù MISA từ chối hóa đơn trong Data; HTTP gateway là 422.
+Nếu không nhận được response (timeout/network), không tạo một HTTP status giả.
+
+409 chống trùng là lỗi **gateway**, không phải một response mới của MISA. Response có `errorSource = gateway`,
+`previousAttempt` và URL tra cứu. PreviousAttempt giữ key/operation/requestId gốc, trạng thái, kết quả hoặc lastError đã lọc nếu có.
+Record pending giữ lastError qua restart; không log raw exception/response. LastError không có nghĩa đã xác minh trạng thái cuối trên MISA.
+canRetry=false cho attempt hiện hữu; not-found cho canRetry=null vì journal không chứng minh hóa đơn chưa được tạo trên MISA.
+Record cũ vẫn đọc được, nhưng key/lỗi/requestId không được lưu trước đó sẽ null; không thể tái tạo raw response quá khứ từ hash.
+Không xóa claim/đổi key/invoiceId để vượt khóa. Phải đối soát với MISA trước khi quyết định gửi lại; không có API tự mở khóa.
 
 | HTTP | Code chính |
 |---|---|
@@ -115,7 +131,7 @@ có chủ đích của baseline, có cancellation từ caller. Nếu caller ng�
   Claim theo site/invoice/phase chặn đổi key hoặc batch overlap để phát hành trùng. Phase điều chỉnh theo nhánh provider thực tế;
   hủy khóa theo loại hóa đơn và searchCode/transactionId của provider, không phụ thuộc invoiceId PMS tùy chọn.
 - Validation/config/login/template lookup lỗi trước business POST: giải phóng reservation, có thể sửa và gửi lại.
-  Sau POST: lỗi/malformed/timeout/cancellation giữ pending; không gửi lại bằng key khác. Dùng journal/status của MISA để đối chiếu.
+  Sau POST: lỗi/malformed/timeout/cancellation giữ pending và lưu lastError đã lọc; không gửi lại bằng key khác. Dùng journal/status của MISA để đối chiếu.
 - Journal hỏng/ghi chưa đủ trả trạng thái pending và chặn retry, không báo not-found. Journal là storage local cho một host/máy hiện tại; chưa có distributed ledger hoặc API tự reset/reconcile pending.
   Batch partial failure cũng giữ claims: chưa tự đoán item nào được phép phát hành lại. Không xóa journal để thử lại mù.
 

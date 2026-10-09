@@ -24,4 +24,6 @@
 
 | D019 | 2026-10-08 | Bỏ dịch vụ admin cũ khỏi API. Cấu hình khách sạn tạm đọc từ JSON server sites.Local.json theo X-Site-Id; sau này DB riêng qua ISiteConfigurationStore. Giữ config request ưu tiên như hợp đồng hiện tại. Không chọn DB/schema lúc này. File thật ignored, lỗi JSON/ID trùng fail closed, không fallback network/site khác; thay credential được đọc ở request sau. | Người dùng: không dùng link admin cũ, sẽ lưu DB riêng, tạm dùng JSON để test |
 
+| D020 | 2026-10-09 | Theo yêu cầu xem lỗi NCC khi publish: trả/lưu riêng message lỗi từ trường supplier xác định, sau che credential/token, lọc structured payload/control characters/giới hạn 1000 ký tự. Giữ providerCode allowlist và thêm providerHttpStatus. Journal lưu lastError/key/operation/requestId gốc; 409 trả previousAttempt và link tra cứu theo invoiceId. Đọc record cũ không bịa dữ liệu thiếu; không đổi retry/release claim hoặc sửa wire NCC. | Người dùng cung cấp curl lỗi publish và yêu cầu biết response/message để xử lý; fake HTTP/restart/site isolation/redaction tests |
+
 Mỗi quyết định thay đổi hành vi cũ phải bổ sung lý do, phạm vi ảnh hưởng và cách kiểm thử. Quyết định thuộc nghiệp vụ cần người dùng xác nhận.

@@ -82,11 +82,82 @@ public class MisaWriteJournalTests : IDisposable
         var request = new { amount = 100 };
         await Journal().ExecuteAsync(MisaTestData.SiteId, "publish", "idempotency-001", request, ["publish:INV-001"], () => Task.FromResult<object?>(true), default);
         await File.WriteAllTextAsync(Assert.Single(Directory.GetFiles(_directory, "*.json")), "{");
-        var status = System.Text.Json.JsonSerializer.SerializeToElement(await Journal().StatusAsync(MisaTestData.SiteId, "publish", "idempotency-001", default));
-        Assert.Equal("pending", status.GetProperty("state").GetString());
+        var status = await Journal().StatusAsync(MisaTestData.SiteId, "publish", "idempotency-001", default);
+        Assert.Equal("pending", status.State);
         var error = await Assert.ThrowsAsync<InvoiceOperationConflictException>(() => Journal().ExecuteAsync(MisaTestData.SiteId,
             "publish", "idempotency-001", request, ["publish:INV-001"], NeverWrite, default));
         Assert.Equal("MISA_OUTCOME_UNCERTAIN", error.Code);
+    }
+
+    [Fact]
+    public async Task Failure_details_and_original_key_survive_restart_and_are_isolated_by_site_and_phase()
+    {
+        await Assert.ThrowsAsync<ProviderCallException>(() => Journal().ExecuteAsync(MisaTestData.SiteId, "publish", "original-key-001",
+            new { amount = 100 }, ["publish:INV-001"], () =>
+            {
+                MisaWriteJournal.MarkDispatched();
+                MisaWriteJournal.MarkResponse(200, "private-token-never-store");
+                throw new ProviderCallException(ProviderFailure.Rejected, "MISA_INVOICE_REJECTED", "private-exception-never-store")
+                    { SupplierCode = "InvalidParameter", SupplierMessage = "Ký hiệu không hợp lệ." };
+            }, default, "original-server-request"));
+        var restarted = Journal();
+        var status = await restarted.InvoiceStatusAsync(MisaTestData.SiteId, "INV-001", "publish", default);
+        Assert.Equal("original-key-001", status.IdempotencyKey);
+        Assert.Equal("original-server-request", status.OriginalRequestId);
+        Assert.Equal("InvalidParameter", status.LastError!.ProviderCode);
+        Assert.Equal("Ký hiệu không hợp lệ.", status.LastError.ProviderMessage);
+        Assert.Equal(200, status.LastError.ProviderHttpStatus);
+        Assert.True(status.RequiresReconciliation);
+        Assert.False(status.CanRetry);
+        Assert.Equal("not-found", (await restarted.InvoiceStatusAsync(Guid.NewGuid(), "INV-001", "publish", default)).State);
+        Assert.Equal("not-found", (await restarted.InvoiceStatusAsync(MisaTestData.SiteId, "INV-001", "xml-create", default)).State);
+        var conflict = await Assert.ThrowsAsync<InvoiceOperationConflictException>(() => restarted.ExecuteAsync(MisaTestData.SiteId,
+            "publish", "new-key-001", new { amount = 100 }, ["publish:INV-001"], NeverWrite, default));
+        Assert.Equal(status.AttemptId, conflict.PreviousAttempt!.AttemptId);
+        Assert.Equal("publish:INV-001", conflict.InvoiceClaim);
+        foreach (var file in Directory.GetFiles(_directory))
+        {
+            var text = await File.ReadAllTextAsync(file);
+            Assert.DoesNotContain("private-token-never-store", text);
+            Assert.DoesNotContain("private-exception-never-store", text);
+        }
+    }
+
+    [Fact]
+    public async Task Legacy_pending_record_can_be_found_by_invoice_without_inventing_missing_error_or_key()
+    {
+        await Journal().ExecuteAsync(MisaTestData.SiteId, "publish", "original-key-001", new { amount = 100 }, ["publish:INV-001"],
+            () => Task.FromResult<object?>(true), default);
+        var path = Assert.Single(Directory.GetFiles(_directory, "*.json"));
+        var record = System.Text.Json.Nodes.JsonNode.Parse(await File.ReadAllTextAsync(path))!.AsObject();
+        foreach (var property in new[] { "operation", "idempotencyKey", "lastError", "originalRequestId" }) record.Remove(property);
+        record["state"] = "pending";
+        record["result"] = null;
+        await File.WriteAllTextAsync(path, record.ToJsonString());
+        var status = await Journal().InvoiceStatusAsync(MisaTestData.SiteId, "INV-001", "publish", default);
+        Assert.Equal("pending", status.State);
+        Assert.Null(status.LastError);
+        Assert.Null(status.IdempotencyKey);
+        Assert.True(status.RequiresReconciliation);
+        var blocked = await Assert.ThrowsAsync<InvoiceOperationConflictException>(() => Journal().ExecuteAsync(MisaTestData.SiteId,
+            "publish", "new-key-001", new { amount = 100 }, ["publish:INV-001"], NeverWrite, default));
+        Assert.Equal("pending", blocked.PreviousAttempt!.State);
+    }
+
+    [Fact]
+    public async Task Publish_timeout_does_not_report_a_prior_template_lookup_http_status_as_publish_response()
+    {
+        await Assert.ThrowsAsync<ProviderCallException>(() => Journal().ExecuteAsync(MisaTestData.SiteId, "publish", "original-key-001",
+            new { amount = 100 }, ["publish:INV-001"], () =>
+            {
+                MisaWriteJournal.MarkResponse(200, "template-token");
+                MisaWriteJournal.MarkDispatched();
+                throw new ProviderCallException(ProviderFailure.Timeout, "MISA_OPERATION_TIMEOUT", "timeout");
+            }, default));
+        var status = await Journal().InvoiceStatusAsync(MisaTestData.SiteId, "INV-001", "publish", default);
+        Assert.Null(status.LastError!.ProviderHttpStatus);
+        Assert.Equal("MISA_OPERATION_TIMEOUT", status.LastError.Code);
+        Assert.False(status.CanRetry);
     }
 
     private MisaWriteJournal Journal() => new(_directory, TimeProvider.System);
