@@ -37,7 +37,7 @@ Bao phủ payload fixture, API thật qua HTTP giả lập, credential/token sep
 
 Probe HTTPS local sau chuyển JSON/restart: **9 ca đạt** — health-check 400 MISA_CREDENTIALS_REQUIRED vì file mẫu credential trống; FormSerial 503 MISA_ENDPOINT_NOT_ALLOWED vì endpoint trống; auth/site/type/capabilities/OpenAPI/journal đúng kỳ vọng. Chứng chỉ public ASP.NET localhost export tại .local/dev-certificate.pem được dùng làm trust riêng cho probe, vẫn kiểm tra TLS/hostname. Không gọi NCC thật.
 
-Chưa gọi admin/MISA thật, chưa sandbox/UAT. Repo cũ giữ nguyên thay đổi local trước phiên này. Chưa push/deploy.
+Test suite vẫn dùng fake HTTP. Ngày 2026-10-09 đã thử riêng health-check/login với endpoint testapi.meinvoice.vn do người dùng cấu hình: HTTP 200, connected=true. Chưa UAT các nghiệp vụ MISA còn lại hoặc cutover. Không gọi admin cũ. Repo cũ giữ nguyên thay đổi local trước phiên này; chưa push/deploy.
 
 ## Chưa làm và quyết định đang chờ
 
@@ -59,9 +59,9 @@ Chưa gọi admin/MISA thật, chưa sandbox/UAT. Repo cũ giữ nguyên thay đ
 
 ## API local/Postman hiện tại
 
-Đã xử lý ADMIN_NOT_CONFIGURED bằng chuyển sang JSON theo D019; không gọi admin. Ngày 2026-10-09 người dùng báo đã điền thông tin và yêu cầu restart: đã khởi động lại Release, giữ nguyên các file cấu hình/journal, kiểm tra liveness HTTPS 200. Chưa kiểm tra kết nối MISA thật trong lần restart này. Các kết quả credential/endpoint trống bên dưới là probe lịch sử ngày 2026-10-08, không phải trạng thái file hiện tại. Sửa nội dung JSON được đọc ở request tiếp theo, sửa allowlist/path/API key cần restart.
+Đã xử lý ADMIN_NOT_CONFIGURED bằng chuyển sang JSON theo D019; không gọi admin. Ngày 2026-10-09 người dùng đã điền thông tin nhưng health-check trả MISA_ENDPOINT_NOT_ALLOWED: URL HTTPS/trailing slash hợp lệ, allowlist local trống. Đã thêm đúng testapi.meinvoice.vn vào Providers:Misa:AllowedHosts, giữ nguyên các cấu hình khác/journal, restart Release. Health-check thật qua API local trả HTTP 200, provider=MISA, connected=true. Các kết quả credential/endpoint trống bên dưới là probe lịch sử ngày 2026-10-08, không phải trạng thái file hiện tại. Sửa nội dung JSON được đọc ở request tiếp theo, sửa allowlist/path/API key cần restart.
 
-- `https://localhost:7150`, loopback, Release; **API PID 16664, exec session 5464** (restart 2026-10-09). Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json.
+- `https://localhost:7150`, loopback, Release; **API PID 14168, exec session 81336** (restart 2026-10-09 sau sửa allowlist). Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json; kết quả health-check rút gọn tại .local/misa-health-allowlist-result.json, không lưu token/credential/raw body.
 - Key client postman-local, site tổng hợp `11111111-1111-1111-1111-111111111111`, hết hạn cuối 2026-10-09 UTC+7. Key gốc chỉ ở .local; server giữ hash trong appsettings.Local.json (ignored).
 - Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json` (19 request). Key đã giữ nguyên, thêm biến còn thiếu. Bản công khai/template tại docs/postman không chứa key.
 - JournalDirectory local là `D:\Code\40.eInvoice\.local\misa-journal`, không xóa khi build/restart. Key idempotency phải ổn định khi retry cùng body; không sinh key mới để vượt pending.

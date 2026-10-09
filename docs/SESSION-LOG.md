@@ -56,3 +56,10 @@
 - Xác minh executable của process đang giữ port 7150 rồi dừng PID 3548; chạy lại Release không build tại https://localhost:7150.
 - Host mới PID 16664/session 5464; GET /health/live qua HTTPS xác minh certificate/hostname trả 200 service=eInvoice, status=alive.
 - Không gọi health-check MISA hoặc thao tác NCC thật trong lần này. Runtime code không đổi; verify đầy đủ gần nhất vẫn 257 test đạt.
+
+## 2026-10-09 — Sửa allowlist MISA sau lỗi health-check
+
+- Chẩn đoán chỉ in scheme/hostname và các cờ validation, không in credential/full config: URL có HTTPS và slash cuối, hostname testapi.meinvoice.vn nhưng AllowedHosts trống.
+- Thêm đúng hostname người dùng đã cấu hình vào appsettings.Local.json (ignored), giữ các trường khác. Restart host sau xác minh executable: PID 14168/session 81336.
+- Thử lại riêng POST /api/eInvoice/health-check qua HTTPS local: **200, provider=MISA, connected=true**. Đã liên hệ endpoint MISA do người dùng cấu hình; không gọi phát hành/hủy/CQT/email hoặc nghiệp vụ khác.
+- Không thay runtime code, không xóa journal. Last verify vẫn 257 test đạt; UAT các luồng còn lại vẫn chưa thực hiện.
