@@ -1,6 +1,6 @@
 # Trạng thái eInvoice — điểm bắt đầu phiên kế tiếp
 
-Ngày cập nhật: **2026-10-08**, Asia/Bangkok.
+Ngày cập nhật: **2026-10-09**, Asia/Bangkok.
 
 ## Mục tiêu và checkpoint
 
@@ -59,13 +59,13 @@ Chưa gọi admin/MISA thật, chưa sandbox/UAT. Repo cũ giữ nguyên thay đ
 
 ## API local/Postman hiện tại
 
-Đã xử lý ADMIN_NOT_CONFIGURED bằng chuyển sang JSON theo D019; không gọi admin. src/eInvoice.Api/sites.Local.json đã tạo từ docs/sites.example.json, GUID khớp Postman local, credential/endpoint trống. File có sẵn của người dùng không bị overwrite; auth key giữ nguyên. Sửa nội dung JSON được đọc ở request tiếp theo, sửa allowlist/path/API key cần restart.
+Đã xử lý ADMIN_NOT_CONFIGURED bằng chuyển sang JSON theo D019; không gọi admin. Ngày 2026-10-09 người dùng báo đã điền thông tin và yêu cầu restart: đã khởi động lại Release, giữ nguyên các file cấu hình/journal, kiểm tra liveness HTTPS 200. Chưa kiểm tra kết nối MISA thật trong lần restart này. Các kết quả credential/endpoint trống bên dưới là probe lịch sử ngày 2026-10-08, không phải trạng thái file hiện tại. Sửa nội dung JSON được đọc ở request tiếp theo, sửa allowlist/path/API key cần restart.
 
-- `https://localhost:7150`, loopback, Release; **API PID 3548, exec session 81966**. Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json.
+- `https://localhost:7150`, loopback, Release; **API PID 16664, exec session 5464** (restart 2026-10-09). Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json.
 - Key client postman-local, site tổng hợp `11111111-1111-1111-1111-111111111111`, hết hạn cuối 2026-10-09 UTC+7. Key gốc chỉ ở .local; server giữ hash trong appsettings.Local.json (ignored).
 - Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json` (19 request). Key đã giữ nguyên, thêm biến còn thiếu. Bản công khai/template tại docs/postman không chứa key.
 - JournalDirectory local là `D:\Code\40.eInvoice\.local\misa-journal`, không xóa khi build/restart. Key idempotency phải ổn định khi retry cùng body; không sinh key mới để vượt pending.
-- JSON site được đọc đúng, chưa điền credential/endpoint MISA: health-check trả 400 MISA_CREDENTIALS_REQUIRED. Đây không phải kết quả kiểm thử sandbox thành công. Thiếu file/sai JSON trả SITE_STORE_*, không trả ADMIN_*.
+- Probe trước khi người dùng điền thông tin (2026-10-08): JSON site được đọc đúng, health-check trả 400 MISA_CREDENTIALS_REQUIRED. Không phải kết quả kiểm thử sandbox thành công. Thiếu file/sai JSON trả SITE_STORE_*, không trả ADMIN_*.
 - Chạy lại khi process đã dừng: `dotnet run --project src/eInvoice.Api -c Release --no-build --no-restore --no-launch-profile --urls https://localhost:7150`.
 - Probe mới: .local/probe-json-sites.py và probe-json-results.json (9 ca). Guard chỉ cho file mẫu endpoint/credential trống để không gọi thật. Probe admin cũ đã lỗi thời, không dùng lại.
 

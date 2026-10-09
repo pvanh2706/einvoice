@@ -49,3 +49,10 @@
 - Thêm 17 test store/API fake HTTP, cả health/forms/document/publish lấy config JSON và không có IAdminClient trong DI. Final verify: **257 test pass, 0 warning/error**. Lần build đầu bị DLL lock do host cũ; đã xác minh/dừng process rồi chạy lại verify thành công.
 - Restart Release https://localhost:7150, **PID 3548/session 81966**. Probe 9 ca dùng public dev certificate localhost làm trust riêng, kiểm tra hostname/TLS bình thường. Health 400 MISA_CREDENTIALS_REQUIRED (file mẫu trống), forms 503 MISA_ENDPOINT_NOT_ALLOWED (endpoint trống); không còn ADMIN_NOT_CONFIGURED và không gọi NCC.
 - Checkpoint: `Use local JSON site configuration with database-ready store interface`. Tiếp theo: người dùng điền sandbox JSON + host allowlist, restart khi thay allowlist, UAT theo variant; Q008/Q009/Q010 vẫn mở. Không sửa repo cũ/push/deploy.
+
+## 2026-10-09 — Restart sau khi người dùng điền cấu hình
+
+- Người dùng báo đã điền thông tin và yêu cầu reset API; chỉ restart host, không reset journal hay sửa credential/key.
+- Xác minh executable của process đang giữ port 7150 rồi dừng PID 3548; chạy lại Release không build tại https://localhost:7150.
+- Host mới PID 16664/session 5464; GET /health/live qua HTTPS xác minh certificate/hostname trả 200 service=eInvoice, status=alive.
+- Không gọi health-check MISA hoặc thao tác NCC thật trong lần này. Runtime code không đổi; verify đầy đủ gần nhất vẫn 257 test đạt.
