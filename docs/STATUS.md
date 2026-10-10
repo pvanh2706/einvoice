@@ -1,6 +1,6 @@
 # Trạng thái eInvoice — điểm bắt đầu phiên kế tiếp
 
-Ngày cập nhật: **2026-10-09**, Asia/Bangkok.
+Ngày cập nhật: **2026-10-11**, Asia/Bangkok.
 
 ## Mục tiêu và checkpoint
 
@@ -12,6 +12,7 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 - Checkpoint phiên này: `Complete MISA baseline APIs with token isolation and durable write journal`; lấy hash bằng `git log -1 --oneline`.
 - Cập nhật mới nhất D019: `Use local JSON site configuration with database-ready store interface`; lấy hash bằng git log. Người dùng bỏ admin cũ, tạm JSON, sau này DB riêng.
 - Cập nhật diagnostics D020: `Expose sanitized MISA errors and persist invoice attempt diagnostics`; xem git log. Publish lỗi mới có message/status, journal lưu lỗi và 409 có previousAttempt/link tra cứu. Không thay cơ chế chặn retry.
+- Cập nhật 2026-10-11: tài liệu bàn giao [INTEGRATION-AGENT](INTEGRATION-AGENT.md) và [JSON publish mẫu](examples/misa-publish.json) cho AI agent phần mềm bên ngoài; scope single HSM MISA sandbox, không đổi runtime/auth/retry hoặc mở kết nối mạng.
 - **Bộ API MISA tương ứng toàn bộ 19 action sống baseline đã triển khai và kiểm thử offline. Sandbox/UAT/cutover chưa thực hiện.**
 - P0 hoàn thành; P1 MISA code/fixture/HTTP giả lập hoàn thành, kiểm chứng thực tế còn chờ.
 
@@ -32,6 +33,8 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 
 ## Kiểm chứng gần nhất
 
+2026-10-10, thay đổi chỉ tài liệu: chạy lại `dotnet test eInvoice.sln -c Release --no-build --no-restore --verbosity minimal`, **268 passed, 0 failed/skipped** trên artifact Release đã build ở checkpoint 316ba42. Không build lại runtime hoặc restart. JSON request publish/status/document/form-serials trong tài liệu đã kiểm tra theo OpenAPI 3.1, body nhúng trùng file JSON riêng, số tiền mẫu/nhánh HSM nhất quán, route/link hợp lệ. `curl.exe` với TLS mặc định xác nhận GET /health/live trả alive; không gọi MISA trong phiên này. Key postman-local cũ đã hết hạn ngày 09/10/2026; chưa gia hạn/cấp key mới.
+
 `powershell -NoProfile -File scripts/verify.ps1`: **PASS**, Release **0 warning, 0 error**, **268 test passed**, không skip. Có 11 ca diagnostics mới: supplier message/status, redaction và không lưu token/raw exception, lỗi qua restart/site/phase isolation, record cũ không bịa lỗi/key, batch item message, 409 không replay và auth/parameter lookup.
 
 Bao phủ payload fixture, API thật qua HTTP giả lập, credential/token separation, no-secret logging, concurrency/cancellation/invalidation, journal replay/restart/duplicate, partial batch, lỗi/response sai/site scope và đối chiếu OpenAPI/capabilities với route thực tế.
@@ -50,6 +53,8 @@ Test suite vẫn dùng fake HTTP. Ngày 2026-10-09 đã thử riêng health-chec
 - Storage/reconcile kết quả ghi chưa xác định và kế hoạch thay thế/rollback trước cutover.
 
 ## Bước tiếp theo khi tiếp tục
+
+Phần mềm bên ngoài có thể bắt đầu tích hợp theo INTEGRATION-AGENT sau khi được cấp key còn hạn/SiteId/URL truy cập được và mẫu HSM sandbox đã xác nhận. Nếu nằm máy khác, localhost không dùng được; việc cấp endpoint HTTPS/network cần cấu hình riêng khi người dùng yêu cầu. Chưa có sandbox publish thành công được xác nhận; không đánh dấu production-ready. Các tên trạng thái processing/rejected/unknown mới được thảo luận, **chưa triển khai**; API vẫn pending/completed/not-found và chưa có tự reconcile/unlock.
 
 1. Đọc AGENTS, STATUS, PLAN, DECISIONS, QUESTIONS, MISA-API, MISA-VARIANTS; kiểm tra git status/branch/log. Bộ MISA đã port, không làm lại.
 2. Xử lý câu trả lời Q008/Q009/Q010 nếu có. Các thay đổi phụ thuộc chưa được duyệt; tiếp tục phần độc lập, giữ baseline nếu chưa có câu trả lời.

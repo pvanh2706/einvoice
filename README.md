@@ -48,6 +48,8 @@ Endpoint hiện có:
 
 Hợp đồng mới, JSON mẫu và mã lỗi: [API-CONTRACT](docs/API-CONTRACT.md). Các route/key cũ không được hỗ trợ.
 
+Phần mềm bên ngoài bắt đầu tích hợp MISA: [Hướng dẫn cho AI agent](docs/INTEGRATION-AGENT.md), kèm body JSON và cURL, điều kiện truy cập/key còn hạn và xử lý kết quả chưa xác định.
+
 ## Nguồn và fixture
 
 Code baseline: `66a9c742d0f6fb692d339076e6cd82780e3476be`. [Reference](docs/reference/README.md) giải thích khác biệt với tài liệu cũ `f77fa2e`.

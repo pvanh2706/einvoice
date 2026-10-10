@@ -2,6 +2,8 @@
 
 Trạng thái: bộ route MISA tương ứng 19 action dispatcher baseline đã triển khai và kiểm thử offline. Sandbox/UAT chưa thực hiện. Phạm vi/validation/response/timeout/idempotency: [MISA-API](MISA-API.md); schema [OpenAPI](openapi.misa.json).
 
+Tài liệu bàn giao cho AI agent phía phần mềm tích hợp: [INTEGRATION-AGENT](INTEGRATION-AGENT.md). Bắt đầu với single HSM MISA trên môi trường test; hướng dẫn phản ánh trạng thái hiện tại, không giả định đã có API đối soát/mở khóa hoặc adapter các nhà cung cấp khác.
+
 - Base route: `/api/eInvoice`.
 - Chỉ tên mới, không alias route/key lịch sử.
 - JSON camelCase. Các key provider được định nghĩa trong model provider riêng; không dùng naming policy của API để serialize provider.

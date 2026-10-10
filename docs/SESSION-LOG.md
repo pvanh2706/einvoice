@@ -72,3 +72,12 @@
 - Verify Release **268 test passed, 0 warning/error**, 11 ca mới. Giữ financial fixture và retry behavior. Lookup không gọi NCC; metadata/key cùng site, phase tách biệt, pending survives restart.
 - Restart local **PID 14072/session 95101**. Tái hiện request được cung cấp sau guard prior pending: 409 gateway + previousAttempt/link; GET invoice-attempts 200 pending. Không có provider write/reconcile/reset thực tế, chỉ lỗi mock trong tests; giữ journal/user credential ngoài Git.
 - Checkpoint `Expose sanitized MISA errors and persist invoice attempt diagnostics`. Tiếp theo: nếu người dùng còn response cũ thì đối chiếu; đối soát MISA trước quyết định gửi lại. Response cũ đã bỏ không thể khôi phục từ hash. Các quyết định Q008/Q009/Q010 vẫn mở.
+
+## 2026-10-10/11 — Tài liệu tích hợp cho AI agent phía phần mềm
+
+- Người dùng hỏi phần mềm khác đã test phát hành được chưa và yêu cầu tài liệu để AI agent gọi API. Đối chiếu route/DTO/validation/mapping/result/journal/security ở checkpoint 316ba42; đủ code để bắt đầu thử MISA, chưa xác nhận publish sandbox thành công.
+- Tạo docs/INTEGRATION-AGENT.md tự chứa hướng dẫn và request/response/cURL, JSON riêng docs/examples/misa-publish.json, liên kết từ README/API-CONTRACT. Scope single invoiceType 0, mode 0 HSM, mẫu non-MTT; hướng dẫn lưu snapshot/key trước gửi, parse từng item, lỗi/timeout/409/lookup và trạng thái CQT riêng.
+- Xác minh listener localhost:7150 vẫn PID 14072; curl.exe HTTPS mặc định trả alive. Không gọi login/publish/CQT/hủy/email MISA. Chỉ đọc expiry cấu hình: key postman-local hết hạn cuối 09/10/2026 UTC+7. Không sửa key/site/credential, mở port hoặc restart. Python probe dùng file public certificate cũ không xác minh được TLS; dùng curl.exe trust Windows thành công, không bypass chứng chỉ.
+- Chạy lại test Release không build/restore: **268 passed, 0 failed/skipped**. Kiểm tra JSON request bằng JSON Schema OpenAPI 3.1, body nhúng/file riêng đồng nhất, totals/nhánh HSM, route và link. Không thêm test/runtime dependency hoặc tự cập nhật financial fixture.
+- Ghi rõ enum hiện tại not-found/pending/completed; processing/rejected/unknown đã thảo luận chưa được implement. Tra cứu journal không gọi MISA, status chỉ SendTaxStatus; chưa có API tự reconcile/unlock.
+- Tiếp theo: bên tích hợp nhận key còn hạn và URL HTTPS truy cập được, SiteId/mẫu/cách ký sandbox; thực hiện UAT được cho phép và đối chiếu MISA. Nếu máy khác cần endpoint khác loopback. Không tự quyết mạng/key/production hoặc đổi ID để vượt claim cũ. Checkpoint `Document MISA sandbox integration for external AI agents`.
