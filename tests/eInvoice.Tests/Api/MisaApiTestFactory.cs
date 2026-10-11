@@ -10,6 +10,7 @@ using eInvoice.Providers.Viettel;
 using eInvoice.Providers.Cyberbill;
 using eInvoice.Providers.Sun;
 using eInvoice.Providers.Minvoice;
+using eInvoice.Providers.EasyInvoice;
 using eInvoice.Providers.Configuration;
 using eInvoice.Tests.Misa;
 using Microsoft.AspNetCore.Hosting;
@@ -71,6 +72,9 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
             services.RemoveAll<MinvoiceOptions>();
             services.AddSingleton(new MinvoiceOptions { AllowedHosts = ["minvoice.example.test", "mst.minvoice.com.vn"] });
             services.AddHttpClient<MinvoiceTransport>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
+            services.RemoveAll<EasyInvoiceOptions>();
+            services.AddSingleton(new EasyInvoiceOptions { AllowedHosts = ["easyinvoice.example.test"] });
+            services.AddHttpClient<EasyInvoiceTransport>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
             services.RemoveAll<MisaWriteJournal>();
             services.AddSingleton(new MisaWriteJournal(_directory, TimeProvider.System));
             services.AddHttpClient<MisaLoginClient>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));

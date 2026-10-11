@@ -37,9 +37,9 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 268 test toàn solution; health-check thật 200, publish diagnostic bị khóa | Chưa |
 | CYBER_BILL | 7 mapping baseline; payment/workflow chờ Q012/Q013 | REST Bearer từng operation | 7 payload độc lập | health/document/void (4 action), 329 tests toàn solution | Chưa |
 | FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
-| EASY_INVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |
+| EASY_INVOICE | 12 action nghiệp vụ; phí/extra/thuế mapper chung, giữ công thức baseline | REST Authentication riêng từng request, MD5 wire, JSON/XML | 20 frozen payload, tỷ giá 0/extra/phí/multi-VAT | 12 route, 456 tests toàn solution; Login/Health chờ Q016 | Chưa |
 
-P2 đã được người dùng yêu cầu tiếp tục ngày 11/10. Viettel/SUN/Minvoice đã xong phần baseline offline; Cyberbill chờ Q012/Q013. Tiếp theo EasyInvoice → Fast → VNPT/VNPT_V5; xử lý Q015 Minvoice nếu có trả lời. Thứ tự theo phụ thuộc kỹ thuật, không phải ưu tiên nghiệp vụ đã được người dùng chọn. REST đi trước; SOAP/WCF dùng WSDL/proxy sinh sẵn ở baseline, không viết tay generated proxy. Không cần sandbox credential để làm kiểm thử offline.
+P2 đã được người dùng yêu cầu tiếp tục ngày 11/10. Viettel/SUN/Minvoice đã xong phần baseline offline; EasyInvoice xong nghiệp vụ nhưng health chờ Q016, Cyberbill chờ Q012/Q013. Tiếp theo Fast → VNPT/VNPT_V5; xử lý Q015 Minvoice/Q016 EasyInvoice nếu có trả lời. Thứ tự theo phụ thuộc kỹ thuật, không phải ưu tiên nghiệp vụ đã được người dùng chọn. REST đi trước; SOAP/WCF dùng WSDL/proxy sinh sẵn ở baseline, không viết tay generated proxy. Không cần sandbox credential để làm kiểm thử offline.
 
 ## P3 — Vận hành và thay thế
 

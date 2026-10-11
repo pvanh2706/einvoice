@@ -11,6 +11,8 @@
 
 ## Đang chờ trước khi thay đổi nghiệp vụ/cutover
 
+- Q016 (đã hỏi 11/10/2026): EasyInvoice không có login/health API trong baseline, code cũ luôn trả thành công. API mới kiểm tra cấu hình và báo connectionVerified=false, hay trả 501? Chưa expose health như kết nối đã xác minh; phần mapping/transport nghiệp vụ tiếp tục độc lập.
+
 - Q014 đã giải quyết 11/10/2026: người dùng chọn giữ từng luồng Minvoice cũ để đối chiếu; nghiệp vụ VP/Bear, health-check Username2/Bearer. Token riêng theo thao tác, không static; xem D024.
 - Q015 (đã hỏi 11/10/2026): Minvoice change cho sửa tiếp với key mới sau khi lần trước completed, nhưng pending/timeout vẫn khóa để đối soát, hay giữ khóa một lần theo hóa đơn? Chưa đổi cơ chế claim cho tới khi trả lời.
 

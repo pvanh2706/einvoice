@@ -13,6 +13,30 @@ namespace eInvoice.Tests.Minvoice;
 
 public class MinvoiceMappingTests
 {
+    [Fact]
+    public async Task Optional_serial_keeps_existing_minvoice_sign_record_replayable()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "eInvoice-tests", Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var request = new PublishExistingInvoiceRequest { InvoiceId = "PMS-ID", ProviderInvoiceCode = "33333333-3333-3333-3333-333333333333", ProviderInvoiceNumber = "123", InvoiceType = 0 };
+            var json = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+            var node = System.Text.Json.Nodes.JsonNode.Parse(JsonSerializer.Serialize(request, json))!.AsObject(); node.Remove("serial");
+            static string Hash(string text) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(text)));
+            var attempt = Hash(MisaTestData.SiteId + "|MINVOICE|publish-existing|legacy-sign-001");
+            var record = new { fingerprint = Hash(node.ToJsonString(json)), state = "completed", provider = "MINVOICE", updatedAtUtc = "2026-10-11T00:00:00Z", result = new { confirmed = true } };
+            await File.WriteAllTextAsync(Path.Combine(directory, attempt + ".json"), JsonSerializer.Serialize(record, json));
+            var replay = await new WriteOperationJournal(directory, TimeProvider.System, "MINVOICE").ExecuteAsync(MisaTestData.SiteId, "publish-existing", "legacy-sign-001", request, [], () => throw new InvalidOperationException("Must not sign again"), default);
+            Assert.True(replay.GetProperty("confirmed").GetBoolean());
+        }
+        finally
+        {
+            var allowedRoot = Path.GetFullPath(Path.Combine(Path.GetTempPath(), "eInvoice-tests")) + Path.DirectorySeparatorChar;
+            if (!Path.GetFullPath(directory).StartsWith(allowedRoot, StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("Unsafe cleanup");
+            Directory.Delete(directory, true);
+        }
+    }
     [Theory]
     [InlineData("service-site-a", "36342869-8a14-4c31-b7be-7f46f5a92b13")]
     [InlineData("service-site-b", "96443794-55bb-4c12-881f-9e6cc1aa66ba")]

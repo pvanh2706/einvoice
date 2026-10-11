@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "eInvoice API — MISA, VIETTEL, SUN, MINVOICE and partial CYBER_BILL",
-    "version": "0.5.0",
+    "title": "eInvoice API — MISA, VIETTEL, SUN, MINVOICE, EASY_INVOICE and partial CYBER_BILL",
+    "version": "0.6.0",
     "description": "Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged."
   },
   "servers": [
@@ -70,7 +70,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -254,7 +255,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -395,15 +397,17 @@
           "MISA",
           "VIETTEL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
-        "summary": "Publish one invoice/ticket/receipt. Normal USB uses the separate XML workflow.",
+        "summary": "Publish one invoice/ticket/receipt. Normal USB uses the separate XML workflow. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -457,7 +461,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -656,7 +661,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -796,14 +802,16 @@
         "tags": [
           "MISA",
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "EASY_INVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "EASY_INVOICE"
         ],
-        "summary": "InvoiceType 0; provider preview URL. Original invoice required for previewType 2/3.",
+        "summary": "InvoiceType 0; provider preview URL. Original invoice required for previewType 2/3. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -845,7 +853,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -1041,7 +1050,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -1182,15 +1192,17 @@
           "MISA",
           "VIETTEL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
-        "summary": "InvoiceType 0 replacement; new invoiceId and original invoice information required.",
+        "summary": "InvoiceType 0 replacement; new invoiceId and original invoice information required. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -1244,7 +1256,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -1386,16 +1399,18 @@
           "VIETTEL",
           "CYBER_BILL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
-        "summary": "Invoice uses searchCode; ticket/receipt use transactionId. Returns provider base64 content.",
+        "summary": "Invoice uses searchCode; ticket/receipt use transactionId. Returns provider base64 content. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -1437,7 +1452,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -1576,16 +1592,18 @@
           "VIETTEL",
           "CYBER_BILL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
-        "summary": "Cancel invoice/ticket/receipt with reason. No automatic retry.",
+        "summary": "Cancel invoice/ticket/receipt with reason. No automatic retry. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -1639,7 +1657,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -1826,7 +1845,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -2023,7 +2043,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -2225,7 +2246,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -2410,7 +2432,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -2607,7 +2630,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -2809,7 +2833,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -2948,13 +2973,15 @@
         "operationId": "misa_draft",
         "tags": [
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "EASY_INVOICE"
         ],
         "x-providers": [
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "EASY_INVOICE"
         ],
-        "summary": "VIETTEL: save/update a draft. Does not confirm invoice publication.",
+        "summary": "VIETTEL: save/update a draft. Does not confirm invoice publication. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -3008,7 +3035,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -3193,7 +3221,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -3332,13 +3361,15 @@
         "operationId": "misa_adjust_increase",
         "tags": [
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "EASY_INVOICE"
         ],
         "x-providers": [
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "EASY_INVOICE"
         ],
-        "summary": "VIETTEL: amount increase; originalProviderInvoiceNumber required.",
+        "summary": "VIETTEL: amount increase; originalProviderInvoiceNumber required. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -3392,7 +3423,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -3531,13 +3563,15 @@
         "operationId": "misa_adjust_decrease",
         "tags": [
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "EASY_INVOICE"
         ],
         "x-providers": [
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "EASY_INVOICE"
         ],
-        "summary": "VIETTEL: amount decrease; preserve baseline amount signs.",
+        "summary": "VIETTEL: amount decrease; preserve baseline amount signs. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -3591,7 +3625,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -3729,12 +3764,14 @@
       "post": {
         "operationId": "misa_adjust_information",
         "tags": [
-          "VIETTEL"
+          "VIETTEL",
+          "EASY_INVOICE"
         ],
         "x-providers": [
-          "VIETTEL"
+          "VIETTEL",
+          "EASY_INVOICE"
         ],
-        "summary": "VIETTEL: information adjustment; originalProviderInvoiceNumber required.",
+        "summary": "VIETTEL: information adjustment; originalProviderInvoiceNumber required. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -3788,7 +3825,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -3973,7 +4011,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -4111,12 +4150,14 @@
       "post": {
         "operationId": "misa_create",
         "tags": [
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
         "x-providers": [
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
-        "summary": "MINVOICE: create unsigned invoice (Save, editmode=1). Does not confirm publication.",
+        "summary": "MINVOICE: create unsigned invoice (Save, editmode=1). Does not confirm publication. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -4170,7 +4211,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -4367,7 +4409,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -4505,12 +4548,14 @@
       "post": {
         "operationId": "misa_delete",
         "tags": [
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
         "x-providers": [
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
-        "summary": "MINVOICE: delete unsigned invoice by serial and provider number (Save, editmode=3).",
+        "summary": "MINVOICE: delete unsigned invoice by serial and provider number (Save, editmode=3). EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -4564,7 +4609,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -4704,12 +4750,14 @@
       "post": {
         "operationId": "misa_publish_existing",
         "tags": [
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
         "x-providers": [
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE"
         ],
-        "summary": "MINVOICE: sign an existing invoice by providerInvoiceCode; existing number is carried from input.",
+        "summary": "MINVOICE: sign an existing invoice by providerInvoiceCode; existing number is carried from input. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
           {
             "ApiKey": []
@@ -4763,7 +4811,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -4948,7 +4997,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -5133,7 +5183,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -5327,7 +5378,8 @@
                         "VIETTEL",
                         "CYBER_BILL",
                         "SUN",
-                        "MINVOICE"
+                        "MINVOICE",
+                        "EASY_INVOICE"
                       ]
                     },
                     "siteId": {
@@ -7761,6 +7813,16 @@
           "invoiceType": {
             "type": "integer",
             "format": "int32"
+          },
+          "serial": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "siteConfigInfo": {
             "anyOf": [

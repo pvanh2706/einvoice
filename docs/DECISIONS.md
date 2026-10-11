@@ -33,4 +33,6 @@
 
 | D024 | 2026-10-11 | Giữ từng luồng đăng nhập Minvoice cũ để đối chiếu trước sandbox/UAT: nghiệp vụ ma_dvcs=VP và header Bear, health-check dùng Username2/Bearer. Không thống nhất auth từ suy đoán; token được giữ riêng mỗi thao tác, không static/cache cross-tenant. | Người dùng trả lời Q014 |
 
+| D025 | 2026-10-11 | EasyInvoice port 12 action nghiệp vụ, giữ Authentication MD5/nonce/epoch và JSON chứa XML, gom mapping phí/metadata/thuế chung nhưng giữ khác biệt tỷ giá 0 và các thuế suất baseline. Ikey là invoiceId PMS; publish-existing thêm serial nullable/bỏ khi null để replay Minvoice cũ không đổi. Create/draft là unsigned import, không xác nhận phát hành; PDF chỉ nhận bytes thực tế. Hai action Login/HealthCheck chưa quảng cáo là đã xác minh, Q016 đang chờ. | Triển khai theo D003/D009/D016/D021, 20 frozen payload độc lập và HTTP giả lập; không tự chốt Q016 |
+
 Mỗi quyết định thay đổi hành vi cũ phải bổ sung lý do, phạm vi ảnh hưởng và cách kiểm thử. Quyết định thuộc nghiệp vụ cần người dùng xác nhận.

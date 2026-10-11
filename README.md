@@ -48,6 +48,7 @@ Endpoint hiện có:
 - Cyberbill một phần: [CYBERBILL-API](docs/CYBERBILL-API.md), health/document/void; luồng phát hành chờ Q012/Q013.
 - SUN 10 action: [SUN-API](docs/SUN-API.md), kèm Postman và quy tắc sid chống trùng.
 - Minvoice 15 action: [MINVOICE-API](docs/MINVOICE-API.md), giữ từng luồng auth theo D024, tách GUID NCC/PMS, kèm Postman.
+- EasyInvoice 12 action nghiệp vụ: [EASYINVOICE-API](docs/EASYINVOICE-API.md), XML/Authentication giữ baseline, tạo nháp/ký nháp riêng; health-check chờ Q016.
 - `GET /openapi/misa.json`: schema để import Postman; [collection synthetic](docs/postman/eInvoice-MISA.postman_collection.json).
 
 Hợp đồng mới, JSON mẫu và mã lỗi: [API-CONTRACT](docs/API-CONTRACT.md). Các route/key cũ không được hỗ trợ.

@@ -54,7 +54,7 @@ schemas['InvoiceAttemptInfo'] = {'type':'object','properties':{
     'originalRequestId':nullable_string(),'requiresReconciliation':{'type':'boolean'},'canRetry':{'type':['boolean','null']},'provider':nullable_string()}}
 def array_of(name): return {'type':'array','items':{'$ref':'#/components/schemas/'+name}}
 def success_schema(route):
-    common={'provider':{'type':'string','enum':['MISA','VIETTEL','CYBER_BILL','SUN','MINVOICE']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
+    common={'provider':{'type':'string','enum':['MISA','VIETTEL','CYBER_BILL','SUN','MINVOICE','EASY_INVOICE']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
     if route=='health-check': common['connected']={'type':'boolean'}
     elif route=='form-serials': common['forms']=array_of('FormSerialResponse')
     else:
@@ -119,6 +119,9 @@ for route, contract, write, description in routes:
     if route == 'document/draft': providers = ['SUN']
     if route in {'health-check','form-serials','publish','replace','adjust','document','void'}: providers.append('MINVOICE')
     if route in {'create','change','delete','publish-existing','invoices','tax-code','email'}: providers = ['MINVOICE']
+    if route in {'create','draft','delete','publish','publish-existing','document','preview','void','replace','adjust/increase','adjust/decrease','adjust/information'}:
+        providers.append('EASY_INVOICE')
+        description += ' EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.'
     paths['/api/eInvoice/'+route] = {'post':{
         'operationId':'misa_'+route.replace('/','_').replace('-','_'), 'tags':providers,
         'x-providers':providers,
@@ -149,7 +152,7 @@ paths['/api/eInvoice/misa/capabilities'] = {'get':{'operationId':'misa_implement
     'parameters':[site_header],'responses':{'200':{'description':'Implemented action-to-route map; does not claim sandbox readiness.'},'401':problem,'403':problem}}}
 paths['/api/eInvoice/capabilities'] = {'get':{'operationId':'site_provider_capabilities','security':[{'ApiKey':[]}],
     'parameters':[site_header],'responses':{'200':{'description':'Actual implemented action-to-route map for the authorized site provider; no provider HTTP call.'},'401':problem,'403':problem,'501':problem}}}
-document = {'openapi':'3.1.0','info':{'title':'eInvoice API — MISA, VIETTEL, SUN, MINVOICE and partial CYBER_BILL','version':'0.5.0',
+document = {'openapi':'3.1.0','info':{'title':'eInvoice API — MISA, VIETTEL, SUN, MINVOICE, EASY_INVOICE and partial CYBER_BILL','version':'0.6.0',
     'description':'Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged.'},
     'servers':[{'url':'https://localhost:7150'}], 'paths':paths,
     'components':{'securitySchemes':{'ApiKey':{'type':'apiKey','in':'header','name':'X-Api-Key'}},'schemas':schemas}}

@@ -163,3 +163,9 @@ Local có site mẫu nhưng credential/endpoint trống: health-check trả 400 
 InvoiceResult thêm providerInvoiceCode tùy chọn khi NCC cần ID riêng; Minvoice trả GUID hoadon68_id tại field này, giữ invoiceId PMS để correlation. AdjustOrReplaceInvoiceRequest thêm originalProviderInvoiceCode; SendEmailRequest thêm providerInvoiceCode GUID. Field mới bị bỏ khi null để giữ fingerprint/hợp đồng các request MISA cũ. Không đổi tên/key phía NCC. PublishExistingInvoiceRequest chứa invoiceId, providerInvoiceCode, providerInvoiceNumber, invoiceType, siteConfigInfo, requestId.
 
 Minvoice invoices trả InvoiceListItem (providerInvoiceCode, signStatus nullable, signedAt nullable với offset +07:00). tax-code trả TaxCodeInfoResult; ngày thành lập là string chưa đoán format. PDF thật được kiểm tra header bytes, không biến body lỗi thành file. Lỗi marker không tồn tại trả HTTP 404 MINVOICE_DOCUMENT_NOT_FOUND. Mọi lookup vẫn không mở khóa pending. Q015 sửa nháp nhiều lần đang chờ quyết định.
+
+## EasyInvoice
+
+`site.partner: 9`, `provider: EASY_INVOICE`, 12 action nghiệp vụ; [EASYINVOICE-API](EASYINVOICE-API.md) và collection Postman mô tả body/response/wire/giới hạn. Health-check cũ không gọi NCC; Q016 đang chờ, hiện trả 501, không báo connected=true.
+
+PublishExistingInvoiceRequest thêm **serial** tùy chọn (bắt buộc với EasyInvoice); null bị bỏ khi serialize để giữ fingerprint Minvoice cũ, regression journal replay đã kiểm chứng. Minvoice vẫn dùng providerInvoiceCode + providerInvoiceNumber. EasyInvoice dùng invoiceId + serial, Ikey chính là ID PMS. Create/draft cùng unsigned import, không trả số phát hành; replace/adjust cần originalInvoiceId trùng originalInvoice.invoiceId và khác ID mới, originalInvoice.maCQT giữ mã gốc. PDF chỉ nhận bytes thực tế, không trả JSON lỗi dưới dạng base64 thành công. Không đổi field/element phía NCC.

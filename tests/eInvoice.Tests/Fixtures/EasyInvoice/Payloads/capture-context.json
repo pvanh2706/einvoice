@@ -1,0 +1,6 @@
+{
+  "baseline": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "culture": "Invariant",
+  "timezone": "UTC+7",
+  "note": "20 offline bodies from frozen baseline; four edge cases added without rewriting the original 16. No runtime provider assembly/HTTP/auth headers."
+}
