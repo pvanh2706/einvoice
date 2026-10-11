@@ -52,7 +52,7 @@ schemas['InvoiceAttemptInfo'] = {'type':'object','properties':{
     'originalRequestId':nullable_string(),'requiresReconciliation':{'type':'boolean'},'canRetry':{'type':['boolean','null']},'provider':nullable_string()}}
 def array_of(name): return {'type':'array','items':{'$ref':'#/components/schemas/'+name}}
 def success_schema(route):
-    common={'provider':{'type':'string','enum':['MISA','VIETTEL','CYBER_BILL']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
+    common={'provider':{'type':'string','enum':['MISA','VIETTEL','CYBER_BILL','SUN']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
     if route=='health-check': common['connected']={'type':'boolean'}
     elif route=='form-serials': common['forms']=array_of('FormSerialResponse')
     else:
@@ -97,12 +97,15 @@ routes = [
  ('adjust/increase','AdjustOrReplaceInvoiceRequest',True,'VIETTEL: amount increase; originalProviderInvoiceNumber required.'),
  ('adjust/decrease','AdjustOrReplaceInvoiceRequest',True,'VIETTEL: amount decrease; preserve baseline amount signs.'),
  ('adjust/information','AdjustOrReplaceInvoiceRequest',True,'VIETTEL: information adjustment; originalProviderInvoiceNumber required.'),
+ ('document/draft','DownloadPdfRequest',False,'SUN: retrieve draft PDF by searchCode. Does not confirm publication.'),
 ]
 paths = {}
 viettel_routes = {'health-check','publish','publish-batch','preview','replace','document','void','draft','search','adjust/increase','adjust/decrease','adjust/information'}
 for route, contract, write, description in routes:
     providers = (['VIETTEL'] if route in {'draft','search','adjust/increase','adjust/decrease','adjust/information'} else ['MISA','VIETTEL'] if route in viettel_routes else ['MISA'])
     if route in {'health-check','document','void'}: providers.append('CYBER_BILL')
+    if route in {'health-check','publish','draft','preview','document','void','replace','adjust/increase','adjust/decrease'}: providers.append('SUN')
+    if route == 'document/draft': providers = ['SUN']
     paths['/api/eInvoice/'+route] = {'post':{
         'operationId':'misa_'+route.replace('/','_').replace('-','_'), 'tags':providers,
         'x-providers':providers,
@@ -133,7 +136,7 @@ paths['/api/eInvoice/misa/capabilities'] = {'get':{'operationId':'misa_implement
     'parameters':[site_header],'responses':{'200':{'description':'Implemented action-to-route map; does not claim sandbox readiness.'},'401':problem,'403':problem}}}
 paths['/api/eInvoice/capabilities'] = {'get':{'operationId':'site_provider_capabilities','security':[{'ApiKey':[]}],
     'parameters':[site_header],'responses':{'200':{'description':'Actual implemented action-to-route map for the authorized site provider; no provider HTTP call.'},'401':problem,'403':problem,'501':problem}}}
-document = {'openapi':'3.1.0','info':{'title':'eInvoice API — MISA, VIETTEL and partial CYBER_BILL','version':'0.3.1',
+document = {'openapi':'3.1.0','info':{'title':'eInvoice API — MISA, VIETTEL, SUN and partial CYBER_BILL','version':'0.4.0',
     'description':'Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged.'},
     'servers':[{'url':'https://localhost:7150'}], 'paths':paths,
     'components':{'securitySchemes':{'ApiKey':{'type':'apiKey','in':'header','name':'X-Api-Key'}},'schemas':schemas}}

@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "eInvoice API — MISA, VIETTEL and partial CYBER_BILL",
-    "version": "0.3.1",
+    "title": "eInvoice API — MISA, VIETTEL, SUN and partial CYBER_BILL",
+    "version": "0.4.0",
     "description": "Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged."
   },
   "servers": [
@@ -17,12 +17,14 @@
         "tags": [
           "MISA",
           "VIETTEL",
-          "CYBER_BILL"
+          "CYBER_BILL",
+          "SUN"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
-          "CYBER_BILL"
+          "CYBER_BILL",
+          "SUN"
         ],
         "summary": "Check a fresh MISA v3 login; bypass token cache.",
         "security": [
@@ -64,7 +66,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -244,7 +247,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -383,11 +387,13 @@
         "operationId": "misa_publish",
         "tags": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "x-providers": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "summary": "Publish one invoice/ticket/receipt. Normal USB uses the separate XML workflow.",
         "security": [
@@ -441,7 +447,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -638,7 +645,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -777,11 +785,13 @@
         "operationId": "misa_preview",
         "tags": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "x-providers": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "summary": "InvoiceType 0; provider preview URL. Original invoice required for previewType 2/3.",
         "security": [
@@ -823,7 +833,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -1015,7 +1026,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -1154,11 +1166,13 @@
         "operationId": "misa_replace",
         "tags": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "x-providers": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "summary": "InvoiceType 0 replacement; new invoiceId and original invoice information required.",
         "security": [
@@ -1212,7 +1226,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -1352,12 +1367,14 @@
         "tags": [
           "MISA",
           "VIETTEL",
-          "CYBER_BILL"
+          "CYBER_BILL",
+          "SUN"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
-          "CYBER_BILL"
+          "CYBER_BILL",
+          "SUN"
         ],
         "summary": "Invoice uses searchCode; ticket/receipt use transactionId. Returns provider base64 content.",
         "security": [
@@ -1399,7 +1416,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -1536,12 +1554,14 @@
         "tags": [
           "MISA",
           "VIETTEL",
-          "CYBER_BILL"
+          "CYBER_BILL",
+          "SUN"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
-          "CYBER_BILL"
+          "CYBER_BILL",
+          "SUN"
         ],
         "summary": "Cancel invoice/ticket/receipt with reason. No automatic retry.",
         "security": [
@@ -1595,7 +1615,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -1780,7 +1801,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -1975,7 +1997,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -2175,7 +2198,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -2358,7 +2382,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -2553,7 +2578,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -2753,7 +2779,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -2891,10 +2918,12 @@
       "post": {
         "operationId": "misa_draft",
         "tags": [
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "x-providers": [
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "summary": "VIETTEL: save/update a draft. Does not confirm invoice publication.",
         "security": [
@@ -2948,7 +2977,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -3131,7 +3161,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -3269,10 +3300,12 @@
       "post": {
         "operationId": "misa_adjust_increase",
         "tags": [
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "x-providers": [
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "summary": "VIETTEL: amount increase; originalProviderInvoiceNumber required.",
         "security": [
@@ -3326,7 +3359,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -3464,10 +3498,12 @@
       "post": {
         "operationId": "misa_adjust_decrease",
         "tags": [
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "x-providers": [
-          "VIETTEL"
+          "VIETTEL",
+          "SUN"
         ],
         "summary": "VIETTEL: amount decrease; preserve baseline amount signs.",
         "security": [
@@ -3521,7 +3557,8 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {
@@ -3716,7 +3753,192 @@
                       "enum": [
                         "MISA",
                         "VIETTEL",
-                        "CYBER_BILL"
+                        "CYBER_BILL",
+                        "SUN"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InvoiceResult"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/document/draft": {
+      "post": {
+        "operationId": "misa_document_draft",
+        "tags": [
+          "SUN"
+        ],
+        "x-providers": [
+          "SUN"
+        ],
+        "summary": "SUN: retrieve draft PDF by searchCode. Does not confirm publication.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DownloadPdfRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN"
                       ]
                     },
                     "siteId": {

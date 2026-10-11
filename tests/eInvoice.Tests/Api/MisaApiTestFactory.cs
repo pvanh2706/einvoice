@@ -8,6 +8,7 @@ using eInvoice.Core.Contracts;
 using eInvoice.Providers.Misa;
 using eInvoice.Providers.Viettel;
 using eInvoice.Providers.Cyberbill;
+using eInvoice.Providers.Sun;
 using eInvoice.Providers.Configuration;
 using eInvoice.Tests.Misa;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,7 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
     public Func<ProviderCall, HttpResponseMessage>? Respond { get; set; }
     public Func<SiteInfo?, Guid?, ResolvedSite>? Resolve { get; set; }
     public string? SiteFilePath { get; init; }
+    public TimeProvider? Clock { get; init; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -43,6 +45,7 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
         builder.ConfigureLogging(logging => logging.AddProvider(new LogProvider(Logs)));
         builder.ConfigureServices(services =>
         {
+            if (Clock is not null) { services.RemoveAll<TimeProvider>(); services.AddSingleton(Clock); }
             if (SiteFilePath is null)
             {
                 services.RemoveAll<ISiteConfigurationResolver>();
@@ -61,6 +64,9 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
             services.RemoveAll<CyberbillOptions>();
             services.AddSingleton(new CyberbillOptions { AllowedHosts = ["cyberbill.example.test"] });
             services.AddHttpClient<CyberbillTransport>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
+            services.RemoveAll<SunOptions>();
+            services.AddSingleton(new SunOptions { AllowedHosts = ["sun.example.test", "sun-cancel.example.test"] });
+            services.AddHttpClient<SunTransport>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
             services.RemoveAll<MisaWriteJournal>();
             services.AddSingleton(new MisaWriteJournal(_directory, TimeProvider.System));
             services.AddHttpClient<MisaLoginClient>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));

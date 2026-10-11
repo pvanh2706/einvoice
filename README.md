@@ -2,7 +2,7 @@
 
 Gateway hóa đơn điện tử viết lại bằng C#. Dự án nguồn tại `D:\Code\25.ezInvoice` được dùng để đối chiếu, không sửa trong quá trình viết lại.
 
-**Trạng thái: nền tảng, MISA 19 action và Viettel 13 action đang có trong code cũ. Đã kiểm thử offline; chưa sandbox/UAT hoặc xác nhận thay production. Các cải tiến nghiệp vụ đang chờ giữ baseline.**
+**Trạng thái: nền tảng, MISA 19 action, Viettel 13 action và SUN 10 action baseline. Cyberbill mới hoàn thành một phần. Đã kiểm thử offline; UAT/cutover chưa hoàn thành. Các cải tiến nghiệp vụ đang chờ giữ baseline.**
 
 ## Tiếp tục phiên làm việc
 
@@ -46,6 +46,7 @@ Endpoint hiện có:
 - Bộ route publish/batch/preview/adjust/replace/document/void/status/CQT/USB: [MISA-API](docs/MISA-API.md).
 - Adapter theo SiteId, capabilities chung và Viettel publish/batch/draft/search/điều chỉnh: [VIETTEL-API](docs/VIETTEL-API.md).
 - Cyberbill một phần: [CYBERBILL-API](docs/CYBERBILL-API.md), health/document/void; luồng phát hành chờ Q012/Q013.
+- SUN 10 action: [SUN-API](docs/SUN-API.md), kèm Postman và quy tắc sid chống trùng.
 - `GET /openapi/misa.json`: schema để import Postman; [collection synthetic](docs/postman/eInvoice-MISA.postman_collection.json).
 
 Hợp đồng mới, JSON mẫu và mã lỗi: [API-CONTRACT](docs/API-CONTRACT.md). Các route/key cũ không được hỗ trợ.

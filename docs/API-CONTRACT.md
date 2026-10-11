@@ -150,3 +150,7 @@ Local có site mẫu nhưng credential/endpoint trống: health-check trả 400 
 ## Cyberbill một phần
 
 `site.partner: 7`, provider `CYBER_BILL`: health-check, document và void đã port. Hợp đồng/giới hạn tại [CYBERBILL-API](CYBERBILL-API.md). Các route chưa hoàn thành trả 501; fixture mapping không phải capability API.
+
+## SUN
+
+`site.partner: 3`, provider `SUN`, đủ 10 action baseline. `document/draft` mới dùng DownloadPdfRequest; preview SUN tải PDF nháp đã có theo `invoice.searchCode`. Response transactionId của SUN là sid, dùng lại khi hủy/điều chỉnh. invoiceId cho SUN nên là GUID ổn định, tối thiểu 32 ký tự sau bỏ dấu `-`; gateway giữ thuật toán sid NCC và khóa cả sid để chặn trùng. Chi tiết ở [SUN-API](SUN-API.md).

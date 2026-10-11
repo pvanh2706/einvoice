@@ -34,6 +34,8 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 
 ## Kiểm chứng gần nhất
 
+SUN 10 action baseline đã port, xem [SUN-API](SUN-API.md). Verify locked restore/Release **0 warning/error, 358 passed, 0 failed/skipped**, 29 tests mới. 10 fixture độc lập, UTC+7/invariant, hai endpoint và bearer/token isolation, sid collision claims, replay/pending/PDF/lỗi/timeout. OpenAPI **26 paths/39 schemas**, Postman SUN 15 requests; không gọi SUN thật hoặc UAT. Checkpoint `Implement SUN baseline APIs with UTC7 mapping and sid claims`.
+
 Cyberbill đã có transport/auth, 7 mapping fixture baseline độc lập; API chỉ expose health-check/document/void (4 action). Q012 luồng tạo/ký và Q013 mã thanh toán đang chờ, publish trả 501 trước NCC. Xem [CYBERBILL-API](CYBERBILL-API.md). Verify locked restore/Release build **0 warning/error, 329 passed, 0 failed/skipped**, 26 test mới; không gọi NCC thật. OpenAPI chỉ liệt kê CYBER_BILL ở 3 route đã xong. Tiếp tục phần độc lập SUN trong lúc chờ.
 
 Sau port Viettel ngày 11/10: `powershell -NoProfile -File scripts/verify.ps1` **PASS**, restore locked, Release **0 warning/error**, **303 passed, 0 failed/skipped** (35 ca mới). Bao phủ 11 wire fixture, login/cookie/auth, thiếu/sai kết quả, batch partial, timeout/lỗi login, endpoint guard, buyer bank/Customername metadata, replay và claim chung/provider hash isolation. OpenAPI **25 paths/39 schemas**, collection Viettel **17 requests** đã kiểm tra JSON/path; collection MISA giữ 20 requests. Không gọi Viettel thật hoặc UAT.
@@ -50,16 +52,16 @@ Test suite vẫn dùng fake HTTP. Ngày 2026-10-09 đã thử riêng health-chec
 
 ## Chưa làm và quyết định đang chờ
 
-- Q008: invariant culture và UTC+7 cho ngày/ticks ngoài năm FormSerial. Hiện giữ công thức, culture và DateTime.Now của mapper baseline.
+- Q008: phần date/culture MISA ngoài năm FormSerial vẫn giữ baseline. Provider mới đã được duyệt UTC+7/invariant theo D021.
 - Q009: định tuyến MTT/batch dựa trên electronicInvoiceType rõ ràng. Hiện giữ điều kiện baseline; mode 4 cần serial MTT, batch không tự sửa dispatcher cũ. Xem MISA-VARIANTS.
 - Q010: giữ hay giới hạn CQT HSM. Chức năng baseline được port với tên tax/send-pending, không nhận invoiceIds vì provider gửi hàng đợi đang chờ. Không coi im lặng là duyệt thay nghiệp vụ.
 - Sandbox/UAT từng variant, golden đã che, token receipt expiry, quantity biên lai int, USB correlation/thứ tự và batch partial errors.
-- 7 provider ngoài MISA/Viettel; Cyberbill đang làm một phần. Log/catalogue còn dùng, correlation requestId PMS, metrics/throttling/proxy và cấu hình production.
+- 6 provider ngoài MISA/Viettel/SUN; Cyberbill đang làm một phần. Log/catalogue còn dùng, correlation requestId PMS, metrics/throttling/proxy và cấu hình production.
 - Storage/reconcile kết quả ghi chưa xác định và kế hoạch thay thế/rollback trước cutover.
 
 ## Bước tiếp theo khi tiếp tục
 
-**Bước P2: Cyberbill một phần, SUN tiếp theo trong lúc chờ Q012/Q013.** MISA/Viettel đã đủ adapter baseline; Cyberbill mới health/document/void. Không ghi các provider còn lại là hoàn thành. Code cũ pinned vẫn là nguồn đọc, bảo toàn wire và thực hiện offline tests/capture trước UAT. API local đã dừng sau xác minh executable PID 14072 để build Release, cần chạy lại ở checkpoint cuối. Không sửa credential/site/key hoặc xóa journal.
+**Bước P2: MISA/Viettel/SUN đã đủ adapter baseline; Cyberbill mới health/document/void, chờ Q012/Q013.** Tiếp theo Minvoice, rồi EasyInvoice/Fast/VNPT/VNPT_V5. Minvoice đã đọc dispatcher sơ bộ, chưa import/code: login trong code cũ có hai luồng/mã dvcs khác nhau và token static cần làm rõ. Không ghi các provider còn lại là hoàn thành. Nguồn pinned chỉ đọc; tiếp tục offline fixture/tests trước UAT. Không sửa credential/site/key hoặc xóa journal.
 
 Phần mềm bên ngoài có thể bắt đầu tích hợp theo INTEGRATION-AGENT sau khi được cấp key còn hạn/SiteId/URL truy cập được và mẫu HSM sandbox đã xác nhận. Nếu nằm máy khác, localhost không dùng được; việc cấp endpoint HTTPS/network cần cấu hình riêng khi người dùng yêu cầu. Chưa có sandbox publish thành công được xác nhận; không đánh dấu production-ready. Các tên trạng thái processing/rejected/unknown mới được thảo luận, **chưa triển khai**; API vẫn pending/completed/not-found và chưa có tự reconcile/unlock.
 

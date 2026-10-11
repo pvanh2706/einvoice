@@ -12,6 +12,7 @@ public static class ProviderEndpoints
     {
         Map<CreateInvoiceRequest>(app, "draft");
         Map<SearchInvoiceRequest>(app, "search");
+        Map<DownloadPdfRequest>(app, "document/draft");
         Map<AdjustOrReplaceInvoiceRequest>(app, "adjust/increase");
         Map<AdjustOrReplaceInvoiceRequest>(app, "adjust/decrease");
         Map<AdjustOrReplaceInvoiceRequest>(app, "adjust/information");

@@ -98,3 +98,10 @@
 - Chỉ expose health-check/document/void, capabilities 4 action. Publish chưa expose vì Q012 luồng tạo–ký và Q013 paymentMethod đang chờ; câu hỏi ghi QUESTIONS.
 - Verify locked restore/Release build 0 warning/error, **329 tests passed**, 26 test mới so với Viettel. Kiểm chứng token tenant isolation, redaction, wire fixture, PDF, replay/lookup và pending giữ khóa. OpenAPI chỉ báo CYBER_BILL ở 3 route đã xong.
 - API local vẫn dừng để build trong P2; credential/site/key/journal thật không sửa, không gọi NCC thật. Tiếp tục SUN độc lập trong lúc chờ.
+
+## 2026-10-11 — SUN đầy đủ theo baseline
+
+- Port 10 action baseline qua SiteId/router chung, giữ hai URL, Bearer và form hủy, wire keys/công thức/default. Scope UTC+7/invariant đã được người dùng duyệt D021. Health chỉ login mới một lần, không trả token.
+- Frozen capture độc lập gồm 10 payload. Chuẩn hóa binding dynamic/extension ToList thành context typed để chạy source; không đổi mapping tiền/thuế. Sid vẫn thuật toán baseline, thêm collision claim và validation mã ngắn trước NCC; transactionId response là sid. Draft không trả số phát hành, preview tải PDF nháp sẵn có.
+- Verify locked restore/Release **0 warning/error, 358 passed, 0 failed/skipped**, 29 tests mới. OpenAPI 26 paths/39 schemas; Postman SUN 15 requests không credential. Không liên hệ SUN thật, không phát hành/hủy/CQT/email thật, không sửa journal/site/key local.
+- Cyberbill Q012/Q013 vẫn chờ. Tiếp theo Minvoice; code dispatcher đã đọc sơ bộ, chưa port; token static và hai luồng login khác nhau cần xác minh trước UAT. Các provider khác chưa hoàn thành. Checkpoint `Implement SUN baseline APIs with UTC7 mapping and sid claims`.
