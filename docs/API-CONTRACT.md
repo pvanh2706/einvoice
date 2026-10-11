@@ -1,8 +1,8 @@
 # Hợp đồng PMS mới — eInvoice
 
-Trạng thái: MISA 19 action và Viettel 13 action dispatcher baseline đã triển khai/kiểm thử offline. Sandbox/UAT chưa thực hiện. Phạm vi/validation/response/timeout/idempotency: [MISA-API](MISA-API.md), [VIETTEL-API](VIETTEL-API.md); schema [OpenAPI](openapi.misa.json) phục vụ tại `/openapi/einvoice.json` và URL `/openapi/misa.json` đã có.
+Trạng thái: MISA 19 action, Viettel 13, SUN 10 và Minvoice 15 action baseline đã triển khai/kiểm thử offline; Cyberbill một phần. UAT/cutover chưa hoàn thành. Phạm vi/validation/response/timeout/idempotency nằm trong tài liệu từng provider; schema [OpenAPI](openapi.misa.json) phục vụ tại `/openapi/einvoice.json` và URL `/openapi/misa.json` đã có.
 
-Route chung chọn adapter theo partner của SiteId. `GET /api/eInvoice/capabilities` trả catalog thực tế của site; `/api/eInvoice/misa/capabilities` vẫn là catalog MISA riêng. Các route bổ sung Viettel: `draft`, `search`, `adjust/increase`, `adjust/decrease`, `adjust/information`; không thêm key body. Nhà cung cấp chưa triển khai hoặc không có operation trả 501 với code phân biệt PROVIDER_NOT_IMPLEMENTED / PROVIDER_OPERATION_NOT_SUPPORTED. FormSerial/status/CQT/USB hiện chỉ MISA.
+Route chung chọn adapter theo partner của SiteId. `GET /api/eInvoice/capabilities` trả catalog thực tế của site; `/api/eInvoice/misa/capabilities` vẫn là catalog MISA riêng. Các route bổ sung Viettel/SUN/Minvoice xem tài liệu từng provider. Nhà cung cấp chưa triển khai hoặc không có operation trả 501 với code phân biệt PROVIDER_NOT_IMPLEMENTED / PROVIDER_OPERATION_NOT_SUPPORTED. FormSerial có MISA và Minvoice; status/CQT/USB hiện chỉ MISA. Minvoice invoices là danh sách trạng thái ký NCC, không thay thế status CQT MISA.
 
 Journal response thêm field nullable `provider`, record cũ không có thì null. Hash MISA giữ nguyên; các provider khác có attempt hash riêng nhưng claim site/invoice dùng chung. Không đổi key/ID hoặc site/provider để vượt khóa. Ngày/culture provider mới theo D021; không đổi các mapper MISA chưa được duyệt.
 
@@ -28,6 +28,7 @@ Tài liệu bàn giao cho AI agent phía phần mềm tích hợp: [INTEGRATION-
 | oldThirdPartyInvoiceNumber | OriginalProviderInvoiceNumber / originalProviderInvoiceNumber | Số hóa đơn gốc tại NCC |
 | ThirdPartyInvoiceNumber | ProviderInvoiceNumber / providerInvoiceNumber | Số hóa đơn tại NCC |
 | ThirdPartyInvoiceCode | ProviderInvoiceCode / providerInvoiceCode | Mã hóa đơn tại NCC |
+| Tham chiếu NCC gốc ở luồng Minvoice | OriginalProviderInvoiceCode / originalProviderInvoiceCode | GUID NCC gốc, tách khỏi originalInvoiceId PMS |
 | RequestID | RequestId / requestId | ID liên kết request |
 | ServiceSummarys | ServiceSummaries / serviceSummaries | Tổng hợp phí dịch vụ |
 | SpecialTaxSummarys | SpecialTaxSummaries / specialTaxSummaries | Tổng hợp thuế đặc biệt |
@@ -154,3 +155,11 @@ Local có site mẫu nhưng credential/endpoint trống: health-check trả 400 
 ## SUN
 
 `site.partner: 3`, provider `SUN`, đủ 10 action baseline. `document/draft` mới dùng DownloadPdfRequest; preview SUN tải PDF nháp đã có theo `invoice.searchCode`. Response transactionId của SUN là sid, dùng lại khi hủy/điều chỉnh. invoiceId cho SUN nên là GUID ổn định, tối thiểu 32 ký tự sau bỏ dấu `-`; gateway giữ thuật toán sid NCC và khóa cả sid để chặn trùng. Chi tiết ở [SUN-API](SUN-API.md).
+
+## Minvoice
+
+`site.partner: 2`, `provider: MINVOICE`, 15 action qua 14 POST route. Thêm create/change/delete/publish-existing/invoices/tax-code/email. [MINVOICE-API](MINVOICE-API.md) mô tả GUID, kiểu wire, timeout và các giới hạn hiện tại.
+
+InvoiceResult thêm providerInvoiceCode tùy chọn khi NCC cần ID riêng; Minvoice trả GUID hoadon68_id tại field này, giữ invoiceId PMS để correlation. AdjustOrReplaceInvoiceRequest thêm originalProviderInvoiceCode; SendEmailRequest thêm providerInvoiceCode GUID. Field mới bị bỏ khi null để giữ fingerprint/hợp đồng các request MISA cũ. Không đổi tên/key phía NCC. PublishExistingInvoiceRequest chứa invoiceId, providerInvoiceCode, providerInvoiceNumber, invoiceType, siteConfigInfo, requestId.
+
+Minvoice invoices trả InvoiceListItem (providerInvoiceCode, signStatus nullable, signedAt nullable với offset +07:00). tax-code trả TaxCodeInfoResult; ngày thành lập là string chưa đoán format. PDF thật được kiểm tra header bytes, không biến body lỗi thành file. Lỗi marker không tồn tại trả HTTP 404 MINVOICE_DOCUMENT_NOT_FOUND. Mọi lookup vẫn không mở khóa pending. Q015 sửa nháp nhiều lần đang chờ quyết định.

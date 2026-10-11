@@ -13,6 +13,13 @@ public static class ProviderEndpoints
         Map<CreateInvoiceRequest>(app, "draft");
         Map<SearchInvoiceRequest>(app, "search");
         Map<DownloadPdfRequest>(app, "document/draft");
+        Map<CreateInvoiceRequest>(app, "create");
+        Map<AdjustOrReplaceInvoiceRequest>(app, "change");
+        Map<DeleteInvoiceRequest>(app, "delete");
+        Map<PublishExistingInvoiceRequest>(app, "publish-existing");
+        Map<GetInvoicesRequest>(app, "invoices");
+        Map<GetTaxCodeInfoRequest>(app, "tax-code");
+        Map<SendEmailRequest>(app, "email");
         Map<AdjustOrReplaceInvoiceRequest>(app, "adjust/increase");
         Map<AdjustOrReplaceInvoiceRequest>(app, "adjust/decrease");
         Map<AdjustOrReplaceInvoiceRequest>(app, "adjust/information");

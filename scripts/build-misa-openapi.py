@@ -37,7 +37,9 @@ def nullable_string(): return {'type':['string','null']}
 schemas['InvoiceResult'] = {'type':'object','properties':{
     'invoiceId':{'type':'string'},'providerInvoiceNumber':nullable_string(),'transactionId':nullable_string(),
     'searchCode':nullable_string(),'taxAuthorityCode':nullable_string(),'invoiceData':nullable_string(),
-    'isSuccess':{'type':'boolean'},'providerErrorCode':nullable_string(),'providerMessage':nullable_string()}}
+    'isSuccess':{'type':'boolean'},'providerErrorCode':nullable_string(),'providerMessage':nullable_string(),'providerInvoiceCode':nullable_string()}}
+schemas['InvoiceListItem'] = {'type':'object','properties':{'providerInvoiceCode':{'type':'string'},'signStatus':{'type':['integer','null']},'signedAt':{'type':['string','null'],'format':'date-time'}}}
+schemas['TaxCodeInfoResult'] = {'type':'object','properties':{key:nullable_string() for key in ['companyName','address','taxCode','registrationId','taxAuthorityProvince','taxAuthorityOffice','legalRepresentative','establishedDate']}}
 schemas['InvoiceDocumentResult'] = {'type':'object','properties':{'content':{'type':'string'},'format':{'type':'string','enum':['base64','url']}}}
 schemas['InvoiceStatusResult'] = {'type':'object','properties':{'invoiceId':{'type':'string'},'taxAuthorityStatus':{'type':'integer'}}}
 schemas['InvoiceHashResult'] = {'type':'object','properties':{'messageCode':nullable_string(),'messageHash':nullable_string()}}
@@ -52,7 +54,7 @@ schemas['InvoiceAttemptInfo'] = {'type':'object','properties':{
     'originalRequestId':nullable_string(),'requiresReconciliation':{'type':'boolean'},'canRetry':{'type':['boolean','null']},'provider':nullable_string()}}
 def array_of(name): return {'type':'array','items':{'$ref':'#/components/schemas/'+name}}
 def success_schema(route):
-    common={'provider':{'type':'string','enum':['MISA','VIETTEL','CYBER_BILL','SUN']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
+    common={'provider':{'type':'string','enum':['MISA','VIETTEL','CYBER_BILL','SUN','MINVOICE']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
     if route=='health-check': common['connected']={'type':'boolean'}
     elif route=='form-serials': common['forms']=array_of('FormSerialResponse')
     else:
@@ -60,7 +62,9 @@ def success_schema(route):
         if route in ['preview','document']: data={'$ref':'#/components/schemas/InvoiceDocumentResult'}
         elif route=='status': data=array_of('InvoiceStatusResult')
         elif route=='xml/hash': data=array_of('InvoiceHashResult')
-        elif route=='void': data={'type':'object','properties':{'success':{'type':'boolean'}}}
+        elif route in ['void','delete','email']: data={'type':'object','properties':{'success':{'type':'boolean'}}}
+        elif route=='invoices': data=array_of('InvoiceListItem')
+        elif route=='tax-code': data={'$ref':'#/components/schemas/TaxCodeInfoResult'}
         elif route in ['tax/send-pending','tax/send-signed']: data={'type':'object','properties':{'providerData':nullable_string()}}
         common['data']=data
     return {'type':'object','properties':common}
@@ -98,6 +102,13 @@ routes = [
  ('adjust/decrease','AdjustOrReplaceInvoiceRequest',True,'VIETTEL: amount decrease; preserve baseline amount signs.'),
  ('adjust/information','AdjustOrReplaceInvoiceRequest',True,'VIETTEL: information adjustment; originalProviderInvoiceNumber required.'),
  ('document/draft','DownloadPdfRequest',False,'SUN: retrieve draft PDF by searchCode. Does not confirm publication.'),
+ ('create','CreateInvoiceRequest',True,'MINVOICE: create unsigned invoice (Save, editmode=1). Does not confirm publication.'),
+ ('change','AdjustOrReplaceInvoiceRequest',True,'MINVOICE: edit unsigned invoice (Save, editmode=2). Original provider code and number required.'),
+ ('delete','DeleteInvoiceRequest',True,'MINVOICE: delete unsigned invoice by serial and provider number (Save, editmode=3).'),
+ ('publish-existing','PublishExistingInvoiceRequest',True,'MINVOICE: sign an existing invoice by providerInvoiceCode; existing number is carried from input.'),
+ ('invoices','GetInvoicesRequest',False,'MINVOICE: read provider invoice IDs/sign status/time for serial and UTC+7 date range. No journal unlock.'),
+ ('tax-code','GetTaxCodeInfoRequest',False,'MINVOICE: public tax registry read after business login; fixed registry host requires allowlist.'),
+ ('email','SendEmailRequest',True,'MINVOICE: email invoice by providerInvoiceCode. Never called automatically.'),
 ]
 paths = {}
 viettel_routes = {'health-check','publish','publish-batch','preview','replace','document','void','draft','search','adjust/increase','adjust/decrease','adjust/information'}
@@ -106,6 +117,8 @@ for route, contract, write, description in routes:
     if route in {'health-check','document','void'}: providers.append('CYBER_BILL')
     if route in {'health-check','publish','draft','preview','document','void','replace','adjust/increase','adjust/decrease'}: providers.append('SUN')
     if route == 'document/draft': providers = ['SUN']
+    if route in {'health-check','form-serials','publish','replace','adjust','document','void'}: providers.append('MINVOICE')
+    if route in {'create','change','delete','publish-existing','invoices','tax-code','email'}: providers = ['MINVOICE']
     paths['/api/eInvoice/'+route] = {'post':{
         'operationId':'misa_'+route.replace('/','_').replace('-','_'), 'tags':providers,
         'x-providers':providers,
@@ -136,7 +149,7 @@ paths['/api/eInvoice/misa/capabilities'] = {'get':{'operationId':'misa_implement
     'parameters':[site_header],'responses':{'200':{'description':'Implemented action-to-route map; does not claim sandbox readiness.'},'401':problem,'403':problem}}}
 paths['/api/eInvoice/capabilities'] = {'get':{'operationId':'site_provider_capabilities','security':[{'ApiKey':[]}],
     'parameters':[site_header],'responses':{'200':{'description':'Actual implemented action-to-route map for the authorized site provider; no provider HTTP call.'},'401':problem,'403':problem,'501':problem}}}
-document = {'openapi':'3.1.0','info':{'title':'eInvoice API — MISA, VIETTEL, SUN and partial CYBER_BILL','version':'0.4.0',
+document = {'openapi':'3.1.0','info':{'title':'eInvoice API — MISA, VIETTEL, SUN, MINVOICE and partial CYBER_BILL','version':'0.5.0',
     'description':'Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged.'},
     'servers':[{'url':'https://localhost:7150'}], 'paths':paths,
     'components':{'securitySchemes':{'ApiKey':{'type':'apiKey','in':'header','name':'X-Api-Key'}},'schemas':schemas}}

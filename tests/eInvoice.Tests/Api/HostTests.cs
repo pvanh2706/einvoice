@@ -21,7 +21,7 @@ public class HostTests : IClassFixture<WebApplicationFactory<Program>>
 
     [Theory]
     [InlineData("/api/ezInvoice/Create")]
-    [InlineData("/api/eInvoice/Create")]
+    [InlineData("/api/eInvoice/not-implemented-route")]
     public async Task Unknown_or_unimplemented_routes_return_json_error_without_claiming_invoice_support(string route)
     {
         using var response = await _client.PostAsync(route, new StringContent("{}"));

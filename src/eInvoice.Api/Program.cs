@@ -11,6 +11,7 @@ using eInvoice.Providers.Common;
 using eInvoice.Providers.Viettel;
 using eInvoice.Providers.Cyberbill;
 using eInvoice.Providers.Sun;
+using eInvoice.Providers.Minvoice;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false)
@@ -66,6 +67,11 @@ builder.Services.AddHttpClient<SunTransport>(client => client.Timeout = TimeSpan
     .RemoveAllLoggers()
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
 builder.Services.AddScoped<IInvoiceProvider, SunInvoiceProvider>();
+builder.Services.AddSingleton(builder.Configuration.GetSection("Providers:Minvoice").Get<MinvoiceOptions>() ?? new MinvoiceOptions());
+builder.Services.AddHttpClient<MinvoiceTransport>(client => client.Timeout = Timeout.InfiniteTimeSpan)
+    .RemoveAllLoggers()
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+builder.Services.AddScoped<IInvoiceProvider, MinvoiceInvoiceProvider>();
 builder.Services.AddScoped<ProviderDispatcher>();
 builder.Services.AddSingleton(serviceProvider => new MisaWriteJournal(
     builder.Configuration["Providers:Misa:JournalDirectory"] ?? Path.Combine(AppContext.BaseDirectory, "misa-journal"),
@@ -126,8 +132,9 @@ app.MapPost("/api/eInvoice/form-serials", async (GetFormSerialsRequest request, 
         throw new SiteConfigurationException("Resolved site configuration does not match the authorized site.");
     if (configuration.Site.Partner != 6)
     {
-        _ = providers.Get(configuration.Site.Partner);
-        throw new UnsupportedProviderOperationException("PROVIDER_OPERATION_NOT_SUPPORTED", "Form/serial lookup is not supported by this provider.");
+        var provider = providers.Get(configuration.Site.Partner);
+        var providerForms = await providers.ExecuteAsync("form-serials", configuration, request, http);
+        return Results.Ok(new { provider = provider.Name, siteId, forms = providerForms, requestId = http.TraceIdentifier });
     }
     var forms = await misa.GetAsync(configuration.Site, http.RequestAborted);
     return Results.Ok(new { provider = "MISA", siteId, forms, requestId = http.TraceIdentifier });

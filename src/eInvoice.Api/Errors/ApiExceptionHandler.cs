@@ -35,6 +35,8 @@ public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : I
                 (504, provider.Code, "Provider request timed out"),
             ProviderCallException { Failure: ProviderFailure.Rejected } provider =>
                 (422, provider.Code, "Provider rejected the request"),
+            ProviderCallException { Failure: ProviderFailure.NotFound } provider =>
+                (404, provider.Code, "Provider invoice was not found"),
             ProviderCallException provider => (502, provider.Code, "Provider response could not be processed"),
             _ => (500, "EINVOICE_INTERNAL_ERROR", "An internal error occurred"),
         };

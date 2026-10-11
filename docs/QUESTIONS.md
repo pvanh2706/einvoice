@@ -11,6 +11,9 @@
 
 ## Đang chờ trước khi thay đổi nghiệp vụ/cutover
 
+- Q014 đã giải quyết 11/10/2026: người dùng chọn giữ từng luồng Minvoice cũ để đối chiếu; nghiệp vụ VP/Bear, health-check Username2/Bearer. Token riêng theo thao tác, không static; xem D024.
+- Q015 (đã hỏi 11/10/2026): Minvoice change cho sửa tiếp với key mới sau khi lần trước completed, nhưng pending/timeout vẫn khóa để đối soát, hay giữ khóa một lần theo hóa đơn? Chưa đổi cơ chế claim cho tới khi trả lời.
+
 - Q012 (đã hỏi 11/10/2026): Cyberbill dispatcher cũ CREATED_AND_PUBLISH thực tế chỉ tạo, PUBLISH mới ký HSM; helper endpoint CREATE_AND_PUBLISH rỗng/không được gọi. Bản mới giữ hai bước create → publish-existing rõ ràng hay `/publish` tự tạo rồi ký? Chưa expose route publish Cyberbill hoặc tự đoán luồng. Mapping/auth/tests độc lập tiếp tục trong lúc chờ.
 - Q013 (đã hỏi 11/10/2026): Cyberbill cũ parse PaymentMethod thành số 1–5 nhưng MISA/Viettel dùng tên. Bản mới Cyberbill lấy mã từ paymentMethodCode và tên từ paymentMethod (wire giữ nguyên), hay giữ paymentMethod số như baseline? Mapping giữ baseline trong lúc chờ, chưa đổi ý nghĩa trường.
 

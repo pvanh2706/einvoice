@@ -35,6 +35,8 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 
 ## Kiểm chứng gần nhất
 
+Minvoice **15 action baseline/14 POST route** đã port theo D024, xem [MINVOICE-API](MINVOICE-API.md). Verify locked restore/Release **0 warning/error, 397 passed, 0 failed/skipped**, 39 tests mới; 11 fixture độc lập gồm hai ngoại lệ phí dịch vụ. Bao phủ token tenant isolation, auth VP/Bear và unit health, ID NCC/PMS, PDF không nhận body lỗi, UTC+7/culture, lỗi/timeout/replay/claim và fingerprint replay MISA cũ. OpenAPI **33 paths/42 schemas**, Postman Minvoice **19 requests**. Không gọi NCC thật/UAT. Q015 đang chờ: change hiện khóa một lần theo GUID NCC, chưa tự cho sửa tiếp sau completed.
+
 SUN 10 action baseline đã port, xem [SUN-API](SUN-API.md). Verify locked restore/Release **0 warning/error, 358 passed, 0 failed/skipped**, 29 tests mới. 10 fixture độc lập, UTC+7/invariant, hai endpoint và bearer/token isolation, sid collision claims, replay/pending/PDF/lỗi/timeout. OpenAPI **26 paths/39 schemas**, Postman SUN 15 requests; không gọi SUN thật hoặc UAT. Checkpoint `Implement SUN baseline APIs with UTC7 mapping and sid claims`.
 
 Cyberbill đã có transport/auth, 7 mapping fixture baseline độc lập; API chỉ expose health-check/document/void (4 action). Q012 luồng tạo/ký và Q013 mã thanh toán đang chờ, publish trả 501 trước NCC. Xem [CYBERBILL-API](CYBERBILL-API.md). Verify locked restore/Release build **0 warning/error, 329 passed, 0 failed/skipped**, 26 test mới; không gọi NCC thật. OpenAPI chỉ liệt kê CYBER_BILL ở 3 route đã xong. Tiếp tục phần độc lập SUN trong lúc chờ.
@@ -57,12 +59,12 @@ Test suite vẫn dùng fake HTTP. Ngày 2026-10-09 đã thử riêng health-chec
 - Q009: định tuyến MTT/batch dựa trên electronicInvoiceType rõ ràng. Hiện giữ điều kiện baseline; mode 4 cần serial MTT, batch không tự sửa dispatcher cũ. Xem MISA-VARIANTS.
 - Q010: giữ hay giới hạn CQT HSM. Chức năng baseline được port với tên tax/send-pending, không nhận invoiceIds vì provider gửi hàng đợi đang chờ. Không coi im lặng là duyệt thay nghiệp vụ.
 - Sandbox/UAT từng variant, golden đã che, token receipt expiry, quantity biên lai int, USB correlation/thứ tự và batch partial errors.
-- 6 provider ngoài MISA/Viettel/SUN; Cyberbill đang làm một phần. Log/catalogue còn dùng, correlation requestId PMS, metrics/throttling/proxy và cấu hình production.
+- 5 provider ngoài MISA/Viettel/SUN/Minvoice; Cyberbill đang làm một phần. Q015 sửa nháp Minvoice đang chờ. Log/catalogue, correlation requestId PMS, metrics/throttling/proxy và cấu hình production còn làm sau.
 - Storage/reconcile kết quả ghi chưa xác định và kế hoạch thay thế/rollback trước cutover.
 
 ## Bước tiếp theo khi tiếp tục
 
-**Bước P2: MISA/Viettel/SUN đã đủ adapter baseline; Cyberbill mới health/document/void, chờ Q012/Q013.** Tiếp theo Minvoice, rồi EasyInvoice/Fast/VNPT/VNPT_V5. Minvoice đã đọc dispatcher sơ bộ, chưa import/code: login trong code cũ có hai luồng/mã dvcs khác nhau và token static cần làm rõ. Không ghi các provider còn lại là hoàn thành. Nguồn pinned chỉ đọc; tiếp tục offline fixture/tests trước UAT. Không sửa credential/site/key hoặc xóa journal.
+**Bước P2: MISA/Viettel/SUN/Minvoice đã có adapter baseline offline; Cyberbill mới health/document/void, chờ Q012/Q013.** Tiếp theo EasyInvoice, rồi Fast/VNPT/VNPT_V5. Minvoice auth Q014 đã giải quyết D024; Q015 sửa tiếp nháp đang chờ. Không ghi các provider còn lại là hoàn thành. Nguồn pinned chỉ đọc; tiếp tục offline fixture/tests trước UAT. Không sửa credential/site/key hoặc xóa journal.
 
 Phần mềm bên ngoài có thể bắt đầu tích hợp theo INTEGRATION-AGENT sau khi được cấp key còn hạn/SiteId/URL truy cập được và mẫu HSM sandbox đã xác nhận. Nếu nằm máy khác, localhost không dùng được; việc cấp endpoint HTTPS/network cần cấu hình riêng khi người dùng yêu cầu. Chưa có sandbox publish thành công được xác nhận; không đánh dấu production-ready. Các tên trạng thái processing/rejected/unknown mới được thảo luận, **chưa triển khai**; API vẫn pending/completed/not-found và chưa có tự reconcile/unlock.
 

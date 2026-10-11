@@ -31,4 +31,6 @@
 
 | D023 | 2026-10-11 | SUN port 10 action baseline, giữ hai URL, Bearer và form hủy; sid vẫn bỏ dấu gạch/32 ký tự đầu, trả dưới transactionId. Thêm claim theo sid bên cạnh invoiceId để chặn collision; mã ngắn trả 400 trước NCC. Ngày/culture theo D021; preview là PDF nháp đã có, draft không xác nhận phát hành. Không retry/unlock hoặc đổi công thức. | Lựa chọn hợp đồng theo D003, chống trùng theo D016/D022, đối chiếu fixture và HTTP giả lập |
 
+| D024 | 2026-10-11 | Giữ từng luồng đăng nhập Minvoice cũ để đối chiếu trước sandbox/UAT: nghiệp vụ ma_dvcs=VP và header Bear, health-check dùng Username2/Bearer. Không thống nhất auth từ suy đoán; token được giữ riêng mỗi thao tác, không static/cache cross-tenant. | Người dùng trả lời Q014 |
+
 Mỗi quyết định thay đổi hành vi cũ phải bổ sung lý do, phạm vi ảnh hưởng và cách kiểm thử. Quyết định thuộc nghiệp vụ cần người dùng xác nhận.

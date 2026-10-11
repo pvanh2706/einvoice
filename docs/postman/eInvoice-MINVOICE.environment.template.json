@@ -1,0 +1,150 @@
+{
+  "name": "eInvoice MINVOICE template - configure sandbox locally",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7150",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "enabled": true,
+      "type": "secret"
+    },
+    {
+      "key": "siteId",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceId",
+      "value": "33333333-3333-3333-3333-333333333333",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftInvoiceId",
+      "value": "44444444-4444-4444-4444-444444444444",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "replaceInvoiceId",
+      "value": "55555555-5555-5555-5555-555555555555",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "adjustInvoiceId",
+      "value": "66666666-6666-6666-6666-666666666666",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "serial",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceDate",
+      "value": "11/10/2026",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "providerInvoiceCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "providerInvoiceNumber",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftProviderInvoiceCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftProviderInvoiceNumber",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "taxCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "email",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "publishKey",
+      "value": "minvoice-publishKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "createKey",
+      "value": "minvoice-createKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "changeKey",
+      "value": "minvoice-changeKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "signKey",
+      "value": "minvoice-signKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "replaceKey",
+      "value": "minvoice-replaceKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "adjustKey",
+      "value": "minvoice-adjustKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "deleteKey",
+      "value": "minvoice-deleteKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "voidKey",
+      "value": "minvoice-voidKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "emailKey",
+      "value": "minvoice-emailKey-001",
+      "enabled": true,
+      "type": "default"
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

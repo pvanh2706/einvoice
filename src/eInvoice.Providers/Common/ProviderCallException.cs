@@ -9,6 +9,7 @@ public enum ProviderFailure
     EmptyResponse,
     InvalidResponse,
     Rejected,
+    NotFound,
 }
 
 public sealed class ProviderCallException(ProviderFailure failure, string code, string message,

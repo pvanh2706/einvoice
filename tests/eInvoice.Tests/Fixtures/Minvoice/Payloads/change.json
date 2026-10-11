@@ -1,0 +1,68 @@
+{
+  "editmode": "2",
+  "data": [
+    {
+      "hoadon68_id": "44444444-4444-4444-4444-444444444444",
+      "inv_invoiceIssuedDate": "2026-10-08",
+      "inv_invoiceSeries": "C26TAA",
+      "inv_invoiceNumber": 123,
+      "so_benh_an": null,
+      "inv_currencyCode": "VND",
+      "inv_exchangeRate": 1.0,
+      "inv_paymentMethodName": "TM/CK",
+      "inv_buyerDisplayName": "Khách thử nghiệm",
+      "inv_buyerLegalName": "Synthetic customer",
+      "inv_buyerTaxCode": null,
+      "inv_buyerAddressLine": "Synthetic address",
+      "inv_buyerEmail": null,
+      "inv_buyerBankAccount": null,
+      "inv_buyerBankName": null,
+      "inv_TotalAmount": 270.5725,
+      "inv_discountAmount": 17.575,
+      "inv_vatAmount": 24.5975,
+      "inv_TotalAmountWithoutVat": 245.975,
+      "so_folio": null,
+      "so_phong": null,
+      "inv_arrivalDate": null,
+      "inv_departureDate": null,
+      "sobaomat": "SEARCH-001",
+      "isDeductionNQ43": false,
+      "tlptdoanhthu20": null,
+      "tgtck20": null,
+      "details": [
+        {
+          "data": [
+            {
+              "stt_rec0": 1,
+              "tchat": 1,
+              "inv_itemCode": null,
+              "inv_itemName": "Dịch vụ thử nghiệm",
+              "inv_unitCode": "Lần",
+              "inv_quantity": 2.5,
+              "inv_unitPrice": 100.4,
+              "inv_discountPercentage": 7.0,
+              "inv_discountAmount": 17.575,
+              "inv_TotalAmountWithoutVat": 245.975,
+              "ma_thue": 10,
+              "inv_vatAmount": 24.5975,
+              "inv_TotalAmount": 270.5725,
+              "thhdv": 251.0,
+              "inv_Amount": 251.0,
+              "ortherFee": 12.55,
+              "inv_vatRateDeduction": null,
+              "inv_vatAmountDeduction": null,
+              "pt_phidv": 5.0,
+              "phidv": 12.55
+            }
+          ]
+        }
+      ],
+      "so_hchieu": null,
+      "cccd": null,
+      "pt_phidichvu": 5.0,
+      "tongphi_dichvu": 12.55,
+      "inv_Amount": 251.0,
+      "mdvqhnsach_nmua": null
+    }
+  ]
+}

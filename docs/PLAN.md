@@ -30,7 +30,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | Provider | Mapping | Transport | Regression fixture | API end-to-end | UAT |
 |---|---|---|---|---|---|
 | VNPT | Chưa | Chưa | Chưa | Chưa | Chưa |
-| MINVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |
+| MINVOICE | 15 action baseline; tiền/ngoại lệ site giữ nguyên | REST VP/Bear nghiệp vụ, unit cấu hình cho health theo D024; không static | 11 frozen payload, có hai ngoại lệ phí dịch vụ | 14 POST route; 397 tests toàn solution; Q015 sửa nháp tiếp đang chờ | Chưa |
 | SUN | 10 action baseline, UTC+7/invariant | REST Bearer từng operation, hai endpoint JSON/form | 10 payload frozen | Đủ route fake HTTP, 358 tests toàn solution | Chưa |
 | VIETTEL | 13 action baseline | REST cookie token từng operation, UTF-8 JSON/form, no retry | 11 frozen payload | Đủ route qua fake HTTP; toàn solution 303 tests | Chưa |
 | VNPT_V5 | Chưa | Chưa | Chưa | Chưa | Chưa |
@@ -39,7 +39,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
 | EASY_INVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |
 
-P2 đã được người dùng yêu cầu tiếp tục ngày 11/10. Viettel đã xong offline; Cyberbill chờ Q012/Q013 nên SUN đã làm trước. Tiếp theo Minvoice/EasyInvoice → Fast → VNPT/VNPT_V5; thứ tự theo phụ thuộc kỹ thuật, không phải ưu tiên nghiệp vụ đã được người dùng chọn. REST đi trước để hoàn thiện router/journal chung; SOAP/WCF dùng WSDL/proxy sinh sẵn ở baseline, không viết tay generated proxy. Không cần sandbox credential để làm kiểm thử offline.
+P2 đã được người dùng yêu cầu tiếp tục ngày 11/10. Viettel/SUN/Minvoice đã xong phần baseline offline; Cyberbill chờ Q012/Q013. Tiếp theo EasyInvoice → Fast → VNPT/VNPT_V5; xử lý Q015 Minvoice nếu có trả lời. Thứ tự theo phụ thuộc kỹ thuật, không phải ưu tiên nghiệp vụ đã được người dùng chọn. REST đi trước; SOAP/WCF dùng WSDL/proxy sinh sẵn ở baseline, không viết tay generated proxy. Không cần sandbox credential để làm kiểm thử offline.
 
 ## P3 — Vận hành và thay thế
 

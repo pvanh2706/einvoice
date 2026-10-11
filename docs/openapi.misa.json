@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "eInvoice API — MISA, VIETTEL, SUN and partial CYBER_BILL",
-    "version": "0.4.0",
+    "title": "eInvoice API — MISA, VIETTEL, SUN, MINVOICE and partial CYBER_BILL",
+    "version": "0.5.0",
     "description": "Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged."
   },
   "servers": [
@@ -18,13 +18,15 @@
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "summary": "Check a fresh MISA v3 login; bypass token cache.",
         "security": [
@@ -67,7 +69,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -202,10 +205,12 @@
       "post": {
         "operationId": "misa_form_serials",
         "tags": [
-          "MISA"
+          "MISA",
+          "MINVOICE"
         ],
         "x-providers": [
-          "MISA"
+          "MISA",
+          "MINVOICE"
         ],
         "summary": "InvoiceType 0 only. Current year UTC+7. GET timeout 90s after login.",
         "security": [
@@ -248,7 +253,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -388,12 +394,14 @@
         "tags": [
           "MISA",
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "summary": "Publish one invoice/ticket/receipt. Normal USB uses the separate XML workflow.",
         "security": [
@@ -448,7 +456,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -646,7 +655,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -834,7 +844,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -969,10 +980,12 @@
       "post": {
         "operationId": "misa_adjust",
         "tags": [
-          "MISA"
+          "MISA",
+          "MINVOICE"
         ],
         "x-providers": [
-          "MISA"
+          "MISA",
+          "MINVOICE"
         ],
         "summary": "InvoiceType 0 adjustment; new invoiceId and original invoice information required.",
         "security": [
@@ -1027,7 +1040,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -1167,12 +1181,14 @@
         "tags": [
           "MISA",
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "summary": "InvoiceType 0 replacement; new invoiceId and original invoice information required.",
         "security": [
@@ -1227,7 +1243,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -1368,13 +1385,15 @@
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "summary": "Invoice uses searchCode; ticket/receipt use transactionId. Returns provider base64 content.",
         "security": [
@@ -1417,7 +1436,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -1555,13 +1575,15 @@
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
-          "SUN"
+          "SUN",
+          "MINVOICE"
         ],
         "summary": "Cancel invoice/ticket/receipt with reason. No automatic retry.",
         "security": [
@@ -1616,7 +1638,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -1802,7 +1825,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -1998,7 +2022,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -2199,7 +2224,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -2383,7 +2409,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -2579,7 +2606,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -2780,7 +2808,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -2978,7 +3007,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -3162,7 +3192,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -3360,7 +3391,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -3558,7 +3590,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -3754,7 +3787,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -3938,7 +3972,8 @@
                         "MISA",
                         "VIETTEL",
                         "CYBER_BILL",
-                        "SUN"
+                        "SUN",
+                        "MINVOICE"
                       ]
                     },
                     "siteId": {
@@ -3952,6 +3987,1362 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/InvoiceResult"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/create": {
+      "post": {
+        "operationId": "misa_create",
+        "tags": [
+          "MINVOICE"
+        ],
+        "x-providers": [
+          "MINVOICE"
+        ],
+        "summary": "MINVOICE: create unsigned invoice (Save, editmode=1). Does not confirm publication.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "Reuse the same key AND identical body to retrieve a completed result. Never resend a pending/uncertain attempt with a new key.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInvoiceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InvoiceResult"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/change": {
+      "post": {
+        "operationId": "misa_change",
+        "tags": [
+          "MINVOICE"
+        ],
+        "x-providers": [
+          "MINVOICE"
+        ],
+        "summary": "MINVOICE: edit unsigned invoice (Save, editmode=2). Original provider code and number required.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "Reuse the same key AND identical body to retrieve a completed result. Never resend a pending/uncertain attempt with a new key.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdjustOrReplaceInvoiceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InvoiceResult"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/delete": {
+      "post": {
+        "operationId": "misa_delete",
+        "tags": [
+          "MINVOICE"
+        ],
+        "x-providers": [
+          "MINVOICE"
+        ],
+        "summary": "MINVOICE: delete unsigned invoice by serial and provider number (Save, editmode=3).",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "Reuse the same key AND identical body to retrieve a completed result. Never resend a pending/uncertain attempt with a new key.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteInvoiceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/publish-existing": {
+      "post": {
+        "operationId": "misa_publish_existing",
+        "tags": [
+          "MINVOICE"
+        ],
+        "x-providers": [
+          "MINVOICE"
+        ],
+        "summary": "MINVOICE: sign an existing invoice by providerInvoiceCode; existing number is carried from input.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "Reuse the same key AND identical body to retrieve a completed result. Never resend a pending/uncertain attempt with a new key.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublishExistingInvoiceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InvoiceResult"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/invoices": {
+      "post": {
+        "operationId": "misa_invoices",
+        "tags": [
+          "MINVOICE"
+        ],
+        "x-providers": [
+          "MINVOICE"
+        ],
+        "summary": "MINVOICE: read provider invoice IDs/sign status/time for serial and UTC+7 date range. No journal unlock.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetInvoicesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InvoiceListItem"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/tax-code": {
+      "post": {
+        "operationId": "misa_tax_code",
+        "tags": [
+          "MINVOICE"
+        ],
+        "x-providers": [
+          "MINVOICE"
+        ],
+        "summary": "MINVOICE: public tax registry read after business login; fixed registry host requires allowlist.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTaxCodeInfoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/TaxCodeInfoResult"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/email": {
+      "post": {
+        "operationId": "misa_email",
+        "tags": [
+          "MINVOICE"
+        ],
+        "x-providers": [
+          "MINVOICE"
+        ],
+        "summary": "MINVOICE: email invoice by providerInvoiceCode. Never called automatically.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "Reuse the same key AND identical body to retrieve a completed result. Never resend a pending/uncertain attempt with a new key.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendEmailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        }
                       }
                     }
                   }
@@ -4520,6 +5911,16 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Invoice"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "originalProviderInvoiceCode": {
+            "anyOf": [
+              {
+                "type": "string"
               },
               {
                 "type": "null"
@@ -6323,6 +7724,66 @@
           }
         }
       },
+      "PublishExistingInvoiceRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "invoiceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "providerInvoiceCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "providerInvoiceNumber": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "invoiceType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "siteConfigInfo": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SiteInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requestId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
       "PublishSignedXmlRequest": {
         "type": "object",
         "additionalProperties": false,
@@ -6454,6 +7915,17 @@
             ]
           },
           "invoiceId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "providerInvoiceCode": {
             "anyOf": [
               {
                 "type": "string",
@@ -7277,6 +8749,86 @@
             ]
           },
           "providerMessage": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "providerInvoiceCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "InvoiceListItem": {
+        "type": "object",
+        "properties": {
+          "providerInvoiceCode": {
+            "type": "string"
+          },
+          "signStatus": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "signedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "TaxCodeInfoResult": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "taxCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "registrationId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "taxAuthorityProvince": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "taxAuthorityOffice": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "legalRepresentative": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "establishedDate": {
             "type": [
               "string",
               "null"

@@ -1,0 +1,7 @@
+{
+  "baseline": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "mapperSource": "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Minvoice/Config/APIServices.cs",
+  "mapperSha256": "c078139097ec824d0fe06a5df3ada5c85685743b54c2fb948a0430b5daa9cfe9",
+  "wireSource": "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Minvoice/Models/MinvoiceModels.cs",
+  "note": "Only live pure mapping methods extracted; typed PMS bridges/GUID parse and injected UTC+7 Now. GetSearchCode baseline random retained; fixtures set explicit SearchCode."
+}
