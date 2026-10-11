@@ -11,7 +11,7 @@
 
 ## Đang chờ trước khi thay đổi nghiệp vụ/cutover
 
-- Q008 (đã hỏi trong phiên hoàn thiện MISA, đang chờ): UTC+7 cho date/ticks, định dạng số invariant (dấu chấm), giữ công thức tiền/thuế/làm tròn baseline trước khi có golden thực tế?
+- Q008: Người dùng **đã duyệt cho các nhà cung cấp mới** ngày UTC+7 và định dạng số invariant, giữ công thức tiền/thuế/làm tròn (D021, 11/10/2026). Phần mở rộng date/ticks/culture MISA ngoài năm FormSerial vẫn chưa được duyệt; giữ baseline MISA.
 - Q009 (đã hỏi, đang chờ): Định tuyến MTT/HSM theo electronicInvoiceType rõ ràng, kiểm tra ký hiệu nhất quán, từ chối batch trộn site/type/mode/form/serial? Hiện mapper/transport đã port, định tuyến vẫn theo baseline trong lúc chờ.
 - Q010 (đã hỏi, đang chờ): Giữ CQT HSM hay giới hạn chỉ USB? Để hoàn tất chức năng tương đương baseline theo yêu cầu viết lại, route HSM được giữ dưới tên tax/send-pending, body không nhận invoiceIds. Chưa áp dụng/giả định một lựa chọn thay đổi nghiệp vụ; không gọi thật hay deploy.
 

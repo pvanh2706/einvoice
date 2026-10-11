@@ -49,10 +49,10 @@ schemas['InvoiceAttemptInfo'] = {'type':'object','properties':{
     'state':{'type':'string','enum':['not-found','pending','completed']},
     'updatedAtUtc':{'type':['string','null'],'format':'date-time'},'result':{},
     'lastError':{'anyOf':[{'$ref':'#/components/schemas/InvoiceAttemptError'},{'type':'null'}]},
-    'originalRequestId':nullable_string(),'requiresReconciliation':{'type':'boolean'},'canRetry':{'type':['boolean','null']}}}
+    'originalRequestId':nullable_string(),'requiresReconciliation':{'type':'boolean'},'canRetry':{'type':['boolean','null']},'provider':nullable_string()}}
 def array_of(name): return {'type':'array','items':{'$ref':'#/components/schemas/'+name}}
 def success_schema(route):
-    common={'provider':{'type':'string','enum':['MISA']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
+    common={'provider':{'type':'string','enum':['MISA','VIETTEL']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
     if route=='health-check': common['connected']={'type':'boolean'}
     elif route=='form-serials': common['forms']=array_of('FormSerialResponse')
     else:
@@ -92,11 +92,18 @@ routes = [
  ('xml/hash','GetXmlHashRequest',False,'Fetch USB message hashes using certificate Base64. Sign externally; never send private key.'),
  ('tax/send-signed','SendSignedTaxAuthorityRequest',True,'Submit externally signed messageCode/signatureValue to CQT.'),
  ('xml/publish','PublishSignedXmlRequest',True,'Publish signed XML after the USB CQT steps.'),
+ ('draft','CreateInvoiceRequest',True,'VIETTEL: save/update a draft. Does not confirm invoice publication.'),
+ ('search','SearchInvoiceRequest',False,'VIETTEL: search by PMS invoiceId/transactionUuid. Read-only, no journal unlock.'),
+ ('adjust/increase','AdjustOrReplaceInvoiceRequest',True,'VIETTEL: amount increase; originalProviderInvoiceNumber required.'),
+ ('adjust/decrease','AdjustOrReplaceInvoiceRequest',True,'VIETTEL: amount decrease; preserve baseline amount signs.'),
+ ('adjust/information','AdjustOrReplaceInvoiceRequest',True,'VIETTEL: information adjustment; originalProviderInvoiceNumber required.'),
 ]
 paths = {}
+viettel_routes = {'health-check','publish','publish-batch','preview','replace','document','void','draft','search','adjust/increase','adjust/decrease','adjust/information'}
 for route, contract, write, description in routes:
     paths['/api/eInvoice/'+route] = {'post':{
-        'operationId':'misa_'+route.replace('/','_').replace('-','_'), 'tags':['MISA'],
+        'operationId':'misa_'+route.replace('/','_').replace('-','_'), 'tags':['MISA','VIETTEL'] if route in viettel_routes else ['MISA'],
+        'x-providers':(['VIETTEL'] if route in {'draft','search','adjust/increase','adjust/decrease','adjust/information'} else ['MISA','VIETTEL'] if route in viettel_routes else ['MISA']),
         'summary':description,'security':[{'ApiKey':[]}], 'parameters':[site_header]+([idempotency] if write else []),
         'requestBody':{'required':True,'content':{'application/json':{'schema':{'$ref':'#/components/schemas/'+contract}}}},
         'responses':{'200':{'description':'Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.',
@@ -122,7 +129,9 @@ paths['/api/eInvoice/invoice-attempts'] = {'get':{
 paths['/health/live'] = {'get':{'operationId':'liveness','responses':{'200':{'description':'Process is alive; no provider call.'}}}}
 paths['/api/eInvoice/misa/capabilities'] = {'get':{'operationId':'misa_implemented_capabilities','security':[{'ApiKey':[]}],
     'parameters':[site_header],'responses':{'200':{'description':'Implemented action-to-route map; does not claim sandbox readiness.'},'401':problem,'403':problem}}}
-document = {'openapi':'3.1.0','info':{'title':'eInvoice MISA API','version':'0.2.0',
+paths['/api/eInvoice/capabilities'] = {'get':{'operationId':'site_provider_capabilities','security':[{'ApiKey':[]}],
+    'parameters':[site_header],'responses':{'200':{'description':'Actual implemented action-to-route map for the authorized site provider; no provider HTTP call.'},'401':problem,'403':problem,'501':problem}}}
+document = {'openapi':'3.1.0','info':{'title':'eInvoice API — MISA and VIETTEL','version':'0.3.0',
     'description':'Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged.'},
     'servers':[{'url':'https://localhost:7150'}], 'paths':paths,
     'components':{'securitySchemes':{'ApiKey':{'type':'apiKey','in':'header','name':'X-Api-Key'}},'schemas':schemas}}

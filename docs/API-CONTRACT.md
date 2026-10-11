@@ -1,6 +1,10 @@
 # Hợp đồng PMS mới — eInvoice
 
-Trạng thái: bộ route MISA tương ứng 19 action dispatcher baseline đã triển khai và kiểm thử offline. Sandbox/UAT chưa thực hiện. Phạm vi/validation/response/timeout/idempotency: [MISA-API](MISA-API.md); schema [OpenAPI](openapi.misa.json).
+Trạng thái: MISA 19 action và Viettel 13 action dispatcher baseline đã triển khai/kiểm thử offline. Sandbox/UAT chưa thực hiện. Phạm vi/validation/response/timeout/idempotency: [MISA-API](MISA-API.md), [VIETTEL-API](VIETTEL-API.md); schema [OpenAPI](openapi.misa.json) phục vụ tại `/openapi/einvoice.json` và URL `/openapi/misa.json` đã có.
+
+Route chung chọn adapter theo partner của SiteId. `GET /api/eInvoice/capabilities` trả catalog thực tế của site; `/api/eInvoice/misa/capabilities` vẫn là catalog MISA riêng. Các route bổ sung Viettel: `draft`, `search`, `adjust/increase`, `adjust/decrease`, `adjust/information`; không thêm key body. Nhà cung cấp chưa triển khai hoặc không có operation trả 501 với code phân biệt PROVIDER_NOT_IMPLEMENTED / PROVIDER_OPERATION_NOT_SUPPORTED. FormSerial/status/CQT/USB hiện chỉ MISA.
+
+Journal response thêm field nullable `provider`, record cũ không có thì null. Hash MISA giữ nguyên; các provider khác có attempt hash riêng nhưng claim site/invoice dùng chung. Không đổi key/ID hoặc site/provider để vượt khóa. Ngày/culture provider mới theo D021; không đổi các mapper MISA chưa được duyệt.
 
 Tài liệu bàn giao cho AI agent phía phần mềm tích hợp: [INTEGRATION-AGENT](INTEGRATION-AGENT.md). Bắt đầu với single HSM MISA trên môi trường test; hướng dẫn phản ánh trạng thái hiện tại, không giả định đã có API đối soát/mở khóa hoặc adapter các nhà cung cấp khác.
 

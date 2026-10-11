@@ -1,6 +1,6 @@
 # Tích hợp phát hành thử hóa đơn qua eInvoice — hướng dẫn cho AI agent
 
-Ngày cập nhật: **11/10/2026**, múi giờ Việt Nam UTC+7. Tài liệu mô tả hợp đồng đang chạy tại checkpoint `316ba42`; không mô tả chức năng dự kiến.
+Ngày cập nhật: **11/10/2026**, múi giờ Việt Nam UTC+7. Hướng dẫn này tập trung vào MISA từ checkpoint `316ba42`. Bản mới đã thêm Viettel qua cùng router, xem [VIETTEL-API](VIETTEL-API.md); không suy ra mọi operation MISA đều hỗ trợ ở Viettel.
 
 ## 1. Mức sẵn sàng và phạm vi lần tích hợp đầu
 
@@ -13,7 +13,7 @@ Tại thời điểm lập tài liệu:
 - API local đang nghe tại `https://localhost:7150`; `GET /health/live` trả `{"service":"eInvoice","status":"alive"}`.
 - API chỉ nghe loopback. Phần mềm trên **máy khác**, trong container hoặc môi trường cloud không thể dùng `localhost` để tới máy eInvoice. Quản trị eInvoice cần cung cấp URL HTTPS có thể truy cập từ backend của phần mềm, với chứng chỉ hợp lệ cho hostname đó.
 - Key `postman-local` cũ hết hạn lúc 23:59:59 ngày **09/10/2026 UTC+7**. Cần key còn hiệu lực trước khi gọi API nghiệp vụ; tài liệu không chứa key thật.
-- Nhà cung cấp duy nhất đã có adapter là MISA. Site cấu hình nhà cung cấp khác trả `501 PROVIDER_NOT_IMPLEMENTED`.
+- Adapter hiện có MISA và Viettel. Hướng dẫn này dùng site MISA; site của nhà cung cấp chưa có adapter trả `501 PROVIDER_NOT_IMPLEMENTED`, operation không được hỗ trợ trả `501 PROVIDER_OPERATION_NOT_SUPPORTED`.
 - Chưa có API tự đối soát kết quả phát hành với MISA hoặc tự mở khóa lần gửi chưa xác định.
 
 ## 2. Thông tin cần nhận từ quản trị eInvoice

@@ -1,5 +1,6 @@
 using eInvoice.Core.Contracts;
 using eInvoice.Providers.Misa;
+using eInvoice.Providers.Common;
 
 namespace eInvoice.Tests.Misa;
 
@@ -158,6 +159,33 @@ public class MisaWriteJournalTests : IDisposable
         Assert.Null(status.LastError!.ProviderHttpStatus);
         Assert.Equal("MISA_OPERATION_TIMEOUT", status.LastError.Code);
         Assert.False(status.CanRetry);
+    }
+
+    [Fact]
+    public async Task Provider_change_cannot_replay_another_providers_result_or_bypass_invoice_claim()
+    {
+        await Journal().ExecuteAsync(MisaTestData.SiteId, "publish", "shared-key-001", new { invoiceId = "INV-001" }, ["publish:INV-001"],
+            () => Task.FromResult<object?>(new { number = "MISA-001" }), default);
+        var viettel = new WriteOperationJournal(_directory, TimeProvider.System, "VIETTEL");
+        Assert.Equal("not-found", (await viettel.StatusAsync(MisaTestData.SiteId, "publish", "shared-key-001", default)).State);
+        var conflict = await Assert.ThrowsAsync<InvoiceOperationConflictException>(() => viettel.ExecuteAsync(MisaTestData.SiteId,
+            "publish", "shared-key-001", new { invoiceId = "INV-001" }, ["publish:INV-001"], NeverWrite, default));
+        Assert.Equal("VIETTEL_INVOICE_ALREADY_ATTEMPTED", conflict.Code);
+        Assert.Equal("MISA", conflict.PreviousAttempt!.Provider);
+    }
+
+    [Fact]
+    public async Task Separate_provider_attempts_keep_own_results_across_restart()
+    {
+        await Journal().ExecuteAsync(MisaTestData.SiteId, "publish", "shared-key-001", new { invoiceId = "MISA-001" }, ["publish:MISA-001"],
+            () => Task.FromResult<object?>(new { number = "MISA-001" }), default);
+        await new WriteOperationJournal(_directory, TimeProvider.System, "VIETTEL").ExecuteAsync(MisaTestData.SiteId, "publish", "shared-key-001",
+            new { invoiceId = "VIETTEL-001" }, ["publish:VIETTEL-001"], () => Task.FromResult<object?>(new { number = "VIETTEL-001" }), default);
+        var misa = await Journal().StatusAsync(MisaTestData.SiteId, "publish", "shared-key-001", default);
+        var viettel = await new WriteOperationJournal(_directory, TimeProvider.System, "VIETTEL").StatusAsync(MisaTestData.SiteId, "publish", "shared-key-001", default);
+        Assert.Equal("MISA", misa.Provider); Assert.Equal("VIETTEL", viettel.Provider);
+        Assert.NotEqual(misa.AttemptId, viettel.AttemptId);
+        Assert.Contains("MISA-001", misa.Result!.Value.GetRawText()); Assert.Contains("VIETTEL-001", viettel.Result!.Value.GetRawText());
     }
 
     private MisaWriteJournal Journal() => new(_directory, TimeProvider.System);

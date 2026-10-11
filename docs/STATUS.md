@@ -13,6 +13,7 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 - Cập nhật mới nhất D019: `Use local JSON site configuration with database-ready store interface`; lấy hash bằng git log. Người dùng bỏ admin cũ, tạm JSON, sau này DB riêng.
 - Cập nhật diagnostics D020: `Expose sanitized MISA errors and persist invoice attempt diagnostics`; xem git log. Publish lỗi mới có message/status, journal lưu lỗi và 409 có previousAttempt/link tra cứu. Không thay cơ chế chặn retry.
 - Cập nhật 2026-10-11: tài liệu bàn giao [INTEGRATION-AGENT](INTEGRATION-AGENT.md) và [JSON publish mẫu](examples/misa-publish.json) cho AI agent phần mềm bên ngoài; scope single HSM MISA sandbox, không đổi runtime/auth/retry hoặc mở kết nối mạng.
+- P2 bắt đầu theo yêu cầu người dùng: **Viettel 13 action đã port**, router chung theo SiteId, journal giữ tương thích MISA và chống vượt claim qua đổi provider; xem [VIETTEL-API](VIETTEL-API.md). Checkpoint `Implement Viettel APIs with shared provider dispatch and durable journal`; lấy hash từ git log. D021 đã duyệt UTC+7/invariant cho provider mới, không đổi tiền/thuế/làm tròn hoặc MISA.
 - **Bộ API MISA tương ứng toàn bộ 19 action sống baseline đã triển khai và kiểm thử offline. Sandbox/UAT/cutover chưa thực hiện.**
 - P0 hoàn thành; P1 MISA code/fixture/HTTP giả lập hoàn thành, kiểm chứng thực tế còn chờ.
 
@@ -32,6 +33,8 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 - OpenAPI 3.1: 19 paths, 39 schemas; Postman 20 request + template environment không credential; MISA-API/LOCAL-SETUP mô tả hợp đồng/diagnostics và trình tự USB.
 
 ## Kiểm chứng gần nhất
+
+Sau port Viettel ngày 11/10: `powershell -NoProfile -File scripts/verify.ps1` **PASS**, restore locked, Release **0 warning/error**, **303 passed, 0 failed/skipped** (35 ca mới). Bao phủ 11 wire fixture, login/cookie/auth, thiếu/sai kết quả, batch partial, timeout/lỗi login, endpoint guard, buyer bank/Customername metadata, replay và claim chung/provider hash isolation. OpenAPI **25 paths/39 schemas**, collection Viettel **17 requests** đã kiểm tra JSON/path; collection MISA giữ 20 requests. Không gọi Viettel thật hoặc UAT.
 
 2026-10-10, thay đổi chỉ tài liệu: chạy lại `dotnet test eInvoice.sln -c Release --no-build --no-restore --verbosity minimal`, **268 passed, 0 failed/skipped** trên artifact Release đã build ở checkpoint 316ba42. Không build lại runtime hoặc restart. JSON request publish/status/document/form-serials trong tài liệu đã kiểm tra theo OpenAPI 3.1, body nhúng trùng file JSON riêng, số tiền mẫu/nhánh HSM nhất quán, route/link hợp lệ. `curl.exe` với TLS mặc định xác nhận GET /health/live trả alive; không gọi MISA trong phiên này. Key postman-local cũ đã hết hạn ngày 09/10/2026; chưa gia hạn/cấp key mới.
 
@@ -53,6 +56,8 @@ Test suite vẫn dùng fake HTTP. Ngày 2026-10-09 đã thử riêng health-chec
 - Storage/reconcile kết quả ghi chưa xác định và kế hoạch thay thế/rollback trước cutover.
 
 ## Bước tiếp theo khi tiếp tục
+
+**Bước P2 đang làm: Cyberbill** sau Viettel, rồi các provider còn lại theo PLAN. Chỉ MISA và Viettel có adapter ở checkpoint hiện tại; không ghi 7 provider còn lại là hoàn thành. Code cũ pinned vẫn là nguồn đọc, bảo toàn wire và thực hiện offline tests/capture trước UAT. API local đã được dừng sau xác minh executable PID 14072 để build Release, cần chạy lại ở checkpoint cuối nếu tiếp tục thử local. Không sửa credential/site/key hoặc xóa journal.
 
 Phần mềm bên ngoài có thể bắt đầu tích hợp theo INTEGRATION-AGENT sau khi được cấp key còn hạn/SiteId/URL truy cập được và mẫu HSM sandbox đã xác nhận. Nếu nằm máy khác, localhost không dùng được; việc cấp endpoint HTTPS/network cần cấu hình riêng khi người dùng yêu cầu. Chưa có sandbox publish thành công được xác nhận; không đánh dấu production-ready. Các tên trạng thái processing/rejected/unknown mới được thảo luận, **chưa triển khai**; API vẫn pending/completed/not-found và chưa có tự reconcile/unlock.
 

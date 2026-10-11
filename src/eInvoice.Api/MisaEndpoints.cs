@@ -45,10 +45,10 @@ internal static class MisaApiEndpoints
             request => ["publish:" + request.InvoiceId]);
 
         app.MapGet("/api/eInvoice/operations/{operation}/{idempotencyKey}", async (string operation, string idempotencyKey,
-            HttpContext http, MisaWriteJournal journal) =>
+            HttpContext http, ProviderDispatcher providers) =>
         {
             var siteId = (Guid)http.Items[SiteAuthorizationFilter.ContextKey]!;
-            return Results.Ok(await journal.StatusAsync(siteId, operation, idempotencyKey, http.RequestAborted));
+            return Results.Ok(await providers.StatusAsync(siteId, operation, idempotencyKey, http.RequestAborted));
         }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
 
         app.MapGet("/api/eInvoice/invoice-attempts", async (string invoiceId, string? phase, HttpContext http, MisaWriteJournal journal) =>
@@ -66,7 +66,7 @@ internal static class MisaApiEndpoints
         Func<T, IReadOnlyList<string>>? claims = null) where T : ISiteScopedRequest
     {
         app.MapPost("/api/eInvoice/" + operation, async ([FromBody] T request, HttpContext http,
-            ISiteConfigurationResolver resolver, IMisaInvoiceService service, MisaWriteJournal journal) =>
+            ISiteConfigurationResolver resolver, IMisaInvoiceService service, MisaWriteJournal journal, ProviderDispatcher providers) =>
         {
             var siteId = (Guid)http.Items[SiteAuthorizationFilter.ContextKey]!;
             string? idempotencyKey = null;
@@ -82,8 +82,10 @@ internal static class MisaApiEndpoints
             if (configuration.Site.Id != siteId)
                 throw new SiteConfigurationException("Resolved site configuration does not match the authorized site.");
             if (configuration.Site.Partner != 6)
-                return Results.Problem(statusCode: 501, title: "This provider is not implemented yet",
-                    extensions: new Dictionary<string, object?> { ["code"] = "PROVIDER_NOT_IMPLEMENTED", ["requestId"] = http.TraceIdentifier });
+            {
+                var providerResult = await providers.ExecuteAsync(operation, configuration, request, http);
+                return Results.Ok(new { provider = providers.Get(configuration.Site.Partner).Name, siteId, data = providerResult, requestId = http.TraceIdentifier });
+            }
             object? result;
             if (claims is null) result = await execute(service, configuration, request, http.RequestAborted);
             else

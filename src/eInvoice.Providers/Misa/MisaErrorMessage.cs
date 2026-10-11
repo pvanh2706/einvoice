@@ -6,7 +6,7 @@ namespace eInvoice.Providers.Misa;
 /// <summary>Only supplier error message fields are accepted; never expose an envelope, request or auth response.</summary>
 internal static class MisaErrorMessage
 {
-    internal static string? Sanitize(string? message, SiteConfiguration? site = null, string? token = null)
+    internal static string? Sanitize(string? message, SiteConfiguration? site = null, string? token = null, string provider = "MISA")
     {
         if (string.IsNullOrWhiteSpace(message)) return null;
         var text = message;
@@ -21,7 +21,7 @@ internal static class MisaErrorMessage
             "$1=[redacted]", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         text = string.Concat(text.Select(character => char.IsControl(character) ? ' ' : character)).Trim();
         if (text.StartsWith('{') || text.StartsWith('[') && !text.StartsWith("[redacted]", StringComparison.Ordinal) || text.StartsWith('<'))
-            return "MISA returned a structured error. Check providerCode and reconcile the invoice.";
+            return provider + " returned a structured error. Check providerCode and reconcile the invoice.";
         return text.Length <= 1000 ? text : text[..1000] + "…";
     }
 }

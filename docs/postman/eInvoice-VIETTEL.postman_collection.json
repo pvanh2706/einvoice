@@ -1,0 +1,485 @@
+{
+  "info": {
+    "name": "eInvoice VIETTEL API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Offline-tested Viettel routes. Sandbox UAT not yet done. No form-serials/status capability. Search reads provider state but does not unlock journal."
+  },
+  "item": [
+    {
+      "name": "Liveness",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/health/live",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset."
+      }
+    },
+    {
+      "name": "OpenAPI",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/openapi/einvoice.json",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset."
+      }
+    },
+    {
+      "name": "Site provider capabilities",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/capabilities",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset."
+      }
+    },
+    {
+      "name": "Viettel fresh connection check",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/health-check",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Publish invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{publishKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"VT-TEST-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Publish batch - inspect each item",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{batchKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish-batch",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoices\": [\n    {\n      \"invoice\": {\n        \"invoiceId\": \"VT-BATCH-001\",\n        \"invoiceType\": 0,\n        \"formNo\": \"{{formNo}}\",\n        \"serial\": \"{{serial}}\",\n        \"invoiceDate\": \"{{invoiceDate}}\",\n        \"customerName\": \"Khách thử nghiệm tích hợp\",\n        \"customerAddress\": \"Địa chỉ thử nghiệm\",\n        \"currencyCode\": \"VND\",\n        \"exchangeRate\": 1,\n        \"paymentMethod\": \"TM/CK\",\n        \"subAmount\": 100000,\n        \"serviceRate\": 0,\n        \"serviceCharge\": 0,\n        \"beforeTaxAmount\": 100000,\n        \"taxRate\": 10,\n        \"taxAmount\": 10000,\n        \"afterTaxAmount\": 110000,\n        \"isMultiVATRate\": false,\n        \"pricePrecision\": 0,\n        \"quantityPrecision\": 0,\n        \"amountPrecision\": 0\n      },\n      \"details\": [\n        {\n          \"itemCode\": \"SERVICE-TEST\",\n          \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n          \"unitName\": \"Lần\",\n          \"quantity\": 1,\n          \"price\": 100000,\n          \"subAmount\": 100000,\n          \"discountAmount\": 0,\n          \"discountPercent\": 0,\n          \"serviceRate\": 0,\n          \"serviceCharge\": 0,\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000,\n          \"afterTaxAmount\": 110000,\n          \"exciseTaxRate\": 0,\n          \"exciseTaxCharge\": 0,\n          \"itemType\": \"1\",\n          \"transactionDate\": \"{{invoiceDate}}\"\n        }\n      ],\n      \"taxSummaries\": [\n        {\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000\n        }\n      ],\n      \"serviceSummaries\": [],\n      \"specialTaxSummaries\": [],\n      \"extraData\": [],\n      \"electronicInvoiceType\": 0\n    },\n    {\n      \"invoice\": {\n        \"invoiceId\": \"VT-BATCH-002\",\n        \"invoiceType\": 0,\n        \"formNo\": \"{{formNo}}\",\n        \"serial\": \"{{serial}}\",\n        \"invoiceDate\": \"{{invoiceDate}}\",\n        \"customerName\": \"Khách thử nghiệm tích hợp\",\n        \"customerAddress\": \"Địa chỉ thử nghiệm\",\n        \"currencyCode\": \"VND\",\n        \"exchangeRate\": 1,\n        \"paymentMethod\": \"TM/CK\",\n        \"subAmount\": 100000,\n        \"serviceRate\": 0,\n        \"serviceCharge\": 0,\n        \"beforeTaxAmount\": 100000,\n        \"taxRate\": 10,\n        \"taxAmount\": 10000,\n        \"afterTaxAmount\": 110000,\n        \"isMultiVATRate\": false,\n        \"pricePrecision\": 0,\n        \"quantityPrecision\": 0,\n        \"amountPrecision\": 0\n      },\n      \"details\": [\n        {\n          \"itemCode\": \"SERVICE-TEST\",\n          \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n          \"unitName\": \"Lần\",\n          \"quantity\": 1,\n          \"price\": 100000,\n          \"subAmount\": 100000,\n          \"discountAmount\": 0,\n          \"discountPercent\": 0,\n          \"serviceRate\": 0,\n          \"serviceCharge\": 0,\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000,\n          \"afterTaxAmount\": 110000,\n          \"exciseTaxRate\": 0,\n          \"exciseTaxCharge\": 0,\n          \"itemType\": \"1\",\n          \"transactionDate\": \"{{invoiceDate}}\"\n        }\n      ],\n      \"taxSummaries\": [\n        {\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000\n        }\n      ],\n      \"serviceSummaries\": [],\n      \"specialTaxSummaries\": [],\n      \"extraData\": [],\n      \"electronicInvoiceType\": 0\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Save draft - does not mean published",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{draftKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/draft",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"VT-DRAFT-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Preview PDF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/preview",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"VT-TEST-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/increase",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{adjust_increaseKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/increase",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"VT-ADJUST-INCREASE-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/decrease",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{adjust_decreaseKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/decrease",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"VT-ADJUST-DECREASE-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/information",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{adjust_informationKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/information",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"VT-ADJUST-INFORMATION-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "replace",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{replaceKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/replace",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"VT-REPLACE-001\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Download PDF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/document",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceId\": \"VT-TEST-001\",\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"providerInvoiceNumber\": \"{{providerInvoiceNumber}}\",\n  \"typeFileDownload\": \"pdf\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Search issued invoice by original PMS ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/search",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceId\": \"VT-TEST-001\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Void issued invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{voidKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/void",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"providerInvoiceNumber\": \"{{providerInvoiceNumber}}\",\n  \"invoiceDate\": \"{{invoiceDate}}\",\n  \"additionalReferenceDate\": \"{{invoiceDate}}\",\n  \"reason\": \"Synthetic cancellation reason\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Read original publish result",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/operations/publish/{{publishKey}}",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset."
+      }
+    },
+    {
+      "name": "Read invoice publish claim",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/invoice-attempts?invoiceId=VT-TEST-001&phase=publish",
+        "description": "Viettel synthetic sandbox example. Configure a separate server site partner=4 and host allowlist. Set issued form/serial/date before first send. Keep invoice ID, key and body fixed; no automatic retries or claim reset."
+      }
+    }
+  ]
+}

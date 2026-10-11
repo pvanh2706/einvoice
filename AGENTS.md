@@ -17,6 +17,7 @@
 - Tên và đường dẫn lịch sử trong reference được giữ để truy vết. Không thay thế chuỗi hàng loạt trong provider payload.
 - Công việc kéo dài nhiều phiên trên **máy này**; không phụ thuộc vào lịch sử chat để tiếp tục.
 - Không dùng dịch vụ/link admin cũ. Cấu hình khách sạn tạm đọc JSON server sites.Local.json; sau này DB riêng qua ISiteConfigurationStore (D019). Không tự nối lại admin hoặc tự chọn DB/schema. File thật chứa credential phải bị Git ignore.
+- Người dùng yêu cầu tiếp tục các nhà cung cấp còn lại ngày 11/10/2026. Viettel đã port sau MISA; tiếp tục P2 theo STATUS/PLAN, không dừng chỉ để hỏi lại quyền làm provider tiếp theo. Ngày/culture **các provider mới** cố định UTC+7/invariant theo D021; giữ công thức tiền/thuế/làm tròn. Chưa áp dụng thay đổi này cho mapper MISA ngoài D013.
 
 ## Khi cần hỏi người dùng
 

@@ -81,3 +81,13 @@
 - Chạy lại test Release không build/restore: **268 passed, 0 failed/skipped**. Kiểm tra JSON request bằng JSON Schema OpenAPI 3.1, body nhúng/file riêng đồng nhất, totals/nhánh HSM, route và link. Không thêm test/runtime dependency hoặc tự cập nhật financial fixture.
 - Ghi rõ enum hiện tại not-found/pending/completed; processing/rejected/unknown đã thảo luận chưa được implement. Tra cứu journal không gọi MISA, status chỉ SendTaxStatus; chưa có API tự reconcile/unlock.
 - Tiếp theo: bên tích hợp nhận key còn hạn và URL HTTPS truy cập được, SiteId/mẫu/cách ký sandbox; thực hiện UAT được cho phép và đối chiếu MISA. Nếu máy khác cần endpoint khác loopback. Không tự quyết mạng/key/production hoặc đổi ID để vượt claim cũ. Checkpoint `Document MISA sandbox integration for external AI agents`.
+
+## 2026-10-11 — Bắt đầu P2, Viettel và router/journal chung
+
+- Người dùng yêu cầu làm tiếp các nhà cung cấp khác. Đã giải thích MISA hoàn thành code/offline nhưng chưa đầy đủ UAT/publish thực tế. Không cần hỏi lại quyền làm provider tiếp theo.
+- Người dùng duyệt D021: ngày UTC+7 và số invariant cho provider mới, giữ công thức tiền/thuế/làm tròn. Viettel epoch 00:00 UTC+7, ngày hủy default UTC+7; culture scope chỉ trong mapper mới. MISA không đổi routing/date ngoài D013.
+- Viettel port 13 action baseline qua 12 operation HTTP, JSON/form-urlencoded, login từng operation và Cookie access_token, không cache token/header chung. Thêm router theo SiteId, capabilities thực tế, draft/search và ba route điều chỉnh; không giả lập form/status Viettel không có.
+- Tách WriteOperationJournal, MisaWriteJournal là wrapper tương thích. MISA giữ hash/đường dẫn; attempt provider khác hash riêng nhưng claims invoice/site chung, chống đổi provider để vượt khóa. Record thêm provider nullable; legacy vẫn đọc được. Không đổi pending/retry/unlock.
+- Frozen tool Viettel độc lập assembly runtime + 11 fixture baseline tổng hợp; 35 tests mới đưa tổng **303 passed**, verify locked restore + Release **0 warning/error**. 25 paths/39 schemas OpenAPI chung, URL cũ giữ; 17 Postman Viettel không credential, docs VIETTEL-API và hợp đồng/AGENTS/PLAN cập nhật.
+- Dừng verified process 14072 để build, chưa restart trong lúc đang tiếp tục P2. Không gọi NCC thật, không sửa sites.Local/key/allowlist thật, không phát hành/hủy/CQT/email, không sửa repo cũ.
+- Checkpoint `Implement Viettel APIs with shared provider dispatch and durable journal`. Tiếp theo Cyberbill; Minvoice/SUN/EasyInvoice/Fast/VNPT/VNPT_V5 còn chưa port.

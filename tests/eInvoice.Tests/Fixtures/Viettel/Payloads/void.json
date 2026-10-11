@@ -1,0 +1,9 @@
+{
+  "supplierTaxCode": "TEST-TAX",
+  "templateCode": "1",
+  "invoiceNo": "000001",
+  "strIssueDate": "1791392400000",
+  "additionalReferenceDate": "1791565200000",
+  "additionalReferenceDesc": "Hủy hóa đơn 000001",
+  "reasonDelete": "Synthetic reason"
+}

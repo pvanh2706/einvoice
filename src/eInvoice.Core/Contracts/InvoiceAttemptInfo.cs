@@ -7,4 +7,4 @@ public sealed record InvoiceAttemptError(string Source, string Code, string? Pro
 
 public sealed record InvoiceAttemptInfo(string? AttemptId, string? Operation, string? IdempotencyKey,
     string State, DateTimeOffset? UpdatedAtUtc, JsonElement? Result, InvoiceAttemptError? LastError,
-    string? OriginalRequestId, bool RequiresReconciliation, bool? CanRetry);
+    string? OriginalRequestId, bool RequiresReconciliation, bool? CanRetry, string? Provider = null);

@@ -1,6 +1,7 @@
 using eInvoice.Core.Configuration;
 using eInvoice.Core.Contracts;
 using eInvoice.Providers.Misa;
+using eInvoice.Providers.Common;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace eInvoice.Api.Errors;
@@ -17,6 +18,7 @@ public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : I
             BadHttpRequestException badRequest => (badRequest.StatusCode, "INVALID_REQUEST", "Invalid request body"),
             InvoiceRequestException request => (400, request.Code, request.Message),
             InvoiceOperationConflictException conflict => (409, conflict.Code, conflict.Message),
+            UnsupportedProviderOperationException unsupported => (501, unsupported.Code, unsupported.Message),
             SiteConfigurationException => (400, "INVALID_SITE_CONFIGURATION", "Invalid site configuration"),
             SiteStoreException { Failure: SiteStoreFailure.NotConfigured } =>
                 (503, "SITE_STORE_NOT_CONFIGURED", "Site configuration JSON file is not configured"),

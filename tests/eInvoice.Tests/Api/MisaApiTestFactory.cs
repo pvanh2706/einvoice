@@ -6,6 +6,7 @@ using System.Text.Json;
 using eInvoice.Core.Configuration;
 using eInvoice.Core.Contracts;
 using eInvoice.Providers.Misa;
+using eInvoice.Providers.Viettel;
 using eInvoice.Providers.Configuration;
 using eInvoice.Tests.Misa;
 using Microsoft.AspNetCore.Hosting;
@@ -53,6 +54,9 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
             }
             services.RemoveAll<MisaLoginOptions>();
             services.AddSingleton(new MisaLoginOptions { AllowedHosts = ["misa.example.test"] });
+            services.RemoveAll<ViettelOptions>();
+            services.AddSingleton(new ViettelOptions { AllowedHosts = ["viettel.example.test"] });
+            services.AddHttpClient<ViettelTransport>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
             services.RemoveAll<MisaWriteJournal>();
             services.AddSingleton(new MisaWriteJournal(_directory, TimeProvider.System));
             services.AddHttpClient<MisaLoginClient>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));

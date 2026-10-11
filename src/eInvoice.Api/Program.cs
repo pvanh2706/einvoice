@@ -7,6 +7,8 @@ using eInvoice.Core.Configuration;
 using eInvoice.Core.Contracts;
 using eInvoice.Providers.Configuration;
 using eInvoice.Providers.Misa;
+using eInvoice.Providers.Common;
+using eInvoice.Providers.Viettel;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false)
@@ -47,6 +49,12 @@ builder.Services.AddHttpClient<MisaBusinessTransport>(client => client.Timeout =
     .RemoveAllLoggers()
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
 builder.Services.AddScoped<IMisaInvoiceService, MisaInvoiceService>();
+builder.Services.AddSingleton(builder.Configuration.GetSection("Providers:Viettel").Get<ViettelOptions>() ?? new ViettelOptions());
+builder.Services.AddHttpClient<ViettelTransport>(client => client.Timeout = TimeSpan.FromSeconds(100))
+    .RemoveAllLoggers()
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+builder.Services.AddScoped<IInvoiceProvider, ViettelInvoiceProvider>();
+builder.Services.AddScoped<ProviderDispatcher>();
 builder.Services.AddSingleton(serviceProvider => new MisaWriteJournal(
     builder.Configuration["Providers:Misa:JournalDirectory"] ?? Path.Combine(AppContext.BaseDirectory, "misa-journal"),
     serviceProvider.GetRequiredService<TimeProvider>()));
@@ -75,23 +83,27 @@ app.UseAuthorization();
 // Liveness only. This does not contact admin/providers or claim the invoice adapters are ready.
 app.MapGet("/health/live", () => Results.Ok(new { service = "eInvoice", status = "alive" }));
 app.MapGet("/openapi/misa.json", () => Results.File(Path.Combine(AppContext.BaseDirectory, "openapi.misa.json"), "application/json"));
+app.MapGet("/openapi/einvoice.json", () => Results.File(Path.Combine(AppContext.BaseDirectory, "openapi.misa.json"), "application/json"));
 
 app.MapPost("/api/eInvoice/health-check", async (ProviderHealthCheckRequest request, HttpContext http,
-    ISiteConfigurationResolver resolver, IMisaLoginClient misa) =>
+    ISiteConfigurationResolver resolver, IMisaLoginClient misa, ProviderDispatcher providers) =>
 {
     var siteId = (Guid)http.Items[SiteAuthorizationFilter.ContextKey]!;
     var configuration = await resolver.ResolveAsync(request.SiteConfigInfo, siteId, http.RequestAborted);
     if (configuration.Site.Id != siteId)
         throw new SiteConfigurationException("Resolved site configuration does not match the authorized site.");
     if (configuration.Site.Partner != 6)
-        return Results.Problem(statusCode: 501, title: "This provider is not implemented yet",
-            extensions: new Dictionary<string, object?> { ["code"] = "PROVIDER_NOT_IMPLEMENTED", ["requestId"] = http.TraceIdentifier });
+    {
+        var provider = providers.Get(configuration.Site.Partner);
+        await provider.CheckConnectionAsync(configuration, http.RequestAborted);
+        return Results.Ok(new { provider = provider.Name, connected = true, siteId, requestId = http.TraceIdentifier });
+    }
     _ = await misa.CheckConnectionAsync(configuration.Site, http.RequestAborted);
     return Results.Ok(new { provider = "MISA", connected = true, siteId, requestId = http.TraceIdentifier });
 }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
 
 app.MapPost("/api/eInvoice/form-serials", async (GetFormSerialsRequest request, HttpContext http,
-    ISiteConfigurationResolver resolver, IMisaFormSerialClient misa) =>
+    ISiteConfigurationResolver resolver, IMisaFormSerialClient misa, ProviderDispatcher providers) =>
 {
     if (request.InvoiceType != 0)
         return Results.Problem(statusCode: 400, title: "Form/serial lookup currently supports invoiceType 0 only",
@@ -101,13 +113,16 @@ app.MapPost("/api/eInvoice/form-serials", async (GetFormSerialsRequest request, 
     if (configuration.Site.Id != siteId)
         throw new SiteConfigurationException("Resolved site configuration does not match the authorized site.");
     if (configuration.Site.Partner != 6)
-        return Results.Problem(statusCode: 501, title: "This provider is not implemented yet",
-            extensions: new Dictionary<string, object?> { ["code"] = "PROVIDER_NOT_IMPLEMENTED", ["requestId"] = http.TraceIdentifier });
+    {
+        _ = providers.Get(configuration.Site.Partner);
+        throw new UnsupportedProviderOperationException("PROVIDER_OPERATION_NOT_SUPPORTED", "Form/serial lookup is not supported by this provider.");
+    }
     var forms = await misa.GetAsync(configuration.Site, http.RequestAborted);
     return Results.Ok(new { provider = "MISA", siteId, forms, requestId = http.TraceIdentifier });
 }).RequireAuthorization().AddEndpointFilter<SiteAuthorizationFilter>();
 
 app.MapMisaApi();
+app.MapProviderApi();
 app.Run();
 
 public partial class Program;

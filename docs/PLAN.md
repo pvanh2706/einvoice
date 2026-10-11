@@ -32,12 +32,14 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | VNPT | Chưa | Chưa | Chưa | Chưa | Chưa |
 | MINVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |
 | SUN | Chưa | Chưa | Chưa | Chưa | Chưa |
-| VIETTEL | Chưa | Chưa | Chưa | Chưa | Chưa |
+| VIETTEL | 13 action baseline | REST cookie token từng operation, UTF-8 JSON/form, no retry | 11 frozen payload | Đủ route qua fake HTTP; toàn solution 303 tests | Chưa |
 | VNPT_V5 | Chưa | Chưa | Chưa | Chưa | Chưa |
 | MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 268 test toàn solution; health-check thật 200, publish diagnostic bị khóa | Chưa |
 | CYBER_BILL | Chưa | Chưa | Chưa | Chưa | Chưa |
 | FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
 | EASY_INVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |
+
+P2 đã được người dùng yêu cầu tiếp tục ngày 11/10. Thứ tự đang thực hiện: Viettel → Cyberbill → Minvoice/SUN/EasyInvoice → Fast → VNPT/VNPT_V5; điều chỉnh theo phụ thuộc kỹ thuật, không phải ưu tiên nghiệp vụ đã được người dùng chọn. REST đi trước để hoàn thiện router/journal chung; SOAP/WCF dùng WSDL/proxy sinh sẵn ở baseline, không viết tay generated proxy. Không cần sandbox credential để làm kiểm thử offline.
 
 ## P3 — Vận hành và thay thế
 
