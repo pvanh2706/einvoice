@@ -16,6 +16,7 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 - P2 bắt đầu theo yêu cầu người dùng: **Viettel 13 action đã port**, router chung theo SiteId, journal giữ tương thích MISA và chống vượt claim qua đổi provider; xem [VIETTEL-API](VIETTEL-API.md). Checkpoint `Implement Viettel APIs with shared provider dispatch and durable journal`; lấy hash từ git log. D021 đã duyệt UTC+7/invariant cho provider mới, không đổi tiền/thuế/làm tròn hoặc MISA.
 - **Bộ API MISA tương ứng toàn bộ 19 action sống baseline đã triển khai và kiểm thử offline. Sandbox/UAT/cutover chưa thực hiện.**
 - P0 hoàn thành; P1 MISA code/fixture/HTTP giả lập hoàn thành, kiểm chứng thực tế còn chờ.
+- Checkpoint P2: Viettel `0930848`, Cyberbill một phần `2122c10`, SUN `ef55f0e`. Đọc QUESTIONS Q012/Q013 trước khi expose phát hành Cyberbill; bước tiếp theo cụ thể nằm bên dưới.
 
 ## Đã hoàn thành
 
@@ -78,7 +79,7 @@ Ngày 2026-10-09 người dùng báo publish 409 khi đổi key. Đã đọc cla
 
 Đã xử lý ADMIN_NOT_CONFIGURED bằng chuyển sang JSON theo D019; không gọi admin. Ngày 2026-10-09 người dùng đã điền thông tin nhưng health-check trả MISA_ENDPOINT_NOT_ALLOWED: URL HTTPS/trailing slash hợp lệ, allowlist local trống. Đã thêm đúng testapi.meinvoice.vn vào Providers:Misa:AllowedHosts, giữ nguyên các cấu hình khác/journal, restart Release. Health-check thật qua API local trả HTTP 200, provider=MISA, connected=true. Các kết quả credential/endpoint trống bên dưới là probe lịch sử ngày 2026-10-08, không phải trạng thái file hiện tại. Sửa nội dung JSON được đọc ở request tiếp theo, sửa allowlist/path/API key cần restart.
 
-- `https://localhost:7150`, loopback, Release; **API PID 14072, exec session 95101** (restart 2026-10-09 sau diagnostics). Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json; kết quả diagnostic rút gọn tại .local/publish-diagnostic-result.json, không lưu token/credential/raw body.
+- `https://localhost:7150`, loopback, Release; **API PID 5352, exec session 47782** (restart 2026-10-11 sau P2 SUN/Cyberbill). GET /health/live 200 và OpenAPI runtime 26 paths/v0.4.0 qua TLS Windows mặc định; không gọi NCC. Kiểm tra executable/listener trước khi dừng vì PID có thể tái sử dụng. Metadata tại .local/local-api.json; kết quả diagnostic rút gọn tại .local/publish-diagnostic-result.json, không lưu token/credential/raw body.
 - Key client postman-local, site tổng hợp `11111111-1111-1111-1111-111111111111`, hết hạn cuối 2026-10-09 UTC+7. Key gốc chỉ ở .local; server giữ hash trong appsettings.Local.json (ignored).
 - Import `.local/eInvoice-local.postman_environment.json` và `.local/eInvoice-local.postman_collection.json` (20 request). Key đã giữ nguyên, thêm biến invoiceId và request tra cứu invoice-attempts. Bản công khai/template tại docs/postman không chứa key.
 - JournalDirectory local là `D:\Code\40.eInvoice\.local\misa-journal`, không xóa khi build/restart. Key idempotency phải ổn định khi retry cùng body; không sinh key mới để vượt pending.
