@@ -91,3 +91,10 @@
 - Frozen tool Viettel độc lập assembly runtime + 11 fixture baseline tổng hợp; 35 tests mới đưa tổng **303 passed**, verify locked restore + Release **0 warning/error**. 25 paths/39 schemas OpenAPI chung, URL cũ giữ; 17 Postman Viettel không credential, docs VIETTEL-API và hợp đồng/AGENTS/PLAN cập nhật.
 - Dừng verified process 14072 để build, chưa restart trong lúc đang tiếp tục P2. Không gọi NCC thật, không sửa sites.Local/key/allowlist thật, không phát hành/hủy/CQT/email, không sửa repo cũ.
 - Checkpoint `Implement Viettel APIs with shared provider dispatch and durable journal`. Tiếp theo Cyberbill; Minvoice/SUN/EasyInvoice/Fast/VNPT/VNPT_V5 còn chưa port.
+
+## 2026-10-11 — Cyberbill, phần độc lập với quyết định nghiệp vụ
+
+- Port auth/transport, mapping và 7 fixture frozen độc lập. Tách ProviderCallException và message sanitizer sang Common, giữ wrapper MISA tương thích. Không đổi financial formula hoặc wire key.
+- Chỉ expose health-check/document/void, capabilities 4 action. Publish chưa expose vì Q012 luồng tạo–ký và Q013 paymentMethod đang chờ; câu hỏi ghi QUESTIONS.
+- Verify locked restore/Release build 0 warning/error, **329 tests passed**, 26 test mới so với Viettel. Kiểm chứng token tenant isolation, redaction, wire fixture, PDF, replay/lookup và pending giữ khóa. OpenAPI chỉ báo CYBER_BILL ở 3 route đã xong.
+- API local vẫn dừng để build trong P2; credential/site/key/journal thật không sửa, không gọi NCC thật. Tiếp tục SUN độc lập trong lúc chờ.

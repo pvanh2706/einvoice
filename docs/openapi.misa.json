@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "eInvoice API — MISA and VIETTEL",
-    "version": "0.3.0",
+    "title": "eInvoice API — MISA, VIETTEL and partial CYBER_BILL",
+    "version": "0.3.1",
     "description": "Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged."
   },
   "servers": [
@@ -16,11 +16,13 @@
         "operationId": "misa_health_check",
         "tags": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "CYBER_BILL"
         ],
         "x-providers": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "CYBER_BILL"
         ],
         "summary": "Check a fresh MISA v3 login; bypass token cache.",
         "security": [
@@ -61,7 +63,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -240,7 +243,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -436,7 +440,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -632,7 +637,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -816,7 +822,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -1007,7 +1014,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -1203,7 +1211,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -1342,11 +1351,13 @@
         "operationId": "misa_document",
         "tags": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "CYBER_BILL"
         ],
         "x-providers": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "CYBER_BILL"
         ],
         "summary": "Invoice uses searchCode; ticket/receipt use transactionId. Returns provider base64 content.",
         "security": [
@@ -1387,7 +1398,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -1523,11 +1535,13 @@
         "operationId": "misa_void",
         "tags": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "CYBER_BILL"
         ],
         "x-providers": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "CYBER_BILL"
         ],
         "summary": "Cancel invoice/ticket/receipt with reason. No automatic retry.",
         "security": [
@@ -1580,7 +1594,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -1764,7 +1779,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -1958,7 +1974,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -2157,7 +2174,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -2339,7 +2357,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -2533,7 +2552,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -2732,7 +2752,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -2870,7 +2891,6 @@
       "post": {
         "operationId": "misa_draft",
         "tags": [
-          "MISA",
           "VIETTEL"
         ],
         "x-providers": [
@@ -2927,7 +2947,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -3065,7 +3086,6 @@
       "post": {
         "operationId": "misa_search",
         "tags": [
-          "MISA",
           "VIETTEL"
         ],
         "x-providers": [
@@ -3110,7 +3130,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -3248,7 +3269,6 @@
       "post": {
         "operationId": "misa_adjust_increase",
         "tags": [
-          "MISA",
           "VIETTEL"
         ],
         "x-providers": [
@@ -3305,7 +3325,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -3443,7 +3464,6 @@
       "post": {
         "operationId": "misa_adjust_decrease",
         "tags": [
-          "MISA",
           "VIETTEL"
         ],
         "x-providers": [
@@ -3500,7 +3520,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {
@@ -3638,7 +3659,6 @@
       "post": {
         "operationId": "misa_adjust_information",
         "tags": [
-          "MISA",
           "VIETTEL"
         ],
         "x-providers": [
@@ -3695,7 +3715,8 @@
                       "type": "string",
                       "enum": [
                         "MISA",
-                        "VIETTEL"
+                        "VIETTEL",
+                        "CYBER_BILL"
                       ]
                     },
                     "siteId": {

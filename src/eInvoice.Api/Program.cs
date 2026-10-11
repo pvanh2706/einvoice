@@ -9,6 +9,7 @@ using eInvoice.Providers.Configuration;
 using eInvoice.Providers.Misa;
 using eInvoice.Providers.Common;
 using eInvoice.Providers.Viettel;
+using eInvoice.Providers.Cyberbill;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false)
@@ -54,6 +55,11 @@ builder.Services.AddHttpClient<ViettelTransport>(client => client.Timeout = Time
     .RemoveAllLoggers()
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
 builder.Services.AddScoped<IInvoiceProvider, ViettelInvoiceProvider>();
+builder.Services.AddSingleton(builder.Configuration.GetSection("Providers:Cyberbill").Get<CyberbillOptions>() ?? new CyberbillOptions());
+builder.Services.AddHttpClient<CyberbillTransport>(client => client.Timeout = TimeSpan.FromSeconds(100))
+    .RemoveAllLoggers()
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+builder.Services.AddScoped<IInvoiceProvider, CyberbillInvoiceProvider>();
 builder.Services.AddScoped<ProviderDispatcher>();
 builder.Services.AddSingleton(serviceProvider => new MisaWriteJournal(
     builder.Configuration["Providers:Misa:JournalDirectory"] ?? Path.Combine(AppContext.BaseDirectory, "misa-journal"),

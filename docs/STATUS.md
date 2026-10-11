@@ -34,6 +34,8 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 
 ## Kiểm chứng gần nhất
 
+Cyberbill đã có transport/auth, 7 mapping fixture baseline độc lập; API chỉ expose health-check/document/void (4 action). Q012 luồng tạo/ký và Q013 mã thanh toán đang chờ, publish trả 501 trước NCC. Xem [CYBERBILL-API](CYBERBILL-API.md). Verify locked restore/Release build **0 warning/error, 329 passed, 0 failed/skipped**, 26 test mới; không gọi NCC thật. OpenAPI chỉ liệt kê CYBER_BILL ở 3 route đã xong. Tiếp tục phần độc lập SUN trong lúc chờ.
+
 Sau port Viettel ngày 11/10: `powershell -NoProfile -File scripts/verify.ps1` **PASS**, restore locked, Release **0 warning/error**, **303 passed, 0 failed/skipped** (35 ca mới). Bao phủ 11 wire fixture, login/cookie/auth, thiếu/sai kết quả, batch partial, timeout/lỗi login, endpoint guard, buyer bank/Customername metadata, replay và claim chung/provider hash isolation. OpenAPI **25 paths/39 schemas**, collection Viettel **17 requests** đã kiểm tra JSON/path; collection MISA giữ 20 requests. Không gọi Viettel thật hoặc UAT.
 
 2026-10-10, thay đổi chỉ tài liệu: chạy lại `dotnet test eInvoice.sln -c Release --no-build --no-restore --verbosity minimal`, **268 passed, 0 failed/skipped** trên artifact Release đã build ở checkpoint 316ba42. Không build lại runtime hoặc restart. JSON request publish/status/document/form-serials trong tài liệu đã kiểm tra theo OpenAPI 3.1, body nhúng trùng file JSON riêng, số tiền mẫu/nhánh HSM nhất quán, route/link hợp lệ. `curl.exe` với TLS mặc định xác nhận GET /health/live trả alive; không gọi MISA trong phiên này. Key postman-local cũ đã hết hạn ngày 09/10/2026; chưa gia hạn/cấp key mới.
@@ -52,12 +54,12 @@ Test suite vẫn dùng fake HTTP. Ngày 2026-10-09 đã thử riêng health-chec
 - Q009: định tuyến MTT/batch dựa trên electronicInvoiceType rõ ràng. Hiện giữ điều kiện baseline; mode 4 cần serial MTT, batch không tự sửa dispatcher cũ. Xem MISA-VARIANTS.
 - Q010: giữ hay giới hạn CQT HSM. Chức năng baseline được port với tên tax/send-pending, không nhận invoiceIds vì provider gửi hàng đợi đang chờ. Không coi im lặng là duyệt thay nghiệp vụ.
 - Sandbox/UAT từng variant, golden đã che, token receipt expiry, quantity biên lai int, USB correlation/thứ tự và batch partial errors.
-- 8 provider còn lại; log/catalogue còn dùng, correlation requestId PMS, metrics/throttling/proxy và cấu hình production.
+- 7 provider ngoài MISA/Viettel; Cyberbill đang làm một phần. Log/catalogue còn dùng, correlation requestId PMS, metrics/throttling/proxy và cấu hình production.
 - Storage/reconcile kết quả ghi chưa xác định và kế hoạch thay thế/rollback trước cutover.
 
 ## Bước tiếp theo khi tiếp tục
 
-**Bước P2 đang làm: Cyberbill** sau Viettel, rồi các provider còn lại theo PLAN. Chỉ MISA và Viettel có adapter ở checkpoint hiện tại; không ghi 7 provider còn lại là hoàn thành. Code cũ pinned vẫn là nguồn đọc, bảo toàn wire và thực hiện offline tests/capture trước UAT. API local đã được dừng sau xác minh executable PID 14072 để build Release, cần chạy lại ở checkpoint cuối nếu tiếp tục thử local. Không sửa credential/site/key hoặc xóa journal.
+**Bước P2: Cyberbill một phần, SUN tiếp theo trong lúc chờ Q012/Q013.** MISA/Viettel đã đủ adapter baseline; Cyberbill mới health/document/void. Không ghi các provider còn lại là hoàn thành. Code cũ pinned vẫn là nguồn đọc, bảo toàn wire và thực hiện offline tests/capture trước UAT. API local đã dừng sau xác minh executable PID 14072 để build Release, cần chạy lại ở checkpoint cuối. Không sửa credential/site/key hoặc xóa journal.
 
 Phần mềm bên ngoài có thể bắt đầu tích hợp theo INTEGRATION-AGENT sau khi được cấp key còn hạn/SiteId/URL truy cập được và mẫu HSM sandbox đã xác nhận. Nếu nằm máy khác, localhost không dùng được; việc cấp endpoint HTTPS/network cần cấu hình riêng khi người dùng yêu cầu. Chưa có sandbox publish thành công được xác nhận; không đánh dấu production-ready. Các tên trạng thái processing/rejected/unknown mới được thảo luận, **chưa triển khai**; API vẫn pending/completed/not-found và chưa có tự reconcile/unlock.
 

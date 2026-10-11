@@ -1,4 +1,4 @@
-namespace eInvoice.Providers.Misa;
+namespace eInvoice.Providers.Common;
 
 public enum ProviderFailure
 {

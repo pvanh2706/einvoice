@@ -4,7 +4,6 @@ using eInvoice.Core;
 using eInvoice.Core.Configuration;
 using eInvoice.Core.Contracts;
 using eInvoice.Providers.Common;
-using eInvoice.Providers.Misa;
 using eInvoice.Providers.Viettel.Mapping;
 using eInvoice.Providers.Viettel.Wire;
 using Newtonsoft.Json.Linq;

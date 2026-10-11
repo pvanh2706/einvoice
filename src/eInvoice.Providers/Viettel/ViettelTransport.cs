@@ -2,7 +2,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using eInvoice.Core.Contracts;
 using eInvoice.Providers.Common;
-using eInvoice.Providers.Misa;
 using eInvoice.Providers.Viettel.Wire;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -95,7 +94,7 @@ public sealed class ViettelTransport(HttpClient client, ViettelOptions options)
         {
             // Numeric HTTP-like codes are the only known codes here; unknown values are not echoed as supplier text.
             SupplierCode = SafeCode(Scalar(json, "errorCode") ?? Scalar(json, "code")),
-            SupplierMessage = MisaErrorMessage.Sanitize(json["description"]?.Type == JTokenType.String ? json.Value<string>("description") : null,
+            SupplierMessage = ProviderErrorMessage.Sanitize(json["description"]?.Type == JTokenType.String ? json.Value<string>("description") : null,
                 site, token, "VIETTEL"),
             SupplierHttpStatus = status,
         };

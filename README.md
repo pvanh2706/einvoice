@@ -45,6 +45,7 @@ Endpoint hiện có:
 - `POST /api/eInvoice/form-serials`: lấy mẫu/ký hiệu MISA cho `invoiceType: 0`, năm hiện tại theo UTC+7.
 - Bộ route publish/batch/preview/adjust/replace/document/void/status/CQT/USB: [MISA-API](docs/MISA-API.md).
 - Adapter theo SiteId, capabilities chung và Viettel publish/batch/draft/search/điều chỉnh: [VIETTEL-API](docs/VIETTEL-API.md).
+- Cyberbill một phần: [CYBERBILL-API](docs/CYBERBILL-API.md), health/document/void; luồng phát hành chờ Q012/Q013.
 - `GET /openapi/misa.json`: schema để import Postman; [collection synthetic](docs/postman/eInvoice-MISA.postman_collection.json).
 
 Hợp đồng mới, JSON mẫu và mã lỗi: [API-CONTRACT](docs/API-CONTRACT.md). Các route/key cũ không được hỗ trợ.

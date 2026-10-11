@@ -146,3 +146,7 @@ curl --request POST 'https://localhost:7150/api/eInvoice/form-serials' \
 ```
 
 Local có site mẫu nhưng credential/endpoint trống: health-check trả 400 MISA_CREDENTIALS_REQUIRED; FormSerial kiểm tra endpoint trước nên trả 503 MISA_ENDPOINT_NOT_ALLOWED. Thiếu file JSON trả 503 SITE_STORE_NOT_CONFIGURED. Test 200 dùng HTTP giả lập, chưa gọi sandbox. Setup JSON tại LOCAL-SETUP.
+
+## Cyberbill một phần
+
+`site.partner: 7`, provider `CYBER_BILL`: health-check, document và void đã port. Hợp đồng/giới hạn tại [CYBERBILL-API](CYBERBILL-API.md). Các route chưa hoàn thành trả 501; fixture mapping không phải capability API.

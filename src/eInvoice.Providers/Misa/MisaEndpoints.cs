@@ -1,3 +1,4 @@
+using eInvoice.Providers.Common;
 using eInvoice.Core.Contracts;
 
 namespace eInvoice.Providers.Misa;

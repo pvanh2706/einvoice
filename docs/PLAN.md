@@ -35,7 +35,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 | VIETTEL | 13 action baseline | REST cookie token từng operation, UTF-8 JSON/form, no retry | 11 frozen payload | Đủ route qua fake HTTP; toàn solution 303 tests | Chưa |
 | VNPT_V5 | Chưa | Chưa | Chưa | Chưa | Chưa |
 | MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 268 test toàn solution; health-check thật 200, publish diagnostic bị khóa | Chưa |
-| CYBER_BILL | Chưa | Chưa | Chưa | Chưa | Chưa |
+| CYBER_BILL | 7 mapping baseline; payment/workflow chờ Q012/Q013 | REST Bearer từng operation | 7 payload độc lập | health/document/void (4 action), 329 tests toàn solution | Chưa |
 | FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
 | EASY_INVOICE | Chưa | Chưa | Chưa | Chưa | Chưa |
 

@@ -1,3 +1,4 @@
+using eInvoice.Providers.Common;
 using System.Text;
 using eInvoice.Core.Contracts;
 using Newtonsoft.Json;

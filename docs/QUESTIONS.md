@@ -11,6 +11,9 @@
 
 ## Đang chờ trước khi thay đổi nghiệp vụ/cutover
 
+- Q012 (đã hỏi 11/10/2026): Cyberbill dispatcher cũ CREATED_AND_PUBLISH thực tế chỉ tạo, PUBLISH mới ký HSM; helper endpoint CREATE_AND_PUBLISH rỗng/không được gọi. Bản mới giữ hai bước create → publish-existing rõ ràng hay `/publish` tự tạo rồi ký? Chưa expose route publish Cyberbill hoặc tự đoán luồng. Mapping/auth/tests độc lập tiếp tục trong lúc chờ.
+- Q013 (đã hỏi 11/10/2026): Cyberbill cũ parse PaymentMethod thành số 1–5 nhưng MISA/Viettel dùng tên. Bản mới Cyberbill lấy mã từ paymentMethodCode và tên từ paymentMethod (wire giữ nguyên), hay giữ paymentMethod số như baseline? Mapping giữ baseline trong lúc chờ, chưa đổi ý nghĩa trường.
+
 - Q008: Người dùng **đã duyệt cho các nhà cung cấp mới** ngày UTC+7 và định dạng số invariant, giữ công thức tiền/thuế/làm tròn (D021, 11/10/2026). Phần mở rộng date/ticks/culture MISA ngoài năm FormSerial vẫn chưa được duyệt; giữ baseline MISA.
 - Q009 (đã hỏi, đang chờ): Định tuyến MTT/HSM theo electronicInvoiceType rõ ràng, kiểm tra ký hiệu nhất quán, từ chối batch trộn site/type/mode/form/serial? Hiện mapper/transport đã port, định tuyến vẫn theo baseline trong lúc chờ.
 - Q010 (đã hỏi, đang chờ): Giữ CQT HSM hay giới hạn chỉ USB? Để hoàn tất chức năng tương đương baseline theo yêu cầu viết lại, route HSM được giữ dưới tên tax/send-pending, body không nhận invoiceIds. Chưa áp dụng/giả định một lựa chọn thay đổi nghiệp vụ; không gọi thật hay deploy.
