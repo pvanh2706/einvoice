@@ -1,8 +1,8 @@
 # API EasyInvoice
 
-`site.partner: 9`, response `provider: "EASY_INVOICE"`. Đã port **12 action nghiệp vụ** trong baseline, kiểm thử HTTP giả lập và 20 payload từ mapper frozen độc lập. Hai action Login/HealthCheck cũ chỉ trả thành công mà không gọi NCC: **Q016 đang chờ**, hiện health-check trả 501 `EASY_INVOICE_HEALTH_NOT_VERIFIED`, không quảng cáo kết nối đã xác minh. Chưa UAT với EasyInvoice thật.
+`site.partner: 9`, response `provider: "EASY_INVOICE"`. Đã port **12 action nghiệp vụ** trong baseline, kiểm thử HTTP giả lập và 20 payload từ mapper frozen độc lập. Hai action Login/HealthCheck đã hoàn thiện theo lựa chọn người dùng ngày 13/10: kiểm tra cấu hình endpoint/credential/allowlist, HTTP 200 với connected=false, connectionVerified=false, configurationValid=true; không gọi NCC. Tổng 14 action baseline. Chưa UAT với EasyInvoice thật.
 
-Import [collection Postman](postman/eInvoice-EASY_INVOICE.postman_collection.json) và [environment template](postman/eInvoice-EASY_INVOICE.environment.template.json), hoặc [OpenAPI chung](openapi.misa.json). Collection có 17 request, không chứa tài khoản/key thật.
+Import [collection Postman](postman/eInvoice-EASY_INVOICE.postman_collection.json) và [environment template](postman/eInvoice-EASY_INVOICE.environment.template.json), hoặc [OpenAPI chung](openapi.misa.json). Collection có 18 request, không chứa tài khoản/key thật.
 
 ## Cấu hình và xác thực
 
@@ -74,7 +74,7 @@ Document/preview chỉ thành công khi HTTP 2xx và bytes bắt đầu `%PDF-`;
 | 400 | INVALID_INVOICE_REQUEST, EASY_INVOICE_CREDENTIALS_REQUIRED |
 | 409 | key/body khác, claim trùng hoặc attempt pending; có diagnostics/link journal |
 | 422 | EASY_INVOICE_OPERATION_REJECTED, providerCode generic EASY_INVOICE_ITEM_REJECTED, providerMessage đã che bí mật + providerHttpStatus |
-| 501 | Luồng chưa hỗ trợ; health riêng EASY_INVOICE_HEALTH_NOT_VERIFIED trong lúc Q016 đang chờ |
+| 501 | Luồng không có trong baseline; health-check kiểm tra cấu hình theo D027 |
 | 502 | EASY_INVOICE_INVALID_RESPONSE / EMPTY_RESPONSE / DOCUMENT_INVALID_RESPONSE / CONNECTION_ERROR |
 | 503 | EASY_INVOICE_ENDPOINT_NOT_ALLOWED |
 | 504 | EASY_INVOICE_TIMEOUT |

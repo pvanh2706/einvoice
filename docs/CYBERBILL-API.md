@@ -1,4 +1,4 @@
-# Cyberbill — tiến độ và hợp đồng hiện tại
+# Cyberbill — 11 action baseline
 
 Provider `CYBER_BILL`, `site.partner = 7`. Code lấy từ baseline `66a9c742d0f6fb692d339076e6cd82780e3476be`. Chưa UAT hoặc gọi Cyberbill thật.
 
@@ -18,10 +18,18 @@ Thành công NCC cần `success: true` và `result.maketqua: "01"`. Document c�
 
 Tra cứu `GET /api/eInvoice/operations/void/{idempotencyKey}` đọc journal local, không gọi NCC. Completed replay cùng key/body; đã gửi mà lỗi giữ pending, cần đối soát. Không dùng key mới để vượt khóa. Invoice-attempts phase publish không phải tra cứu claim hủy.
 
-## Phần đang chờ quyết định
+## Tạo và ký riêng theo quyết định ngày 13/10/2026
 
-Q012: dispatcher cũ CREATED/CHANGE/CREATED_AND_PUBLISH chỉ tạo; PUBLISH ký HSM hóa đơn có sẵn. Helper tạo–phát hành trực tiếp có endpoint rỗng, không được gọi. Chưa expose create/publish-existing/publish/adjust/replace/delete cho tới khi chốt luồng API.
+Q012/Q013 đã được người dùng chốt: giữ hai bước tạo → ký và paymentMethod là mã số 1–5.
 
-Q013: mapper cũ parse `paymentMethod` thành số, khác tên thanh toán phía MISA/Viettel. Chưa chuyển sang `paymentMethodCode` khi chưa có quyết định; mapping baseline đang được giữ để đối chiếu.
+| POST /api/eInvoice/… | Body | Ý nghĩa |
+|---|---|---|
+| create | CreateInvoiceRequest | GuiHoadonGoc, tạo unsigned; action CreateAndPublish lịch sử cũng trỏ route này |
+| change | AdjustOrReplaceInvoiceRequest | GuiHoadonGoc theo hành vi CHANGE cũ |
+| replace, adjust | AdjustOrReplaceInvoiceRequest | ID mới và originalInvoiceId; tạo hóa đơn thay thế/điều chỉnh chưa ký |
+| publish-existing | PublishExistingInvoiceRequest | invoiceId + providerInvoiceCode; KyHoaDonHSM |
+| delete | DeleteInvoiceRequest | invoiceId + providerInvoiceCode; XoaHoaDon |
 
-7 fixture create/replace/adjust/sign/document/delete/void đã capture bằng công cụ frozen độc lập, không tham chiếu assembly provider runtime. Mapper giữ công thức tiền/thuế/default; scope invariant theo D021. Có fixture của một thao tác không đồng nghĩa API đó đã hoàn thành. Capabilities chỉ báo 4 action Login/HealthCheck/DownloadPdf/Void (3 route). Các thao tác còn lại trả 501 trước khi gọi Cyberbill.
+Các thao tác này cần Idempotency-Key. Create/replace/adjust trả InvoiceResult gồm providerInvoiceCode/magiaodich và requiresSigning=true. PMS dùng mã trả về trong publish-existing; ký thành công trả requiresSigning=false và mã CQT nếu có. Không tự gọi ký sau create; /publish không có luồng create rồi ký. PaymentMethod tên như TM/CK trả 400 trước NCC; paymentMethodCode không thay cho lựa chọn mã số này.
+
+7 fixture create/replace/adjust/sign/document/delete/void từ source frozen độc lập được đối chiếu ở mapping và API fake HTTP. Mapper giữ công thức tiền/thuế/default, invariant theo D021. Capabilities có đủ 11 action sống baseline. Chưa UAT với Cyberbill thật.

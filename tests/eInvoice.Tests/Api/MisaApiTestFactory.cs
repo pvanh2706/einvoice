@@ -11,6 +11,10 @@ using eInvoice.Providers.Cyberbill;
 using eInvoice.Providers.Sun;
 using eInvoice.Providers.Minvoice;
 using eInvoice.Providers.EasyInvoice;
+using eInvoice.Providers.Fast;
+using eInvoice.Providers.Vnpt;
+using eInvoice.Providers.Vnpt.Baseline;
+using eInvoice.Providers.Common;
 using eInvoice.Providers.Configuration;
 using eInvoice.Tests.Misa;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +35,8 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
     public ConcurrentQueue<string> Logs { get; } = new();
     public Func<ProviderCall, HttpResponseMessage>? Respond { get; set; }
     public Func<SiteInfo?, Guid?, ResolvedSite>? Resolve { get; set; }
+    public ConcurrentQueue<SoapCall> SoapCalls { get; } = new();
+    public Func<SoapCall, object>? SoapRespond { get; set; }
     public string? SiteFilePath { get; init; }
     public TimeProvider? Clock { get; init; }
 
@@ -75,6 +81,13 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
             services.RemoveAll<EasyInvoiceOptions>();
             services.AddSingleton(new EasyInvoiceOptions { AllowedHosts = ["easyinvoice.example.test"] });
             services.AddHttpClient<EasyInvoiceTransport>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
+            services.RemoveAll<FastOptions>();
+            services.AddSingleton(new FastOptions { AllowedHosts = ["fast.example.test", "fast-soap.example.test"] });
+            services.AddHttpClient<FastTransport>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
+            services.RemoveAll<VnptOptions>();
+            services.AddSingleton(new VnptOptions { AllowedHosts = ["vnpt.example.test"] });
+            services.RemoveAll<IVnptSoapInvoker>();
+            services.AddSingleton<IVnptSoapInvoker>(new SoapInvoker(this));
             services.RemoveAll<MisaWriteJournal>();
             services.AddSingleton(new MisaWriteJournal(_directory, TimeProvider.System));
             services.AddHttpClient<MisaLoginClient>().ConfigurePrimaryHttpMessageHandler(() => new Handler(this));
@@ -137,6 +150,48 @@ internal sealed class MisaApiTestFactory : WebApplicationFactory<Program>
         }
     }
     public sealed record ProviderCall(string Url, HttpMethod Method, string? Body, Dictionary<string, string> Headers, string? Encoding);
+    public sealed record SoapCall(Type Client, string Url, string Operation, object Request, Type Response);
+    private sealed class SoapInvoker(MisaApiTestFactory factory) : IVnptSoapInvoker
+    {
+        public Task<T> CallAsync<T>(Type client, string url, string operation, object request, CancellationToken ct)
+        {
+            ct.ThrowIfCancellationRequested();
+            _ = VnptSoapInvoker.ResolveOperation(client, operation, request.GetType());
+            if (VnptSoapInvoker.MarksWrite(operation)) WriteOperationJournal.MarkDispatched();
+            var call = new SoapCall(client, url, operation, request, typeof(T));
+            factory.SoapCalls.Enqueue(call);
+            if (factory.SoapRespond is not null) return Task.FromResult((T)factory.SoapRespond(call));
+            var result = operation switch
+            {
+                "getPublishInvsAsync" => "{\"status\":\"OK\",\"result\":[{\"NameInvoice\":\"Synthetic form\",\"InvPattern\":\"1\",\"InvSerial\":\"C26TAA\",\"Quantity\":100,\"FromNo\":1,\"ToNo\":100,\"CurrentNo\":1,\"Status\":1}]}",
+                "GetCertInfoAsync" => Convert.ToBase64String(Encoding.UTF8.GetBytes("<Certificate><SerialNumber>SYNTHETIC-CERT</SerialNumber></Certificate>")),
+                "GetMCCQThueByFkeysAsync" => Convert.ToBase64String(Encoding.UTF8.GetBytes("<DSHDon><HDon><Fkey>INV-001</Fkey><SHDon>123</SHDon><TThai>1</TThai></HDon></DSHDon>")),
+                "downloadInvPDFFkeyAsync" or "downloadInvPDFFkeyNoPayAsync" or "downloadInvPDFFkeyNoPayErrorAsync" or "downloadNewInvPDFFkeyAsync" => "JVBERi0xLjQKc3ludGhldGlj",
+                "getInvViewFkeyAsync" => "https://vnpt.example.test/synthetic-document",
+                "listInvByCusFkeyAsync" => "<Data><Item><cusCode>INV-001</cusCode><signStatus>1</signStatus><invNum>123</invNum></Item></Data>",
+                "getInvByFkeyAsync" => Convert.ToBase64String(Encoding.UTF8.GetBytes("<DSHDon><HDon><Fkey>INV-001</Fkey><SHDon>123</SHDon><TThai>1</TThai></HDon></DSHDon>")),
+                "deleteInvoiceByFkeyAsync" or "cancelInvAsync" or "cancelInvNoPayAsync" or "SendInvMTTFkeyAsync" => "OK",
+                _ => "OK:#INV-001_123",
+            };
+            var body = request.GetType().GetField("Body")!.GetValue(request)!;
+            var xml = body.GetType().GetField("xmlInvData")?.GetValue(body) as string;
+            if (xml is not null && operation == "ImportAndPublishInvAsync")
+            {
+                var keys = System.Xml.Linq.XDocument.Parse(xml).Descendants().Where(e => e.Name.LocalName == "key").Select(e => e.Value);
+                result = "OK:1;C26TAA-" + string.Join(',', keys.Select(k => k + "_123"));
+            }
+            return Task.FromResult((T)SoapResponse(typeof(T), result));
+        }
+    }
+    internal static object SoapResponse(Type type, string value)
+    {
+        var response = Activator.CreateInstance(type)!;
+        var bodyField = type.GetField("Body")!;
+        var body = Activator.CreateInstance(bodyField.FieldType)!;
+        body.GetType().GetFields().Single(f => f.FieldType == typeof(string)).SetValue(body, value);
+        bodyField.SetValue(response, body);
+        return response;
+    }
     private sealed class LogProvider(ConcurrentQueue<string> logs) : ILoggerProvider
     {
         public ILogger CreateLogger(string categoryName) => new CapturedLogger(logs);

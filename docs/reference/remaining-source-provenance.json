@@ -1,0 +1,9 @@
+{
+  "baseline": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "sources": {
+    "src/ezInvoice.Application/EventSourcedNormalizers/FastNormalizes/FastConvertRequest.cs": "de7858c16a70c569543f9a75efe556a66de3e3b12ea5a97724d0121953f60ae5",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Fast/Models/FastInvoiceModels.cs": "1db29e573f80f7a60afc3b51318a781228d337bcf51636cdf555014ac0fccf61",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Fast/Models/FastRequestModels.cs": "337e7b8054356f6206b25b846573f5025e2052b5302c1b95b4c94715dcd19caa",
+    "src/ezInvoice.Application/Services/ThirdPartyServices/EnumDefine.cs": "725722bfec74a0b4eeb40f41149bbe8f3f976bdac542d140a427f817170e468a"
+  }
+}

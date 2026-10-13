@@ -11,6 +11,9 @@ public static class ProviderEndpoints
     public static void MapProviderApi(this WebApplication app)
     {
         Map<CreateInvoiceRequest>(app, "draft");
+        Map<CreateInvoiceRequest>(app, "draft/edit");
+        Map<GetFormSerialsRequest>(app, "certificate");
+        Map<SendToTaxAuthorityRequest>(app, "tax/send");
         Map<SearchInvoiceRequest>(app, "search");
         Map<DownloadPdfRequest>(app, "document/draft");
         Map<CreateInvoiceRequest>(app, "create");

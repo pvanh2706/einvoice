@@ -1,12 +1,25 @@
 # Trạng thái eInvoice — điểm bắt đầu phiên kế tiếp
 
-Ngày cập nhật: **2026-10-11**, Asia/Bangkok.
+Ngày cập nhật: **2026-10-13**, Asia/Bangkok.
+
+## Kết quả hiện tại
+
+**Đã convert đủ 9 provider / 133 action sống baseline; hoàn thành phần code và kiểm thử offline.** MISA 19, Viettel 13, SUN 10, Minvoice 15, Cyberbill 11, EasyInvoice 14, FAST 13, VNPT 17, VNPT_V5 21. Chưa UAT với NCC thật hoặc cutover.
+
+Phiên 13/10: FAST REST MTT/SOAP GTGT, VNPT/VNPT_V5 dùng WSDL proxy V1/V5/TLYT, Cyberbill create → sign riêng, Login/HealthCheck FAST/EasyInvoice configuration-only đã triển khai. Q012/Q013/Q016/Q017 được người dùng chốt, xem D026–D029. Bổ sung IsItemSpecialTax/IsSum=4 từ HEAD c09ad7d của repo cũ được review riêng, không nâng baseline chung hoặc đổi công thức.
+
+Verify locked restore/Release **PASS: 0 warning/error; 569 passed, 0 failed/skipped** (113 ca mới so với checkpoint EasyInvoice). 24 fixture mới độc lập, WCF formatter/action/param casing, API fake HTTP/invoker từng route/biến thể, credential/endpoint guard, replay/pending/timeout, mixed ERR/OK và correlation. Lỗi ở bước đọc certificate trước tax/send giải phóng reservation vì chưa gửi business write; timeout sau write vẫn pending. Không gọi NCC thật; không thay credential/key/journal hoặc routing production. Hai test “provider chưa triển khai” chuyển partner mẫu từ VNPT sang 999 vì VNPT nay đã có adapter.
+
+OpenAPI **36 paths / 42 schemas / v0.7.0**, Postman FAST 13, VNPT 18, VNPT_V5 22, Cyberbill 10, EasyInvoice 18 request. [FAST-API](FAST-API.md), [VNPT-API](VNPT-API.md), [CYBERBILL-API](CYBERBILL-API.md), [EASYINVOICE-API](EASYINVOICE-API.md). Trạng thái/API local bên dưới là lịch sử checkpoint 11/10; **không restart API local trong phiên convert 13/10**. Khi cần dùng code mới, restart theo executable/listener đã xác minh, giữ nguyên journal.
+
+Bước tiếp theo: sandbox/UAT từng provider và biến thể; xử lý Q008/Q009/Q010/Q015 trước khi đổi nghiệp vụ; P3 storage/reconcile và runbook cutover. Không làm lại P2 hoặc tự reset pending.
 
 ## Mục tiêu và checkpoint
 
 Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, giữ key/payload provider. Quyền và quy tắc nằm trong AGENTS.md, DECISIONS.md; không phụ thuộc lịch sử chat.
 
 - Branch: `rewrite/foundation`.
+- Checkpoint phiên 13/10: `Complete remaining invoice providers and baseline action coverage`; lấy hash bằng `git log -1 --oneline`. Không push/deploy hoặc restart API local trong phiên này.
 - Baseline repo cũ: `66a9c742d0f6fb692d339076e6cd82780e3476be` tại `D:\Code\25.ezInvoice`.
 - Checkpoint nền tảng `9316ec3`, FormSerial `92f9063`.
 - Checkpoint phiên này: `Complete MISA baseline APIs with token isolation and durable write journal`; lấy hash bằng `git log -1 --oneline`.
@@ -17,7 +30,7 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 - **Bộ API MISA tương ứng toàn bộ 19 action sống baseline đã triển khai và kiểm thử offline. Sandbox/UAT/cutover chưa thực hiện.**
 - P0 hoàn thành; P1 MISA code/fixture/HTTP giả lập hoàn thành, kiểm chứng thực tế còn chờ.
 - Checkpoint P2: Viettel `0930848`, Cyberbill một phần `2122c10`, SUN `ef55f0e`, Minvoice `ac75844`. Đọc QUESTIONS Q012/Q013 trước khi expose phát hành Cyberbill; bước tiếp theo cụ thể nằm bên dưới.
-- EasyInvoice nghiệp vụ checkpoint `1d05d97`; health/Login chưa chốt Q016, chưa coi 14 action baseline là đã xong.
+- EasyInvoice checkpoint lịch sử `1d05d97` có 12 action nghiệp vụ; Login/Health đã hoàn thiện 13/10 theo D027.
 
 ## Đã hoàn thành
 
@@ -35,6 +48,8 @@ Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, gi
 - OpenAPI 3.1: 19 paths, 39 schemas; Postman 20 request + template environment không credential; MISA-API/LOCAL-SETUP mô tả hợp đồng/diagnostics và trình tự USB.
 
 ## Kiểm chứng gần nhất
+
+Kết quả hiện tại 13/10: **569 tests passed**, xem phần “Kết quả hiện tại”. Các đoạn sau là lịch sử checkpoint trước khi hoàn thiện các provider còn lại.
 
 EasyInvoice **12 action nghiệp vụ/12 POST route** đã port, xem [EASYINVOICE-API](EASYINVOICE-API.md). Verify locked restore/Release **0 warning/error, 456 passed, 0 failed/skipped**, 59 tests mới so với Minvoice. 20 fixture độc lập giữ XML/tỷ giá 0/phí/metadata/tổng thuế; runtime gom ba khối mapper, Authentication từng request/tenant/nonce, PDF thật, correlation Ikey, replay/claim/pending và fingerprint Minvoice cũ có thêm serial nullable. OpenAPI 33 paths/42 schemas/v0.6.0, Postman 17 requests. **Health/Login chờ Q016**, tạm 501, capabilities chỉ 12 action nghiệp vụ; chưa UAT/NCC thật.
 
@@ -62,12 +77,12 @@ Test suite vẫn dùng fake HTTP. Ngày 2026-10-09 đã thử riêng health-chec
 - Q009: định tuyến MTT/batch dựa trên electronicInvoiceType rõ ràng. Hiện giữ điều kiện baseline; mode 4 cần serial MTT, batch không tự sửa dispatcher cũ. Xem MISA-VARIANTS.
 - Q010: giữ hay giới hạn CQT HSM. Chức năng baseline được port với tên tax/send-pending, không nhận invoiceIds vì provider gửi hàng đợi đang chờ. Không coi im lặng là duyệt thay nghiệp vụ.
 - Sandbox/UAT từng variant, golden đã che, token receipt expiry, quantity biên lai int, USB correlation/thứ tự và batch partial errors.
-- Fast/VNPT/VNPT_V5 chưa port; Cyberbill đang làm một phần. Q015 sửa nháp Minvoice, Q016 health EasyInvoice đang chờ. Log/catalogue, correlation requestId PMS, metrics/throttling/proxy và cấu hình production còn làm sau.
+- Các adapter baseline đã port đầy đủ. Q015 sửa tiếp nháp Minvoice vẫn chờ; Q012/Q013/Q016/Q017 đã chốt. Log/catalogue, correlation requestId PMS, metrics/throttling/proxy và cấu hình production còn làm sau.
 - Storage/reconcile kết quả ghi chưa xác định và kế hoạch thay thế/rollback trước cutover.
 
 ## Bước tiếp theo khi tiếp tục
 
-**Bước P2: MISA/Viettel/SUN/Minvoice đã có adapter baseline offline; EasyInvoice xong 12 action nghiệp vụ, health Q016 đang chờ; Cyberbill mới health/document/void, chờ Q012/Q013.** Tiếp theo Fast, rồi VNPT/VNPT_V5. Minvoice auth Q014 đã giải quyết D024; Q015 sửa tiếp nháp đang chờ. Fast cần đọc G01–G06/G26 và source enum/mapper/repository/proxy, username JSON chứa clientC/proxyC/user/unitC, hai URL MTT/GTGT; preserve wire text/plain và thứ tự cột, không tự sửa TaxRate=8 mapping. SOAP/WCF dùng proxy sinh từ WSDL, không viết tay generated code. Không ghi provider chưa port/UAT là hoàn thành. Nguồn pinned chỉ đọc; tiếp tục offline fixture/tests trước UAT. Không sửa credential/site/key hoặc xóa journal.
+**P2 code/offline đã hoàn thành cho cả 9 provider.** Tiếp theo sandbox/UAT và P3; Q015 sửa tiếp nháp Minvoice còn chờ. FAST giữ username JSON chứa clientC/proxyC/user/unitC, hai URL MTT/GTGT, text/plain và thứ tự cột, TaxRate=8 mapping. SOAP/WCF dùng proxy sinh từ WSDL. Không coi offline pass là UAT/cutover hoàn thành. Nguồn pinned chỉ đọc; không sửa credential/site/key hoặc xóa journal.
 
 Phần mềm bên ngoài có thể bắt đầu tích hợp theo INTEGRATION-AGENT sau khi được cấp key còn hạn/SiteId/URL truy cập được và mẫu HSM sandbox đã xác nhận. Nếu nằm máy khác, localhost không dùng được; việc cấp endpoint HTTPS/network cần cấu hình riêng khi người dùng yêu cầu. Chưa có sandbox publish thành công được xác nhận; không đánh dấu production-ready. Các tên trạng thái processing/rejected/unknown mới được thảo luận, **chưa triển khai**; API vẫn pending/completed/not-found và chưa có tự reconcile/unlock.
 

@@ -140,8 +140,12 @@ public class EasyInvoiceOperationTests
     {
         using var factory = Factory(); using var client = factory.Client();
         using var health = await client.PostAsync("/api/eInvoice/health-check", MisaApiTestFactory.Body(new { }));
-        Assert.Equal(HttpStatusCode.NotImplemented, health.StatusCode);
-        using var caps = await client.GetAsync("/api/eInvoice/capabilities"); using var json = JsonDocument.Parse(await caps.Content.ReadAsStringAsync()); Assert.Equal(12, json.RootElement.GetProperty("actions").GetArrayLength());
+        Assert.Equal(HttpStatusCode.OK, health.StatusCode);
+        using var healthJson = JsonDocument.Parse(await health.Content.ReadAsStringAsync());
+        Assert.False(healthJson.RootElement.GetProperty("connected").GetBoolean());
+        Assert.False(healthJson.RootElement.GetProperty("connectionVerified").GetBoolean());
+        Assert.True(healthJson.RootElement.GetProperty("configurationValid").GetBoolean());
+        using var caps = await client.GetAsync("/api/eInvoice/capabilities"); using var json = JsonDocument.Parse(await caps.Content.ReadAsStringAsync()); Assert.Equal(14, json.RootElement.GetProperty("actions").GetArrayLength());
         client.DefaultRequestHeaders.Add("Idempotency-Key", "easy-unsupported-001");
         using var batch = await client.PostAsync("/api/eInvoice/publish-batch", MisaApiTestFactory.Body(new InvoiceBatchRequest { Invoices = [Input()] })); Assert.Equal(HttpStatusCode.NotImplemented, batch.StatusCode);
         Assert.Empty(factory.Calls);

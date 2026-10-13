@@ -13,4 +13,6 @@ public class CreateInvoiceRequest : ISiteScopedRequest
     public int? ElectronicInvoiceType { get; set; }
     public SiteInfo? SiteConfigInfo { get; set; } = null;
     public UserInfo? UserInfo { get; set; } = null;
+    [global::System.Text.Json.Serialization.JsonIgnore(Condition = global::System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public bool? DeleteExistingDraft { get; set; }
 }

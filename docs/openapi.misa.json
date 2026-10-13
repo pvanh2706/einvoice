@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "eInvoice API — MISA, VIETTEL, SUN, MINVOICE, EASY_INVOICE and partial CYBER_BILL",
-    "version": "0.6.0",
+    "title": "eInvoice API — nine baseline providers",
+    "version": "0.7.0",
     "description": "Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged."
   },
   "servers": [
@@ -19,16 +19,24 @@
           "VIETTEL",
           "CYBER_BILL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "CYBER_BILL",
           "SUN",
-          "MINVOICE"
+          "MINVOICE",
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
-        "summary": "Check a fresh MISA v3 login; bypass token cache.",
+        "summary": "Check a fresh MISA v3 login; bypass token cache. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API. FAST/EASY_INVOICE validate configuration only: connected=false, connectionVerified=false; no supplier call.",
         "security": [
           {
             "ApiKey": []
@@ -71,7 +79,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -82,6 +93,12 @@
                       "type": "string"
                     },
                     "connected": {
+                      "type": "boolean"
+                    },
+                    "connectionVerified": {
+                      "type": "boolean"
+                    },
+                    "configurationValid": {
                       "type": "boolean"
                     }
                   }
@@ -207,11 +224,15 @@
         "operationId": "misa_form_serials",
         "tags": [
           "MISA",
-          "MINVOICE"
+          "MINVOICE",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
-          "MINVOICE"
+          "MINVOICE",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "InvoiceType 0 only. Current year UTC+7. GET timeout 90s after login.",
         "security": [
@@ -256,7 +277,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -398,14 +422,20 @@
           "VIETTEL",
           "SUN",
           "MINVOICE",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "SUN",
           "MINVOICE",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "Publish one invoice/ticket/receipt. Normal USB uses the separate XML workflow. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -462,7 +492,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -473,10 +506,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -601,11 +641,17 @@
         "operationId": "misa_publish_batch",
         "tags": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
-          "VIETTEL"
+          "VIETTEL",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "Homogeneous batch. Inspect isSuccess on EACH result; results correlate by invoiceId, not position.",
         "security": [
@@ -662,7 +708,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -673,10 +722,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -803,15 +859,21 @@
           "MISA",
           "VIETTEL",
           "SUN",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
           "SUN",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
-        "summary": "InvoiceType 0; provider preview URL. Original invoice required for previewType 2/3. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
+        "summary": "InvoiceType 0; provider preview URL. Original invoice required for previewType 2/3. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API. VNPT/VNPT_V5 preview imports a draft before reading its PDF; Idempotency-Key is required for those providers.",
         "security": [
           {
             "ApiKey": []
@@ -825,6 +887,18 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "description": "Required for VNPT/VNPT_V5 preview, which imports a draft. Other providers preview without a write.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
             }
           }
         ],
@@ -854,7 +928,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -990,11 +1067,15 @@
         "operationId": "misa_adjust",
         "tags": [
           "MISA",
-          "MINVOICE"
+          "CYBER_BILL",
+          "MINVOICE",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
-          "MINVOICE"
+          "CYBER_BILL",
+          "MINVOICE",
+          "VNPT_V5"
         ],
         "summary": "InvoiceType 0 adjustment; new invoiceId and original invoice information required.",
         "security": [
@@ -1051,7 +1132,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -1062,10 +1146,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -1191,16 +1282,24 @@
         "tags": [
           "MISA",
           "VIETTEL",
+          "CYBER_BILL",
           "SUN",
           "MINVOICE",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
           "VIETTEL",
+          "CYBER_BILL",
           "SUN",
           "MINVOICE",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "InvoiceType 0 replacement; new invoiceId and original invoice information required. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -1257,7 +1356,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -1268,10 +1370,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -1400,7 +1509,10 @@
           "CYBER_BILL",
           "SUN",
           "MINVOICE",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
@@ -1408,7 +1520,10 @@
           "CYBER_BILL",
           "SUN",
           "MINVOICE",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "Invoice uses searchCode; ticket/receipt use transactionId. Returns provider base64 content. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -1453,7 +1568,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -1593,7 +1711,10 @@
           "CYBER_BILL",
           "SUN",
           "MINVOICE",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MISA",
@@ -1601,7 +1722,10 @@
           "CYBER_BILL",
           "SUN",
           "MINVOICE",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "Cancel invoice/ticket/receipt with reason. No automatic retry. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -1658,7 +1782,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -1798,10 +1925,14 @@
       "post": {
         "operationId": "misa_status",
         "tags": [
-          "MISA"
+          "MISA",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
-          "MISA"
+          "MISA",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "InvoiceType 0 status lookup by invoiceIds. External MISA key ezInvoiceID is preserved internally.",
         "security": [
@@ -1846,7 +1977,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -2044,7 +2178,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -2247,7 +2384,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -2258,10 +2398,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -2433,7 +2580,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -2631,7 +2781,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -2834,7 +2987,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -2845,10 +3001,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -2974,12 +3137,18 @@
         "tags": [
           "VIETTEL",
           "SUN",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "VIETTEL",
           "SUN",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "VIETTEL: save/update a draft. Does not confirm invoice publication. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -3036,7 +3205,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -3047,10 +3219,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -3174,10 +3353,12 @@
       "post": {
         "operationId": "misa_search",
         "tags": [
-          "VIETTEL"
+          "VIETTEL",
+          "VNPT"
         ],
         "x-providers": [
-          "VIETTEL"
+          "VIETTEL",
+          "VNPT"
         ],
         "summary": "VIETTEL: search by PMS invoiceId/transactionUuid. Read-only, no journal unlock.",
         "security": [
@@ -3222,7 +3403,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -3233,10 +3417,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -3362,12 +3553,18 @@
         "tags": [
           "VIETTEL",
           "SUN",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "VIETTEL",
           "SUN",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "VIETTEL: amount increase; originalProviderInvoiceNumber required. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -3424,7 +3621,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -3435,10 +3635,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -3564,12 +3771,18 @@
         "tags": [
           "VIETTEL",
           "SUN",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "VIETTEL",
           "SUN",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "VIETTEL: amount decrease; preserve baseline amount signs. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -3626,7 +3839,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -3637,10 +3853,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -3765,11 +3988,17 @@
         "operationId": "misa_adjust_information",
         "tags": [
           "VIETTEL",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "VIETTEL",
-          "EASY_INVOICE"
+          "EASY_INVOICE",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "VIETTEL: information adjustment; originalProviderInvoiceNumber required. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -3826,7 +4055,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -3837,10 +4069,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -3964,10 +4203,16 @@
       "post": {
         "operationId": "misa_document_draft",
         "tags": [
-          "SUN"
+          "SUN",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
-          "SUN"
+          "SUN",
+          "FAST",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "SUN: retrieve draft PDF by searchCode. Does not confirm publication.",
         "security": [
@@ -4012,7 +4257,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -4023,10 +4271,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "$ref": "#/components/schemas/InvoiceDocumentResult"
                     }
                   }
                 }
@@ -4151,11 +4396,15 @@
         "operationId": "misa_create",
         "tags": [
           "MINVOICE",
-          "EASY_INVOICE"
+          "CYBER_BILL",
+          "EASY_INVOICE",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MINVOICE",
-          "EASY_INVOICE"
+          "CYBER_BILL",
+          "EASY_INVOICE",
+          "VNPT_V5"
         ],
         "summary": "MINVOICE: create unsigned invoice (Save, editmode=1). Does not confirm publication. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -4212,7 +4461,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -4223,10 +4475,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -4350,10 +4609,12 @@
       "post": {
         "operationId": "misa_change",
         "tags": [
-          "MINVOICE"
+          "MINVOICE",
+          "CYBER_BILL"
         ],
         "x-providers": [
-          "MINVOICE"
+          "MINVOICE",
+          "CYBER_BILL"
         ],
         "summary": "MINVOICE: edit unsigned invoice (Save, editmode=2). Original provider code and number required.",
         "security": [
@@ -4410,7 +4671,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -4421,10 +4685,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -4549,11 +4820,17 @@
         "operationId": "misa_delete",
         "tags": [
           "MINVOICE",
-          "EASY_INVOICE"
+          "CYBER_BILL",
+          "EASY_INVOICE",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MINVOICE",
-          "EASY_INVOICE"
+          "CYBER_BILL",
+          "EASY_INVOICE",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "MINVOICE: delete unsigned invoice by serial and provider number (Save, editmode=3). EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -4610,7 +4887,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -4751,11 +5031,17 @@
         "operationId": "misa_publish_existing",
         "tags": [
           "MINVOICE",
-          "EASY_INVOICE"
+          "CYBER_BILL",
+          "EASY_INVOICE",
+          "VNPT",
+          "VNPT_V5"
         ],
         "x-providers": [
           "MINVOICE",
-          "EASY_INVOICE"
+          "CYBER_BILL",
+          "EASY_INVOICE",
+          "VNPT",
+          "VNPT_V5"
         ],
         "summary": "MINVOICE: sign an existing invoice by providerInvoiceCode; existing number is carried from input. EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.",
         "security": [
@@ -4812,7 +5098,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -4823,10 +5112,17 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResult"
-                      }
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
                     }
                   }
                 }
@@ -4998,7 +5294,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -5184,7 +5483,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -5379,7 +5681,10 @@
                         "CYBER_BILL",
                         "SUN",
                         "MINVOICE",
-                        "EASY_INVOICE"
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
                       ]
                     },
                     "siteId": {
@@ -5396,6 +5701,604 @@
                           "type": "boolean"
                         }
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/draft/edit": {
+      "post": {
+        "operationId": "misa_draft_edit",
+        "tags": [
+          "VNPT_V5"
+        ],
+        "x-providers": [
+          "VNPT_V5"
+        ],
+        "summary": "VNPT_V5: retain the baseline draft-import branch; invoiceId remains stable.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "Reuse the same key AND identical body to retrieve a completed result. Never resend a pending/uncertain attempt with a new key.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInvoiceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE",
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/InvoiceResult"
+                          }
+                        },
+                        {
+                          "$ref": "#/components/schemas/InvoiceResult"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/certificate": {
+      "post": {
+        "operationId": "misa_certificate",
+        "tags": [
+          "VNPT_V5"
+        ],
+        "x-providers": [
+          "VNPT_V5"
+        ],
+        "summary": "VNPT_V5: retrieve the certificate serial used for cash-register tax submission.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetFormSerialsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE",
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "JSON error; no raw provider response or credential.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eInvoice/tax/send": {
+      "post": {
+        "operationId": "misa_tax_send",
+        "tags": [
+          "VNPT_V5"
+        ],
+        "x-providers": [
+          "VNPT_V5"
+        ],
+        "summary": "VNPT_V5: submit the specified invoiceIds, formNo and serial. Obtain certificate serial before submission.",
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Site-Id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "Reuse the same key AND identical body to retrieve a completed result. Never resend a pending/uncertain attempt with a new key.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendToTaxAuthorityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "enum": [
+                        "MISA",
+                        "VIETTEL",
+                        "CYBER_BILL",
+                        "SUN",
+                        "MINVOICE",
+                        "EASY_INVOICE",
+                        "FAST",
+                        "VNPT",
+                        "VNPT_V5"
+                      ]
+                    },
+                    "siteId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     }
                   }
                 }
@@ -5939,6 +6842,16 @@
               }
             ]
           },
+          "deleteExistingDraft": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "originalInvoiceId": {
             "anyOf": [
               {
@@ -6105,6 +7018,16 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/UserInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deleteExistingDraft": {
+            "anyOf": [
+              {
+                "type": "boolean"
               },
               {
                 "type": "null"
@@ -7665,6 +8588,16 @@
                 "type": "null"
               }
             ]
+          },
+          "isItemSpecialTax": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         }
       },
@@ -7815,6 +8748,16 @@
             "format": "int32"
           },
           "serial": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "formNo": {
             "anyOf": [
               {
                 "type": "string"
@@ -8819,6 +9762,12 @@
           "providerInvoiceCode": {
             "type": [
               "string",
+              "null"
+            ]
+          },
+          "requiresSigning": {
+            "type": [
+              "boolean",
               "null"
             ]
           }

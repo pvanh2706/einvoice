@@ -1,0 +1,13 @@
+{
+  "Body": {
+    "Account": "synthetic-account",
+    "ACpass": "synthetic-secret",
+    "xmlInvData": "<ThayTheHD>\r\n  <key>INV-001</key>\r\n  <TTChung>\r\n    <NBKe>2026-10-08</NBKe>\r\n    <DVTTe>VND</DVTTe>\r\n    <TGia>1</TGia>\r\n    <HTTToan>TM/CK</HTTToan>\r\n  </TTChung>\r\n  <NDHDon>\r\n    <NBan />\r\n    <NMua>\r\n      <Ten>Synthetic customer</Ten>\r\n      <MST />\r\n      <DChi>Synthetic address</DChi>\r\n      <SDThoai />\r\n      <DCTDTu />\r\n      <HVTNMHang>Khách thử nghiệm</HVTNMHang>\r\n      <STKNHang />\r\n      <TNHang />\r\n      <SHChieu />\r\n      <ServicechargeRate>5</ServicechargeRate>\r\n      <ServicechargeAmount>13.805</ServicechargeAmount>\r\n    </NMua>\r\n    <DSHHDVu>\r\n      <HHDVu>\r\n        <TChat>1</TChat>\r\n        <STT>1</STT>\r\n        <MHHDVu />\r\n        <THHDVu>Dịch vụ thử nghiệm</THHDVu>\r\n        <DVTinh>Lần</DVTinh>\r\n        <SLuong>2.5</SLuong>\r\n        <DGia>100.4</DGia>\r\n        <TLCKhau>7</TLCKhau>\r\n        <STCKhau>17.575</STCKhau>\r\n        <ThTien>245.975</ThTien>\r\n        <TSuat>10</TSuat>\r\n        <TThue>24.5975</TThue>\r\n        <TSThue>270.5725</TSThue>\r\n      </HHDVu>\r\n    </DSHHDVu>\r\n    <TToan>\r\n      <THTTLTSuat>\r\n        <LTSuat>\r\n          <TSuat>10</TSuat>\r\n          <ThTien>245.975</ThTien>\r\n          <TThue>24.5975</TThue>\r\n        </LTSuat>\r\n      </THTTLTSuat>\r\n      <TgTCThue>245.975</TgTCThue>\r\n      <TgTThue>24.5975</TgTThue>\r\n      <TgTTTBSo>270.5725</TgTTTBSo>\r\n      <TgTTTBChu>Hai trăm bảy mươi đồng</TgTTTBChu>\r\n    </TToan>\r\n  </NDHDon>\r\n</ThayTheHD>",
+    "username": "synthetic-user",
+    "pass": "synthetic-secret2",
+    "fkey": "OLD-001",
+    "convert": 0,
+    "pattern": "1",
+    "serial": "C26TAA"
+  }
+}

@@ -11,13 +11,13 @@
 
 ## Đang chờ trước khi thay đổi nghiệp vụ/cutover
 
-- Q016 (đã hỏi 11/10/2026): EasyInvoice không có login/health API trong baseline, code cũ luôn trả thành công. API mới kiểm tra cấu hình và báo connectionVerified=false, hay trả 501? Chưa expose health như kết nối đã xác minh; phần mapping/transport nghiệp vụ tiếp tục độc lập.
+- Q016 đã giải quyết 13/10/2026: EasyInvoice kiểm tra cấu hình, trả connectionVerified=false; người dùng cũng duyệt cùng hành vi cho FAST (Q017). Không gọi NCC hoặc giả định đã xác minh kết nối.
 
 - Q014 đã giải quyết 11/10/2026: người dùng chọn giữ từng luồng Minvoice cũ để đối chiếu; nghiệp vụ VP/Bear, health-check Username2/Bearer. Token riêng theo thao tác, không static; xem D024.
 - Q015 (đã hỏi 11/10/2026): Minvoice change cho sửa tiếp với key mới sau khi lần trước completed, nhưng pending/timeout vẫn khóa để đối soát, hay giữ khóa một lần theo hóa đơn? Chưa đổi cơ chế claim cho tới khi trả lời.
 
-- Q012 (đã hỏi 11/10/2026): Cyberbill dispatcher cũ CREATED_AND_PUBLISH thực tế chỉ tạo, PUBLISH mới ký HSM; helper endpoint CREATE_AND_PUBLISH rỗng/không được gọi. Bản mới giữ hai bước create → publish-existing rõ ràng hay `/publish` tự tạo rồi ký? Chưa expose route publish Cyberbill hoặc tự đoán luồng. Mapping/auth/tests độc lập tiếp tục trong lúc chờ.
-- Q013 (đã hỏi 11/10/2026): Cyberbill cũ parse PaymentMethod thành số 1–5 nhưng MISA/Viettel dùng tên. Bản mới Cyberbill lấy mã từ paymentMethodCode và tên từ paymentMethod (wire giữ nguyên), hay giữ paymentMethod số như baseline? Mapping giữ baseline trong lúc chờ, chưa đổi ý nghĩa trường.
+- Q012 đã giải quyết 13/10/2026: Cyberbill giữ hai bước tạo → ký như code cũ. create unsigned, publish-existing ký; không tự ghép hai bước.
+- Q013 đã giải quyết 13/10/2026: Cyberbill giữ paymentMethod là mã số 1–5 theo baseline.
 
 - Q008: Người dùng **đã duyệt cho các nhà cung cấp mới** ngày UTC+7 và định dạng số invariant, giữ công thức tiền/thuế/làm tròn (D021, 11/10/2026). Phần mở rộng date/ticks/culture MISA ngoài năm FormSerial vẫn chưa được duyệt; giữ baseline MISA.
 - Q009 (đã hỏi, đang chờ): Định tuyến MTT/HSM theo electronicInvoiceType rõ ràng, kiểm tra ký hiệu nhất quán, từ chối batch trộn site/type/mode/form/serial? Hiện mapper/transport đã port, định tuyến vẫn theo baseline trong lúc chờ.

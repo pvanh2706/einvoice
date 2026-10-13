@@ -8,6 +8,7 @@ public interface IInvoiceProvider
 {
     int PartnerId { get; }
     string Name { get; }
+    bool VerifiesConnection => true;
     IReadOnlyDictionary<InvoiceAction, string> Routes { get; }
     bool Supports(string operation);
     bool IsWrite(string operation);

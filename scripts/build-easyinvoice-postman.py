@@ -17,6 +17,7 @@ def add(name,route,body=None,key=None,method='POST',auth=True):
 add('Liveness','/health/live',method='GET',auth=False)
 add('OpenAPI','/openapi/einvoice.json',method='GET',auth=False)
 add('Capabilities','/api/eInvoice/capabilities',method='GET')
+add('Validate configuration - connectionVerified=false','/api/eInvoice/health-check',{})
 add('Create and publish','/api/eInvoice/publish',invoice,'publishKey')
 for slug,key in [('create','createKey'),('draft','draftKey')]:
     body=deepcopy(invoice); body['invoice']['invoiceId']='{{draftInvoiceId}}'
@@ -35,7 +36,7 @@ add('Read original publish attempt','/api/eInvoice/operations/publish/{{publishK
 add('Read invoice publish claim','/api/eInvoice/invoice-attempts?invoiceId={{invoiceId}}&phase=publish',method='GET')
 values={'baseUrl':'https://localhost:7150','apiKey':'','siteId':'','invoiceId':'EASY-SYNTHETIC-001','draftInvoiceId':'EASY-DRAFT-001','newInvoiceId':'EASY-NEW-001','serial':'','invoiceDate':'11/10/2026','taxAuthorityCode':''}
 for key in ['publishKey','createKey','draftKey','signKey','replaceKey','increaseKey','decreaseKey','informationKey','deleteKey','voidKey']:values[key]='easy-'+key+'-001'
-collection={'info':{'name':'eInvoice EASY_INVOICE API','schema':'https://schema.getpostman.com/json/collection/v2.1.0/collection.json','description':'12 implemented business actions; health behavior pending Q016. Offline only, UAT required. Create and draft are the same unsigned import, choose one. Each adjustment/replacement needs its own newInvoiceId/key; do not run all with the same identity.'},'item':items}
+collection={'info':{'name':'eInvoice EASY_INVOICE API','schema':'https://schema.getpostman.com/json/collection/v2.1.0/collection.json','description':'14 baseline actions: 12 business actions plus Login/HealthCheck configuration validation with connectionVerified=false. Offline only, UAT required. Create and draft are the same unsigned import, choose one. Each adjustment/replacement needs its own newInvoiceId/key; do not run all with the same identity.'},'item':items}
 environment={'name':'eInvoice EASY_INVOICE template - configure sandbox locally','values':[{'key':key,'value':value,'enabled':True,'type':'secret' if key=='apiKey' else 'default'} for key,value in values.items()],'_postman_variable_scope':'environment'}
 target=root/'docs/postman'
 (target/'eInvoice-EASY_INVOICE.postman_collection.json').write_text(json.dumps(collection,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')

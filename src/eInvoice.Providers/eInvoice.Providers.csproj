@@ -9,5 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\eInvoice.Core\eInvoice.Core.csproj" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.12" />
   </ItemGroup>
 </Project>

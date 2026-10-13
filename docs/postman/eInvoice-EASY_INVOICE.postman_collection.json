@@ -2,7 +2,7 @@
   "info": {
     "name": "eInvoice EASY_INVOICE API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "12 implemented business actions; health behavior pending Q016. Offline only, UAT required. Create and draft are the same unsigned import, choose one. Each adjustment/replacement needs its own newInvoiceId/key; do not run all with the same identity."
+    "description": "14 baseline actions: 12 business actions plus Login/HealthCheck configuration validation with connectionVerified=false. Offline only, UAT required. Create and draft are the same unsigned import, choose one. Each adjustment/replacement needs its own newInvoiceId/key; do not run all with the same identity."
   },
   "item": [
     {
@@ -39,6 +39,37 @@
         ],
         "url": "{{baseUrl}}/api/eInvoice/capabilities",
         "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests."
+      }
+    },
+    {
+      "name": "Validate configuration - connectionVerified=false",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/health-check",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
       }
     },
     {

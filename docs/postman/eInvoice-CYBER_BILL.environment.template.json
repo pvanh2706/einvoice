@@ -1,0 +1,120 @@
+{
+  "name": "eInvoice CYBER_BILL template",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7150",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "enabled": true,
+      "type": "secret"
+    },
+    {
+      "key": "siteId",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceId",
+      "value": "22222222-2222-2222-2222-222222222222",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "newInvoiceId",
+      "value": "33333333-3333-3333-3333-333333333333",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "originalInvoiceId",
+      "value": "11111111-2222-3333-4444-555555555555",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "formNo",
+      "value": "1",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "serial",
+      "value": "C26TAA",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceDate",
+      "value": "13/10/2026",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "providerInvoiceCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "providerInvoiceNumber",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "searchCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "createKey",
+      "value": "cyber_bill-create-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "changeKey",
+      "value": "cyber_bill-change-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "publish-existingKey",
+      "value": "cyber_bill-publish-existing-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "replaceKey",
+      "value": "cyber_bill-replace-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "adjustKey",
+      "value": "cyber_bill-adjust-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "voidKey",
+      "value": "cyber_bill-void-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "deleteKey",
+      "value": "cyber_bill-delete-001",
+      "enabled": true,
+      "type": "default"
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

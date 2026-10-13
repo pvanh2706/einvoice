@@ -1,12 +1,12 @@
 # Hợp đồng PMS mới — eInvoice
 
-Trạng thái: MISA 19 action, Viettel 13, SUN 10 và Minvoice 15 action baseline đã triển khai/kiểm thử offline; Cyberbill một phần. UAT/cutover chưa hoàn thành. Phạm vi/validation/response/timeout/idempotency nằm trong tài liệu từng provider; schema [OpenAPI](openapi.misa.json) phục vụ tại `/openapi/einvoice.json` và URL `/openapi/misa.json` đã có.
+Trạng thái: đủ 9 nhà cung cấp / 133 action sống baseline đã triển khai/kiểm thử offline; xem FAST-API và VNPT-API cho luồng mới. UAT/cutover chưa hoàn thành. Phạm vi/validation/response/timeout/idempotency nằm trong tài liệu từng provider; schema [OpenAPI](openapi.misa.json) phục vụ tại `/openapi/einvoice.json` và URL `/openapi/misa.json` đã có.
 
-Route chung chọn adapter theo partner của SiteId. `GET /api/eInvoice/capabilities` trả catalog thực tế của site; `/api/eInvoice/misa/capabilities` vẫn là catalog MISA riêng. Các route bổ sung Viettel/SUN/Minvoice xem tài liệu từng provider. Nhà cung cấp chưa triển khai hoặc không có operation trả 501 với code phân biệt PROVIDER_NOT_IMPLEMENTED / PROVIDER_OPERATION_NOT_SUPPORTED. FormSerial có MISA và Minvoice; status/CQT/USB hiện chỉ MISA. Minvoice invoices là danh sách trạng thái ký NCC, không thay thế status CQT MISA.
+Route chung chọn adapter theo partner của SiteId. `GET /api/eInvoice/capabilities` trả catalog thực tế của site; `/api/eInvoice/misa/capabilities` vẫn là catalog MISA riêng. Các route bổ sung Viettel/SUN/Minvoice xem tài liệu từng provider. Nhà cung cấp chưa triển khai hoặc không có operation trả 501 với code phân biệt PROVIDER_NOT_IMPLEMENTED / PROVIDER_OPERATION_NOT_SUPPORTED. FormSerial có MISA, Minvoice và VNPT/VNPT_V5; status có thêm VNPT/VNPT_V5. VNPT_V5 gửi CQT theo danh sách ID qua tax/send; tax/send-pending vẫn riêng MISA. USB vẫn theo MISA. Minvoice invoices là danh sách trạng thái ký NCC, không thay thế status CQT MISA.
 
 Journal response thêm field nullable `provider`, record cũ không có thì null. Hash MISA giữ nguyên; các provider khác có attempt hash riêng nhưng claim site/invoice dùng chung. Không đổi key/ID hoặc site/provider để vượt khóa. Ngày/culture provider mới theo D021; không đổi các mapper MISA chưa được duyệt.
 
-Tài liệu bàn giao cho AI agent phía phần mềm tích hợp: [INTEGRATION-AGENT](INTEGRATION-AGENT.md). Bắt đầu với single HSM MISA trên môi trường test; hướng dẫn phản ánh trạng thái hiện tại, không giả định đã có API đối soát/mở khóa hoặc adapter các nhà cung cấp khác.
+Tài liệu bàn giao cho AI agent phía phần mềm tích hợp: [INTEGRATION-AGENT](INTEGRATION-AGENT.md). Bắt đầu với single HSM MISA trên môi trường test; hướng dẫn phản ánh trạng thái hiện tại, không giả định đã có API đối soát/mở khóa hoặc kết quả UAT các nhà cung cấp khác.
 
 - Base route: `/api/eInvoice`.
 - Chỉ tên mới, không alias route/key lịch sử.
@@ -148,9 +148,9 @@ curl --request POST 'https://localhost:7150/api/eInvoice/form-serials' \
 
 Local có site mẫu nhưng credential/endpoint trống: health-check trả 400 MISA_CREDENTIALS_REQUIRED; FormSerial kiểm tra endpoint trước nên trả 503 MISA_ENDPOINT_NOT_ALLOWED. Thiếu file JSON trả 503 SITE_STORE_NOT_CONFIGURED. Test 200 dùng HTTP giả lập, chưa gọi sandbox. Setup JSON tại LOCAL-SETUP.
 
-## Cyberbill một phần
+## Cyberbill hoàn thiện
 
-`site.partner: 7`, provider `CYBER_BILL`: health-check, document và void đã port. Hợp đồng/giới hạn tại [CYBERBILL-API](CYBERBILL-API.md). Các route chưa hoàn thành trả 501; fixture mapping không phải capability API.
+`site.partner: 7`, provider `CYBER_BILL`: đủ 11 action baseline. Create/replace/adjust là unsigned, publish-existing ký riêng; paymentMethod là mã số 1–5. Hợp đồng tại [CYBERBILL-API](CYBERBILL-API.md). /publish không tự ghép tạo và ký.
 
 ## SUN
 
@@ -166,6 +166,17 @@ Minvoice invoices trả InvoiceListItem (providerInvoiceCode, signStatus nullabl
 
 ## EasyInvoice
 
-`site.partner: 9`, `provider: EASY_INVOICE`, 12 action nghiệp vụ; [EASYINVOICE-API](EASYINVOICE-API.md) và collection Postman mô tả body/response/wire/giới hạn. Health-check cũ không gọi NCC; Q016 đang chờ, hiện trả 501, không báo connected=true.
+`site.partner: 9`, `provider: EASY_INVOICE`, 14 action baseline gồm 12 nghiệp vụ và Login/HealthCheck kiểm tra cấu hình; [EASYINVOICE-API](EASYINVOICE-API.md) và collection Postman mô tả body/response/wire/giới hạn. Health-check HTTP 200 với connected=false, connectionVerified=false; không gọi NCC.
 
 PublishExistingInvoiceRequest thêm **serial** tùy chọn (bắt buộc với EasyInvoice); null bị bỏ khi serialize để giữ fingerprint Minvoice cũ, regression journal replay đã kiểm chứng. Minvoice vẫn dùng providerInvoiceCode + providerInvoiceNumber. EasyInvoice dùng invoiceId + serial, Ikey chính là ID PMS. Create/draft cùng unsigned import, không trả số phát hành; replace/adjust cần originalInvoiceId trùng originalInvoice.invoiceId và khác ID mới, originalInvoice.maCQT giữ mã gốc. PDF chỉ nhận bytes thực tế, không trả JSON lỗi dưới dạng base64 thành công. Không đổi field/element phía NCC.
+
+## Phần bổ sung hoàn tất provider ngày 13/10/2026
+
+- FAST/EasyInvoice health-check trả HTTP 200 với connected=false, connectionVerified=false, configurationValid=true sau kiểm tra cấu hình; không thực hiện login NCC.
+- Cyberbill giữ hai bước create → publish-existing, paymentMethod là mã số 1–5. Action CreateAndPublish lịch sử ánh xạ vào create unsigned; /publish Cyberbill không tự tạo rồi ký. InvoiceResult thêm requiresSigning nullable, bỏ khi null, true ở unsigned create/adjust/replace và false sau ký.
+- VNPT_V5 có draft/edit, certificate, tax/send. Preview VNPT/VNPT_V5 tạo nháp trước PDF, cần Idempotency-Key; các provider khác giữ preview đọc.
+- PublishExistingInvoiceRequest thêm formNo nullable/bỏ khi null; CreateInvoiceRequest thêm deleteExistingDraft nullable/bỏ khi null, dùng ở VNPT_V5 publish. null giữ điều kiện xóa nháp của baseline, false bỏ bước xóa. Không thay fingerprint request cũ khi bỏ các field này.
+- InvoiceDetail thêm isItemSpecialTax nullable/bỏ khi null, giữ bổ sung c09ad7d trong repo 25.ezInvoice: IsSum=4 cho Product V4; không đổi công thức hoặc tự thêm vào nhánh khác.
+- VNPT batch invoiceId dùng GUID dạng D để tương thích kết quả fkey 36 ký tự của baseline. Payload XML/SOAP, tên param và thứ tự thẻ NCC được giữ.
+
+[FAST-API](FAST-API.md), [VNPT-API](VNPT-API.md), [CYBERBILL-API](CYBERBILL-API.md), [EASYINVOICE-API](EASYINVOICE-API.md).

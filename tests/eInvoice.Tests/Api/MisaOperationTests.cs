@@ -267,7 +267,7 @@ public class MisaOperationTests
         if (mode is "other-provider" or "resolver-mismatch") factory.Resolve = (_, _) =>
         {
             var site = MisaTestData.Site;
-            if (mode == "other-provider") site.Site.Partner = 1;
+            if (mode == "other-provider") site.Site.Partner = 999;
             else site.Site.Id = Guid.NewGuid();
             return site;
         };

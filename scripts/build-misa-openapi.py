@@ -37,7 +37,7 @@ def nullable_string(): return {'type':['string','null']}
 schemas['InvoiceResult'] = {'type':'object','properties':{
     'invoiceId':{'type':'string'},'providerInvoiceNumber':nullable_string(),'transactionId':nullable_string(),
     'searchCode':nullable_string(),'taxAuthorityCode':nullable_string(),'invoiceData':nullable_string(),
-    'isSuccess':{'type':'boolean'},'providerErrorCode':nullable_string(),'providerMessage':nullable_string(),'providerInvoiceCode':nullable_string()}}
+    'isSuccess':{'type':'boolean'},'providerErrorCode':nullable_string(),'providerMessage':nullable_string(),'providerInvoiceCode':nullable_string(),'requiresSigning':{'type':['boolean','null']}}}
 schemas['InvoiceListItem'] = {'type':'object','properties':{'providerInvoiceCode':{'type':'string'},'signStatus':{'type':['integer','null']},'signedAt':{'type':['string','null'],'format':'date-time'}}}
 schemas['TaxCodeInfoResult'] = {'type':'object','properties':{key:nullable_string() for key in ['companyName','address','taxCode','registrationId','taxAuthorityProvince','taxAuthorityOffice','legalRepresentative','establishedDate']}}
 schemas['InvoiceDocumentResult'] = {'type':'object','properties':{'content':{'type':'string'},'format':{'type':'string','enum':['base64','url']}}}
@@ -54,12 +54,16 @@ schemas['InvoiceAttemptInfo'] = {'type':'object','properties':{
     'originalRequestId':nullable_string(),'requiresReconciliation':{'type':'boolean'},'canRetry':{'type':['boolean','null']},'provider':nullable_string()}}
 def array_of(name): return {'type':'array','items':{'$ref':'#/components/schemas/'+name}}
 def success_schema(route):
-    common={'provider':{'type':'string','enum':['MISA','VIETTEL','CYBER_BILL','SUN','MINVOICE','EASY_INVOICE']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
-    if route=='health-check': common['connected']={'type':'boolean'}
+    common={'provider':{'type':'string','enum':['MISA','VIETTEL','CYBER_BILL','SUN','MINVOICE','EASY_INVOICE','FAST','VNPT','VNPT_V5']},'siteId':{'type':'string','format':'uuid'},'requestId':{'type':'string'}}
+    if route=='health-check':
+        common['connected']={'type':'boolean'}
+        common['connectionVerified']={'type':'boolean'}
+        common['configurationValid']={'type':'boolean'}
     elif route=='form-serials': common['forms']=array_of('FormSerialResponse')
     else:
-        data=array_of('InvoiceResult')
-        if route in ['preview','document']: data={'$ref':'#/components/schemas/InvoiceDocumentResult'}
+        data={'anyOf':[array_of('InvoiceResult'),{'$ref':'#/components/schemas/InvoiceResult'}]}
+        if route in ['preview','document','document/draft']: data={'$ref':'#/components/schemas/InvoiceDocumentResult'}
+        elif route in ['certificate','tax/send']: data=nullable_string()
         elif route=='status': data=array_of('InvoiceStatusResult')
         elif route=='xml/hash': data=array_of('InvoiceHashResult')
         elif route in ['void','delete','email']: data={'type':'object','properties':{'success':{'type':'boolean'}}}
@@ -109,23 +113,34 @@ routes = [
  ('invoices','GetInvoicesRequest',False,'MINVOICE: read provider invoice IDs/sign status/time for serial and UTC+7 date range. No journal unlock.'),
  ('tax-code','GetTaxCodeInfoRequest',False,'MINVOICE: public tax registry read after business login; fixed registry host requires allowlist.'),
  ('email','SendEmailRequest',True,'MINVOICE: email invoice by providerInvoiceCode. Never called automatically.'),
+ ('draft/edit','CreateInvoiceRequest',True,'VNPT_V5: retain the baseline draft-import branch; invoiceId remains stable.'),
+ ('certificate','GetFormSerialsRequest',False,'VNPT_V5: retrieve the certificate serial used for cash-register tax submission.'),
+ ('tax/send','SendToTaxAuthorityRequest',True,'VNPT_V5: submit the specified invoiceIds, formNo and serial. Obtain certificate serial before submission.'),
 ]
 paths = {}
 viettel_routes = {'health-check','publish','publish-batch','preview','replace','document','void','draft','search','adjust/increase','adjust/decrease','adjust/information'}
 for route, contract, write, description in routes:
     providers = (['VIETTEL'] if route in {'draft','search','adjust/increase','adjust/decrease','adjust/information'} else ['MISA','VIETTEL'] if route in viettel_routes else ['MISA'])
-    if route in {'health-check','document','void'}: providers.append('CYBER_BILL')
+    if route in {'health-check','document','void','create','change','delete','publish-existing','replace','adjust'}: providers.append('CYBER_BILL')
     if route in {'health-check','publish','draft','preview','document','void','replace','adjust/increase','adjust/decrease'}: providers.append('SUN')
     if route == 'document/draft': providers = ['SUN']
     if route in {'health-check','form-serials','publish','replace','adjust','document','void'}: providers.append('MINVOICE')
-    if route in {'create','change','delete','publish-existing','invoices','tax-code','email'}: providers = ['MINVOICE']
-    if route in {'create','draft','delete','publish','publish-existing','document','preview','void','replace','adjust/increase','adjust/decrease','adjust/information'}:
+    if route in {'create','change','delete','publish-existing','invoices','tax-code','email'}: providers = ['MINVOICE'] + (['CYBER_BILL'] if route in {'create','change','delete','publish-existing'} else [])
+    if route in {'health-check','create','draft','delete','publish','publish-existing','document','preview','void','replace','adjust/increase','adjust/decrease','adjust/information'}:
         providers.append('EASY_INVOICE')
         description += ' EASY_INVOICE: see EASYINVOICE-API for Ikey, XML, unsigned import and preview type semantics; no health verification API.'
+    if route in {'health-check','publish','publish-batch','draft','preview','void','document','document/draft','adjust/increase','adjust/decrease','adjust/information','replace'}: providers.append('FAST')
+    vnpt_routes={'health-check','form-serials','draft','publish','publish-batch','publish-existing','document','document/draft','preview','void','delete','adjust/increase','adjust/decrease','adjust/information','replace','status'}
+    if route in vnpt_routes | {'search'}: providers.append('VNPT')
+    if route in vnpt_routes | {'create','draft/edit','adjust','certificate','tax/send'}: providers.append('VNPT_V5')
+    if route in {'draft/edit','certificate','tax/send'}: providers=['VNPT_V5']
+    if route=='health-check': description += ' FAST/EASY_INVOICE validate configuration only: connected=false, connectionVerified=false; no supplier call.'
+    if route=='preview': description += ' VNPT/VNPT_V5 preview imports a draft before reading its PDF; Idempotency-Key is required for those providers.'
+    extra_headers=([idempotency] if write else [{**idempotency,'required':False,'description':'Required for VNPT/VNPT_V5 preview, which imports a draft. Other providers preview without a write.'}] if route=='preview' else [])
     paths['/api/eInvoice/'+route] = {'post':{
         'operationId':'misa_'+route.replace('/','_').replace('-','_'), 'tags':providers,
         'x-providers':providers,
-        'summary':description,'security':[{'ApiKey':[]}], 'parameters':[site_header]+([idempotency] if write else []),
+        'summary':description,'security':[{'ApiKey':[]}], 'parameters':[site_header]+extra_headers,
         'requestBody':{'required':True,'content':{'application/json':{'schema':{'$ref':'#/components/schemas/'+contract}}}},
         'responses':{'200':{'description':'Completed API operation. Business data is in data (forms for form-serials). Batch may contain per-item failures.',
             'content':{'application/json':{'schema':success_schema(route)}}},
@@ -152,7 +167,7 @@ paths['/api/eInvoice/misa/capabilities'] = {'get':{'operationId':'misa_implement
     'parameters':[site_header],'responses':{'200':{'description':'Implemented action-to-route map; does not claim sandbox readiness.'},'401':problem,'403':problem}}}
 paths['/api/eInvoice/capabilities'] = {'get':{'operationId':'site_provider_capabilities','security':[{'ApiKey':[]}],
     'parameters':[site_header],'responses':{'200':{'description':'Actual implemented action-to-route map for the authorized site provider; no provider HTTP call.'},'401':problem,'403':problem,'501':problem}}}
-document = {'openapi':'3.1.0','info':{'title':'eInvoice API — MISA, VIETTEL, SUN, MINVOICE, EASY_INVOICE and partial CYBER_BILL','version':'0.6.0',
+document = {'openapi':'3.1.0','info':{'title':'eInvoice API — nine baseline providers','version':'0.7.0',
     'description':'Rewrite contract. Synthetic/offline tests; sandbox UAT still required. Only new PMS route/keys. Provider wire keys unchanged.'},
     'servers':[{'url':'https://localhost:7150'}], 'paths':paths,
     'components':{'securitySchemes':{'ApiKey':{'type':'apiKey','in':'header','name':'X-Api-Key'}},'schemas':schemas}}

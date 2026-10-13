@@ -211,7 +211,7 @@ public class FormSerialTests
             return Task.FromResult(new ResolvedSite(new SiteConfiguration
             {
                 Id = mode == "resolver-mismatch" ? OtherSite : siteId,
-                Partner = mode == "other-provider" ? 1 : 6,
+                Partner = mode == "other-provider" ? 999 : 6,
                 PartnerUrl = "https://misa.example.test/api/v3/", TaxNumber = "TEST-TAX",
                 Username = "synthetic-user", Password = "synthetic-secret",
             }, []));

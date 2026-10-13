@@ -8,6 +8,8 @@ public class PublishExistingInvoiceRequest : ISiteScopedRequest
     public int InvoiceType { get; set; }
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
     public string? Serial { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? FormNo { get; set; }
     public SiteInfo? SiteConfigInfo { get; set; }
     public string? RequestId { get; set; }
 }

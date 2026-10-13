@@ -1,0 +1,32 @@
+{
+  "baseline": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "sources": {
+    "src/ezInvoice.Application/EventSourcedNormalizers/VnptNormalizes/VnptConvertRequest.cs": "69dbf22607d5c5a59395e3b5b69a381e9f2f512fcef4fab9e50c0e610ffeb51b",
+    "src/ezInvoice.Application/EventSourcedNormalizers/VnptNormalizes/VnptMTTConvertRequest.cs": "1f1a7021b1737e6247e0f664b1661b5208dd2c48e8c620e9e84eaf02402445e5",
+    "src/ezInvoice.Application/EventSourcedNormalizers/VnptNormalizes/VnptConvertResponse.cs": "daa3e587cb63d01d60e8f7923537a9a70bb5b9df329bb7c7681d0af7e04eecb8",
+    "src/ezInvoice.Application/EventSourcedNormalizers/VnptNormalizes/VnptMTTConvertResponse.cs": "a56121f4acc9266c57e3e057483ba0747bd069a174ab1f0c18d2fa84dda7ab71",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/FormSerialModel.cs": "70af6ec0346ba66fe25351d29b81dae847ead5f3c3c19d898ef0c2a556d1268a",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/FormSerialVnptListResult.cs": "56e80f49c6a19adac183f558c5014146ad71ca60d94a90fe5996120e01047b19",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/MTT/AdjustInvoiceModel_MTT.cs": "293f9edb7fc6d0d6e843255ef072e22c1d30c6be9b8393231d6015bdb1692ff9",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/MTT/ReplaceInvoiceModel_MTT.cs": "d2e8b761d84d9317e242bf8d8b9b72c439054bb9063b9589850f48628d874e12",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/MTT/VnptInvoiceModel_MTT.cs": "b760a12f3c5c7a423020328dd30b733a172344493d9e96f879fc1dedf1d354d1",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/ThirdPartyResponseModel.cs": "ff817485f7630298513ed5fe03e2eaf4857c7e9acada4f4a616084c273255992",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/V5/AdjustInvoiceModelV5.cs": "fafcaef000b11358b6b45a1bdc8311bda418098f0dca5a5ae2b83caaeb15ccb9",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/V5/ReplaceInvoiceModelV5.cs": "508b01c257640a20dce796979c755d45ba9559226bcdb93a7692a20706f92de6",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/V5/VnptInvoiceModelV5.cs": "f544830d5275f674f51946debf9fa2010176d808033c4eb69c7f62e3a1d721f6",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/VnptInvoiceModel.cs": "06e9841d367e297e9ca6d57436b3e8452eae7878cc4385d5bf2200b3adf20fe3",
+    "src/ezInvoice.Application/ViewModels/VnptViewModels/VnptResponseError.cs": "b3ddcddd82f2e3ad09dc5e3f552226c57040a69b46e375ff2567f47c72c6f2b2",
+    "src/ezInvoice.Application/Services/ThirdPartyServices/VnptAppService.cs": "83cb2c8f77753d30edf61d967688544349b7699b3b5d0fe402223e59e1d0d04a",
+    "src/ezInvoice.Application/Services/ThirdPartyServices/VnptV5AppService.cs": "ac2fb05e2ed70e03737ee63cf2e1e39af2fd21a5bc997b366365fbc683543ae8",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/Connected Services/BusinessService_V5/Reference.cs": "d77331c56ddd355eba9279521b7e6f1a045b93944df2a960988cb389053d6c71",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/Connected Services/PortalService/Reference.cs": "27c4442d08b6ac633b3f7a1afdb78f287546e3c45192d2fd58a3859b80c96545",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/Connected Services/PortalService_V5/Reference.cs": "9a78ada2374d870f4b4879b852f933c347cb555d5ed48f46cc5a8ce3cf7cb2fd",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/Connected Services/PublishService/Reference.cs": "d6ef20e7f16d501634d51850d8bfa84f7ba65b71b0649d958e7cee0f43c7e6a9",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/Connected Services/PublishService_V5/Reference.cs": "6aa1a20a81c1c07bd56208a66e8ba503c829e2c7442f0cf6addec89906b12244",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/Connected Services/PublishService_TLYT/Reference.cs": "79601cace5e734ebeca7e372e60d0fb492a18a85465b43bca4d072f554b2252b",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/VnptRepository.cs": "e9910be774210be3439383272fb5ded6aa90ed4b47a47a939669f364153bd555",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/VnptRepository_TLYT.cs": "d8b19c0e56c3a77d49d731aec137597963caae4467aa7319678a4f998dc33521",
+    "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Vnpt/V5/VnptV5Repository.cs": "e2ecc28db4fe77daabc05dd6766634a2e18c273265aa9550bf90ee965c0b8be4"
+  },
+  "note": "Generated WSDL proxies copied unchanged; mapping/service sources bridged to canonical DTOs; repository calls injectable."
+}

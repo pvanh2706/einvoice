@@ -14,8 +14,10 @@ public sealed class EasyInvoiceInvoiceProvider(EasyInvoiceTransport transport) :
 {
     public int PartnerId => 9;
     public string Name => "EASY_INVOICE";
+    public bool VerifiesConnection => false;
     public IReadOnlyDictionary<InvoiceAction, string> Routes { get; } = new Dictionary<InvoiceAction, string>
     {
+        [InvoiceAction.Login] = "health-check", [InvoiceAction.HealthCheck] = "health-check",
         [InvoiceAction.Create] = "create", [InvoiceAction.Draft] = "draft", [InvoiceAction.Delete] = "delete",
         [InvoiceAction.CreateAndPublish] = "publish", [InvoiceAction.Publish] = "publish-existing",
         [InvoiceAction.DownloadPdf] = "document", [InvoiceAction.Preview] = "preview", [InvoiceAction.Void] = "void",
@@ -32,8 +34,12 @@ public sealed class EasyInvoiceInvoiceProvider(EasyInvoiceTransport transport) :
         VoidInvoiceRequest data => ["void:" + data.InvoiceId],
         _ => [],
     };
-    public Task CheckConnectionAsync(ResolvedSite site, CancellationToken cancellationToken) =>
-        throw new UnsupportedProviderOperationException("EASY_INVOICE_HEALTH_NOT_VERIFIED", "EasyInvoice has no connection verification API in the baseline; health behavior is awaiting a decision.");
+    public Task CheckConnectionAsync(ResolvedSite site, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = transport.Validate(site.Site);
+        return Task.CompletedTask;
+    }
 
     public async Task<object?> ExecuteAsync(string operation, ResolvedSite site, ISiteScopedRequest request, CancellationToken cancellationToken)
     {

@@ -25,4 +25,6 @@ public class InvoiceDetail
     public decimal? TaxReduction43AmountOC { get; set; } // Số tiền giảm thuế nguyên tệ
     public string? RoomCode { get; set; }
     public string? ItemType { get; set; }
+    [global::System.Text.Json.Serialization.JsonIgnore(Condition = global::System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public bool? IsItemSpecialTax { get; set; }
 }

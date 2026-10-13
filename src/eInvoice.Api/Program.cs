@@ -13,6 +13,8 @@ using eInvoice.Providers.Cyberbill;
 using eInvoice.Providers.Sun;
 using eInvoice.Providers.Minvoice;
 using eInvoice.Providers.EasyInvoice;
+using eInvoice.Providers.Fast;
+using eInvoice.Providers.Vnpt;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false)
@@ -78,6 +80,15 @@ builder.Services.AddHttpClient<EasyInvoiceTransport>(client => client.Timeout = 
     .RemoveAllLoggers()
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
 builder.Services.AddScoped<IInvoiceProvider, EasyInvoiceInvoiceProvider>();
+builder.Services.AddSingleton(builder.Configuration.GetSection("Providers:Fast").Get<FastOptions>() ?? new FastOptions());
+builder.Services.AddHttpClient<FastTransport>(client => client.Timeout = TimeSpan.FromSeconds(100))
+    .RemoveAllLoggers()
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+builder.Services.AddScoped<IInvoiceProvider, FastInvoiceProvider>();
+builder.Services.AddSingleton(builder.Configuration.GetSection("Providers:Vnpt").Get<VnptOptions>() ?? new VnptOptions());
+builder.Services.AddSingleton<IVnptSoapInvoker, VnptSoapInvoker>();
+builder.Services.AddScoped<IInvoiceProvider, VnptInvoiceProvider>();
+builder.Services.AddScoped<IInvoiceProvider, VnptV5InvoiceProvider>();
 builder.Services.AddScoped<ProviderDispatcher>();
 builder.Services.AddSingleton(serviceProvider => new MisaWriteJournal(
     builder.Configuration["Providers:Misa:JournalDirectory"] ?? Path.Combine(AppContext.BaseDirectory, "misa-journal"),
@@ -120,6 +131,8 @@ app.MapPost("/api/eInvoice/health-check", async (ProviderHealthCheckRequest requ
     {
         var provider = providers.Get(configuration.Site.Partner);
         await provider.CheckConnectionAsync(configuration, http.RequestAborted);
+        if (!provider.VerifiesConnection)
+            return Results.Ok(new { provider = provider.Name, connected = false, connectionVerified = false, configurationValid = true, siteId, requestId = http.TraceIdentifier });
         return Results.Ok(new { provider = provider.Name, connected = true, siteId, requestId = http.TraceIdentifier });
     }
     _ = await misa.CheckConnectionAsync(configuration.Site, http.RequestAborted);

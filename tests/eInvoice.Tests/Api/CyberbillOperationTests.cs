@@ -37,8 +37,8 @@ public class CyberbillOperationTests
         Assert.Contains("CYBER_BILL", text); Assert.DoesNotContain("synthetic-token", text);
         using var caps = await client.GetAsync("/api/eInvoice/capabilities");
         using var json = JsonDocument.Parse(await caps.Content.ReadAsStringAsync());
-        Assert.Equal(4, json.RootElement.GetProperty("actions").GetArrayLength());
-        Assert.DoesNotContain("publish", json.RootElement.GetRawText());
+        Assert.Equal(11, json.RootElement.GetProperty("actions").GetArrayLength());
+        Assert.Contains("publish-existing", json.RootElement.GetRawText());
         Assert.Single(factory.Calls);
     }
 

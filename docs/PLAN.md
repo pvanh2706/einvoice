@@ -29,17 +29,17 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 
 | Provider | Mapping | Transport | Regression fixture | API end-to-end | UAT |
 |---|---|---|---|---|---|
-| VNPT | Chưa | Chưa | Chưa | Chưa | Chưa |
+| VNPT | 17 action baseline + IsItemSpecialTax current supplement | WSDL-generated SOAP V1/V5/TLYT; request scope | V1/V5/MTT/receipt trong 24 fixture FAST/VNPT độc lập | Đủ route fake invoker + WCF formatter; lỗi/replay/timeout | Chưa |
 | MINVOICE | 15 action baseline; tiền/ngoại lệ site giữ nguyên | REST VP/Bear nghiệp vụ, unit cấu hình cho health theo D024; không static | 11 frozen payload, có hai ngoại lệ phí dịch vụ | 14 POST route; 397 tests toàn solution; Q015 sửa nháp tiếp đang chờ | Chưa |
 | SUN | 10 action baseline, UTC+7/invariant | REST Bearer từng operation, hai endpoint JSON/form | 10 payload frozen | Đủ route fake HTTP, 358 tests toàn solution | Chưa |
 | VIETTEL | 13 action baseline | REST cookie token từng operation, UTF-8 JSON/form, no retry | 11 frozen payload | Đủ route qua fake HTTP; toàn solution 303 tests | Chưa |
-| VNPT_V5 | Chưa | Chưa | Chưa | Chưa | Chưa |
+| VNPT_V5 | 21 action baseline, giữ CREATED/EDIT_DRAFT dispatcher | WSDL-generated SOAP V5, không retry ghi | Payload baseline và certificate/CQT fake | Đủ route và biến thể MTT/receipt, delete-before-publish | Chưa |
 | MISA | 19 action sống baseline | v3 + biên lai, không retry ghi | 16 payload độc lập + FormSerial + helper | Đủ route qua HTTP giả lập, 268 test toàn solution; health-check thật 200, publish diagnostic bị khóa | Chưa |
-| CYBER_BILL | 7 mapping baseline; payment/workflow chờ Q012/Q013 | REST Bearer từng operation | 7 payload độc lập | health/document/void (4 action), 329 tests toàn solution | Chưa |
-| FAST | Chưa | Chưa | Chưa | Chưa | Chưa |
-| EASY_INVOICE | 12 action nghiệp vụ; phí/extra/thuế mapper chung, giữ công thức baseline | REST Authentication riêng từng request, MD5 wire, JSON/XML | 20 frozen payload, tỷ giá 0/extra/phí/multi-VAT | 12 route, 456 tests toàn solution; Login/Health chờ Q016 | Chưa |
+| CYBER_BILL | 11 action, paymentMethod mã số theo D026 | REST Bearer từng operation; create → sign riêng | 7 payload độc lập | Đủ route, unsigned requiresSigning, replay/validation | Chưa |
+| FAST | 13 action baseline, giữ TaxRate=8 → TaxAmount0 | REST text/plain MTT + SOAP GTGT; token scoped | 10 frozen payload + API fake HTTP | Đủ action; health configuration-only theo D027 | Chưa |
+| EASY_INVOICE | 14 action, 12 nghiệp vụ + Login/Health config validation | REST Authentication riêng từng request, JSON/XML | 20 frozen payload | Health connected=false/connectionVerified=false; không gọi NCC | Chưa |
 
-P2 đã được người dùng yêu cầu tiếp tục ngày 11/10. Viettel/SUN/Minvoice đã xong phần baseline offline; EasyInvoice xong nghiệp vụ nhưng health chờ Q016, Cyberbill chờ Q012/Q013. Tiếp theo Fast → VNPT/VNPT_V5; xử lý Q015 Minvoice/Q016 EasyInvoice nếu có trả lời. Thứ tự theo phụ thuộc kỹ thuật, không phải ưu tiên nghiệp vụ đã được người dùng chọn. REST đi trước; SOAP/WCF dùng WSDL/proxy sinh sẵn ở baseline, không viết tay generated proxy. Không cần sandbox credential để làm kiểm thử offline.
+P2 code/offline hoàn thành ngày 13/10/2026: đủ 9 provider / 133 action sống baseline. Q012/Q013/Q016/Q017 đã chốt; Q015 và các cải tiến MISA vẫn chờ trước khi thay nghiệp vụ. Tiếp theo là UAT từng biến thể và P3, không làm lại adapter đã port. Không tự gọi NCC/production hoặc mở khóa journal.
 
 ## P3 — Vận hành và thay thế
 
