@@ -1,0 +1,9 @@
+{
+  "baseline": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "mapper": "src/ezInvoice.Application/EventSourcedNormalizers/EasyInvoiceNormalizes/EasyInvoiceConvertRequest.cs",
+  "decodedSourceSha256": "257866aebd6b19d6f9b414e608f366cc10b0fd04d4caef2c346a88b0a123f483",
+  "notes": [
+    "Typed PMS bridges only; body/endpoint unchanged. Authentication tested in transport.",
+    "Frozen mapper retains duplicated financial blocks; runtime consolidation must match these fixtures."
+  ]
+}

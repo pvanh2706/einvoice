@@ -1,0 +1,63 @@
+{
+  "doanhnghiep_mst": "TEST-TAX",
+  "loaihoadon_ma": "1",
+  "mauso": "1",
+  "kyhieu": "C26TAA",
+  "sophieu": "1",
+  "ma_hoadon": "INV-001",
+  "ngaylap": "2026-10-08 00:00:00",
+  "dnmua_mst": null,
+  "dnmua_ten": "Synthetic customer",
+  "dnmua_tennguoimua": "Khách thử nghiệm",
+  "dnmua_diachi": "Synthetic address",
+  "dnmua_sdt": null,
+  "dnmua_email": null,
+  "thanhtoan_phuongthuc": 3,
+  "thanhtoan_phuongthuc_ten": "3",
+  "thanhtoan_taikhoan": null,
+  "thanhtoan_nganhang": null,
+  "tiente_ma": "VND",
+  "tygiangoaite": 1.0,
+  "thanhtoan_thoihan": "",
+  "tongtien_chietkhau": 0.0,
+  "ghichu": null,
+  "tongtien_chuavat": 245.975,
+  "tienthue": 24.5975,
+  "tongtien_covat": 270.5725,
+  "nguoilap": "",
+  "dulieudacthu01": "",
+  "dulieudacthu02": "",
+  "dulieudacthu03": "",
+  "dulieudacthu04": "",
+  "dulieudacthu05": "",
+  "dschitiet": [
+    {
+      "stt": 1,
+      "hanghoa_loai": 1,
+      "khuyenmai": 0,
+      "ma": "",
+      "ten": "Dịch vụ thử nghiệm",
+      "donvitinh": "Lần",
+      "soluong": 2.5,
+      "dongia": 100.4,
+      "phantram_chietkhau": 7.0,
+      "tongtien_chietkhau": 17.575,
+      "phikhac_tyle": 0.0,
+      "phikhac_sotien": 0.0,
+      "tongtien_chuathue": 251.0,
+      "mathue": "10",
+      "tongtien_cothue": 270.5725
+    }
+  ],
+  "dsthuesuat": [
+    {
+      "mathue": "10",
+      "tongtien_chiuthue": 245.975,
+      "tongtien_thue": 24.5975
+    }
+  ],
+  "hoadon_goc": "OLD-001",
+  "hopdong_so": "",
+  "hopdong_ngayky": "",
+  "file_hopdong": ""
+}

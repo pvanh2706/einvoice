@@ -1,0 +1,107 @@
+{
+  "generalInvoiceInfo": {
+    "invoiceType": "1",
+    "templateCode": "1",
+    "invoiceSeries": "C26TAA",
+    "invoiceIssuedDate": 1791392400000,
+    "currencyCode": "VND",
+    "adjustmentType": "3",
+    "invoiceNo": null,
+    "invoiceNote": null,
+    "originalInvoiceId": "0000123",
+    "adjustmentInvoiceType": null,
+    "originalInvoiceIssueDate": null,
+    "additionalReferenceDesc": null,
+    "additionalReferenceDate": null,
+    "paymentStatus": true,
+    "paymentType": "TM/CK",
+    "paymentTypeName": "TM/CK",
+    "cusGetInvoiceRight": true,
+    "buyerIdNo": null,
+    "buyerIdType": null,
+    "transactionUuid": "INV-001",
+    "userName": null,
+    "validation": null,
+    "adjustAmount20": null,
+    "exchangeRate": 1.0
+  },
+  "buyerInfo": {
+    "buyerName": "Khách thử nghiệm",
+    "buyerLegalName": "Synthetic customer",
+    "buyerTaxCode": null,
+    "buyerAddressLine": "Synthetic address",
+    "buyerPhoneNumber": null,
+    "buyerFaxNumber": null,
+    "buyerEmail": null,
+    "buyerBankName": null,
+    "buyerBankAccount": null,
+    "buyerDistrictName": null,
+    "buyerCityName": null,
+    "buyerCountryCode": null,
+    "buyerIdNo": "",
+    "buyerIdType": null,
+    "buyerNotGetInvoice": 0,
+    "buyerBudgetCode": null
+  },
+  "sellerInfo": null,
+  "extAttribute": null,
+  "payments": [
+    {
+      "paymentMethodName": "TM/CK",
+      "paymentMethod": null
+    }
+  ],
+  "deliveryInfo": null,
+  "itemInfo": [
+    {
+      "lineNumber": "1",
+      "itemCode": "",
+      "itemName": "Dịch vụ thử nghiệm",
+      "unitCode": "",
+      "unitName": "Lần",
+      "unitPrice": 100.4,
+      "quantity": 2.5,
+      "itemTotalAmountWithoutTax": 268.575,
+      "itemTotalAmountWithTax": 270.5725,
+      "itemTotalAmountAfterDiscount": 251.0,
+      "itemDiscount": 17.575,
+      "discount": 7.0,
+      "taxPercentage": 10.0,
+      "taxAmount": 24.5975,
+      "adjustmentTaxAmount": null,
+      "isIncreaseItem": null,
+      "itemNote": null,
+      "batchNo": null,
+      "expDate": "08/10/2026",
+      "selection": null,
+      "adjustRatio": null
+    }
+  ],
+  "discountItemInfo": null,
+  "metadata": null,
+  "invoiceFile": null,
+  "taxBreakdowns": [
+    {
+      "taxPercentage": 10.0,
+      "taxableAmount": 245.975,
+      "taxAmount": 24.5975,
+      "taxableAmountPos": null,
+      "taxAmountPos": null,
+      "taxExemptionReason": null
+    }
+  ],
+  "summarizeInfo": {
+    "sumOfTotalLineAmountWithoutTax": 245.975,
+    "totalAmountWithoutTax": 245.975,
+    "totalTaxAmount": 24.5975,
+    "totalAmountWithTax": 270.5725,
+    "totalAmountWithTaxFrn": null,
+    "totalAmountWithTaxInWords": "Hai trăm bảy mươi đồng",
+    "isTotalAmountPos": null,
+    "isTotalTaxAmountPos": null,
+    "isTotalAmtWithoutTaxPos": null,
+    "discountAmount": null,
+    "totalAmountAfterDiscount": 245.975,
+    "isDiscountAmtPos": null
+  }
+}

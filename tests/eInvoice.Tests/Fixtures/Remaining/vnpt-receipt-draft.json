@@ -1,0 +1,11 @@
+{
+  "Body": {
+    "xmlInvData": "<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<Invoices xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <Inv>\r\n    <key>INV-001</key>\r\n    <Invoice>\r\n      <Buyer>Khách thử nghiệm</Buyer>\r\n      <CusCode>INV-001</CusCode>\r\n      <CusName>Synthetic customer</CusName>\r\n      <CusAddress>Synthetic address</CusAddress>\r\n      <CusPhone />\r\n      <CusTaxCode />\r\n      <CusBankNo />\r\n      <CusBankName />\r\n      <PaymentMethod>TM/CK</PaymentMethod>\r\n      <PaymentStatus>1</PaymentStatus>\r\n      <Total>251</Total>\r\n      <VATRate>10</VATRate>\r\n      <VATAmount>24.5975</VATAmount>\r\n      <Amount>270.5725</Amount>\r\n      <AmountInWords>Hai trăm bảy mươi đồng</AmountInWords>\r\n      <ArisingDate>08/10/2026</ArisingDate>\r\n      <CurrencyUnit>VND</CurrencyUnit>\r\n      <GrossValue10>245.975</GrossValue10>\r\n      <VatAmount10>24.5975</VatAmount10>\r\n      <KindOfService>10/2026</KindOfService>\r\n      <QuestQuantity>0</QuestQuantity>\r\n      <DiscountAmount>17.575</DiscountAmount>\r\n      <Products>\r\n        <Product>\r\n          <ProdName>Dịch vụ thử nghiệm</ProdName>\r\n          <ProdUnit>Lần</ProdUnit>\r\n          <ProdQuantity>2.5</ProdQuantity>\r\n          <ProdPrice>100.4</ProdPrice>\r\n          <Amount>270.5725</Amount>\r\n          <Total>245.975</Total>\r\n          <VATRate>10</VATRate>\r\n          <VATAmount>24.5975</VATAmount>\r\n          <Extra1>08/10/2026</Extra1>\r\n        </Product>\r\n      </Products>\r\n      <Extra>Dịch vụ thử nghiệm</Extra>\r\n    </Invoice>\r\n  </Inv>\r\n</Invoices>",
+    "username": "synthetic-user",
+    "password": "synthetic-secret2",
+    "convert": 0,
+    "tkTao": "synthetic-account",
+    "pattern": "1",
+    "serial": "R26TEST"
+  }
+}

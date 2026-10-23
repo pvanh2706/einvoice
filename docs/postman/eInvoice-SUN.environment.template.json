@@ -1,0 +1,144 @@
+{
+  "name": "eInvoice SUN template - configure sandbox locally",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7150",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "enabled": true,
+      "type": "secret"
+    },
+    {
+      "key": "siteId",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceId",
+      "value": "33333333-3333-3333-3333-333333333333",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftInvoiceId",
+      "value": "44444444-4444-4444-4444-444444444444",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "increaseInvoiceId",
+      "value": "55555555-5555-5555-5555-555555555555",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "decreaseInvoiceId",
+      "value": "66666666-6666-6666-6666-666666666666",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "replaceInvoiceId",
+      "value": "77777777-7777-7777-7777-777777777777",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "formNo",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "serial",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceDate",
+      "value": "11/10/2026",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "searchCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftSearchCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "sid",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "originalSid",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "originalSearchCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "originalProviderInvoiceNumber",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "publishKey",
+      "value": "sun-publishKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftKey",
+      "value": "sun-draftKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "increaseKey",
+      "value": "sun-increaseKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "decreaseKey",
+      "value": "sun-decreaseKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "replaceKey",
+      "value": "sun-replaceKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "voidKey",
+      "value": "sun-voidKey-001",
+      "enabled": true,
+      "type": "default"
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

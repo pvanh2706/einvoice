@@ -1,0 +1,26 @@
+using System.Globalization;
+using eInvoice.Core.Contracts;
+using eInvoice.Capture.Sun.Mapping;
+using eInvoice.Tests.Misa;
+using Newtonsoft.Json;
+
+CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+var output = Path.GetFullPath(args.Length == 0 ? "tests/eInvoice.Tests/Fixtures/Sun/Payloads" : args[0]);
+Directory.CreateDirectory(output);
+SunMappingContext Context(object input) => new() { Company = MisaTestData.Site.Site, Data = input, Now = new DateTime(2026, 10, 11) };
+void Save(string name, object payload) => File.WriteAllText(Path.Combine(output, name + ".json"), JsonConvert.SerializeObject(payload, Formatting.Indented) + "\n");
+var input = MisaTestData.Invoice(); input.Invoice!.InvoiceId = "33333333-3333-3333-3333-333333333333";
+input.Invoice.Sid = "old-sid"; input.Invoice.SearchCode = "SEARCH-001";
+Save("publish", SunRequestMapper.ConvertCreateAndPublishInvoiceRequest(Context(input)).Body);
+Save("draft", SunRequestMapper.ConvertCreateAndPublishInvoiceRequest(Context(input)).Body);
+Save("replace", SunRequestMapper.ConvertInvoiceReplaceRequest(Context(input)).Body);
+Save("adjust-increase", SunRequestMapper.ConvertInvoiceAdjustRequest(Context(input), 2).Body);
+Save("adjust-decrease", SunRequestMapper.ConvertInvoiceAdjustRequest(Context(input), 1).Body);
+Save("preview", SunRequestMapper.ConvertDownloadPDFDraftRequest(Context(input)).Body);
+var document = new DownloadPdfRequest { InvoiceType = 0, SearchCode = "SEARCH-001" };
+Save("document", SunRequestMapper.ConvertDownloadPDFRequest(Context(document), false).Body);
+Save("draft-document", SunRequestMapper.ConvertDownloadPDFRequest(Context(document), true).Body);
+Save("void", SunRequestMapper.ConvertVoidInvoiceRequest(Context(new VoidInvoiceRequest { InvoiceType = 0, Sid = "old-sid", Reason = "Synthetic reason" })).Body);
+Save("health-check", SunRequestMapper.ConvertLoginRequest(Context(new ProviderHealthCheckRequest())).Body);
+Save("capture-context", new { baseline = "66a9c742d0f6fb692d339076e6cd82780e3476be", culture = "Invariant", timezone = "UTC+7", date = "2026-10-11", note = "Offline frozen baseline; no runtime provider assembly or provider HTTP." });
+Console.WriteLine("Captured 10 offline Sun payloads.");

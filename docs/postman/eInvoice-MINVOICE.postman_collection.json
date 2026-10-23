@@ -1,0 +1,551 @@
+{
+  "info": {
+    "name": "eInvoice MINVOICE API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "15 baseline actions, offline tests only. No sandbox UAT. Business VP/Bear and health configured unit retained. Pending never authorizes blind retry. Create/change are unsigned operations."
+  },
+  "item": [
+    {
+      "name": "Liveness",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/health/live",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset."
+      }
+    },
+    {
+      "name": "OpenAPI",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/openapi/einvoice.json",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset."
+      }
+    },
+    {
+      "name": "Capabilities",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/capabilities",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset."
+      }
+    },
+    {
+      "name": "Health check - configured unit",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/health-check",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Form and serial list",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/form-serials",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Create and publish - SaveSign",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{publishKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"searchCode\": \"SYNTHETIC-SEARCH-001\"\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Create unsigned - Save",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{createKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/create",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{draftInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"searchCode\": \"SYNTHETIC-SEARCH-001\"\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Change unsigned - Save editmode 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{changeKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/change",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{draftInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"searchCode\": \"SYNTHETIC-SEARCH-001\"\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceCode\": \"{{draftProviderInvoiceCode}}\",\n  \"originalProviderInvoiceNumber\": \"{{draftProviderInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Sign existing unsigned - Sign",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{signKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish-existing",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"invoiceId\": \"{{draftInvoiceId}}\",\n  \"providerInvoiceCode\": \"{{draftProviderInvoiceCode}}\",\n  \"providerInvoiceNumber\": \"{{draftProviderInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "replace",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{replaceKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/replace",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{replaceInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"searchCode\": \"SYNTHETIC-SEARCH-001\"\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceCode\": \"{{providerInvoiceCode}}\",\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{adjustKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{adjustInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"searchCode\": \"SYNTHETIC-SEARCH-001\"\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceCode\": \"{{providerInvoiceCode}}\",\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Delete unsigned by serial and number",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{deleteKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/delete",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"invoiceId\": \"{{draftInvoiceId}}\",\n  \"serial\": \"{{serial}}\",\n  \"providerInvoiceNumber\": \"{{draftProviderInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Void signed invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{voidKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/void",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"providerInvoiceCode\": \"{{providerInvoiceCode}}\",\n  \"providerInvoiceNumber\": \"{{providerInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Download PDF by provider GUID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/document",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"providerInvoiceCode\": \"{{providerInvoiceCode}}\",\n  \"typeFileDownload\": \"pdf\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Get invoice sign statuses",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/invoices",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fromDate\": \"2026-10-01T00:00:00\",\n  \"toDate\": \"2026-10-11T00:00:00\",\n  \"serial\": \"{{serial}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Tax registry - separate allowlist required",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/tax-code",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"taxCode\": \"{{taxCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Email - explicit sandbox recipient only",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{emailKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/email",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"providerInvoiceCode\": \"{{providerInvoiceCode}}\",\n  \"email\": \"{{email}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Read original publish attempt",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/operations/publish/{{publishKey}}",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset."
+      }
+    },
+    {
+      "name": "Read PMS invoice publish claim",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/invoice-attempts?invoiceId={{invoiceId}}&phase=publish",
+        "description": "Minvoice synthetic sandbox example. Configure partner=2, credentials and allowed HTTPS host separately. Persist key/body and providerInvoiceCode. No auto retry or claim reset."
+      }
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "name": "eInvoice VIETTEL template - configure sandbox locally",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7150",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "enabled": true,
+      "type": "secret"
+    },
+    {
+      "key": "siteId",
+      "value": "22222222-2222-2222-2222-222222222222",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "formNo",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "serial",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceDate",
+      "value": "11/10/2026",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "providerInvoiceNumber",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "publishKey",
+      "value": "viettel-publishKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "batchKey",
+      "value": "viettel-batchKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftKey",
+      "value": "viettel-draftKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "adjust_increaseKey",
+      "value": "viettel-adjust_increaseKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "adjust_decreaseKey",
+      "value": "viettel-adjust_decreaseKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "adjust_informationKey",
+      "value": "viettel-adjust_informationKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "replaceKey",
+      "value": "viettel-replaceKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "voidKey",
+      "value": "viettel-voidKey-001",
+      "enabled": true,
+      "type": "default"
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

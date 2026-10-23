@@ -1,0 +1,19 @@
+{
+  "sites": [
+    {
+      "site": {
+        "id": "11111111-1111-1111-1111-111111111111",
+        "name": "Khách sạn test",
+        "partner": 6,
+        "taxNumber": "",
+        "partnerUrl": "",
+        "username": "",
+        "password": "",
+        "partnerUrl2": "",
+        "username2": "",
+        "password2": ""
+      },
+      "extraDataMap": []
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "inv_InvoiceAuth_id": "44444444-4444-4444-4444-444444444444",
+  "inv_invoiceIssuedDate": "2026-10-08",
+  "so_folio": null,
+  "so_phong": null,
+  "inv_arrivalDate": null,
+  "inv_departureDate": null,
+  "data": [
+    {
+      "stt": 1,
+      "tchat": 1,
+      "ma": null,
+      "inv_itemName": "Dịch vụ thử nghiệm",
+      "inv_unitCode": "Lần",
+      "inv_quantity": 2.5,
+      "inv_unitPrice": 100.4,
+      "inv_discountPercentage": 7.0,
+      "inv_discountAmount": 17.575,
+      "inv_TotalAmountWithoutVat": 245.975,
+      "ma_thue": "10",
+      "inv_vatAmount": 24.5975,
+      "inv_TotalAmount": 270.5725,
+      "ServiceRate": null,
+      "ServiceCharge": null,
+      "SubAmount": null,
+      "ghi_chu": null,
+      "thhdv": 251.0,
+      "inv_Amount": 251.0,
+      "ortherFee": 12.55,
+      "inv_vatRateDeduction": null,
+      "inv_vatAmountDeduction": null
+    }
+  ]
+}

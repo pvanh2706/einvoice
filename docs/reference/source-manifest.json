@@ -1,0 +1,116 @@
+{
+  "baselineCommit": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "documentationCommit": "f77fa2e",
+  "files": [
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/EnumDefine.cs",
+      "sha256": "c61f2248623ebe7017ccf424667422d455d26477816eb445ae61a1350de4efda"
+    },
+    {
+      "path": "src/ezInvoice.Services.Api/Controllers/ApiForPms/PmsController.cs",
+      "sha256": "d08b4cabc382f1d758395f38ef60787b9d9ebb0d4f65aa95eedae16c1c1453b6"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/VnptAppService.cs",
+      "sha256": "36ada6d6725fa9afb4e8ce55fa1b3e3982137ec2f021a2d597c3f17d954518ba"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/MinvoiceAppService.cs",
+      "sha256": "07fcc8156c269c5e6334905efda3b0a74e224e7728501d3f338ea8ecffd66282"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/SunAppService.cs",
+      "sha256": "a248e9f7a0575cd2147185ee0ede76ad71a13fd6007f8750ff37b765de9af9a0"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/ViettelAppService.cs",
+      "sha256": "5ef4c523bf8bd7ab9327d5f870437c980d7b776bfb4d2ea5252501597f1e7bd4"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/VnptV5AppService.cs",
+      "sha256": "906de3d23792b8a7fa841aa28cb62be4d3863d45851c5d8c5c9019d731117d4c"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/MisaAppService.cs",
+      "sha256": "32e52ef07320a3e44f1e461e73af6a15045125799722cb1d6683c1d11a93e824"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/CyberbillAppService.cs",
+      "sha256": "1f35ae40efa867264d470f66b2c55305fa8ee2f850817e6f9ae56e2256c493d0"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/FastAppService.cs",
+      "sha256": "1f07c16adc5668dfcfa8bc0189a4c304de7ac00da9c7c39c9191afe71e3a5c2e"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/ThirdPartyServices/EasyInvoiceAppService.cs",
+      "sha256": "66a51e39c0e17c3dd5a3828b3d675c101bf459d1f265f5c4162e1d60800ae596"
+    },
+    {
+      "path": "docs/rewrite/00-START-HERE.md",
+      "origin": "legacy working tree; untracked at capture",
+      "sha256": "632d5a322a089f13874637576fc8d81e9b0d141d2c05f9fc0a7fe60f61148063"
+    },
+    {
+      "path": "docs/rewrite/01-ma-tran-partner-action.md",
+      "origin": "legacy working tree; untracked at capture",
+      "sha256": "3cf9416267d9625ddf3c209961984f970cf9955a7df1daa537cdf91daec1e899"
+    },
+    {
+      "path": "docs/rewrite/02-bang-credential.md",
+      "origin": "legacy working tree; untracked at capture",
+      "sha256": "8344e4c3b0faa33af82669be863dabd77831c1e2b0617d8af16d5a73b08c19cf"
+    },
+    {
+      "path": "docs/rewrite/03-so-tay-bay.md",
+      "origin": "legacy working tree; untracked at capture",
+      "sha256": "263295b0b5367e82b10f1ea414f9b6f77b48a8549d5e50ea29ee0fc268d7056a"
+    },
+    {
+      "path": "docs/rewrite/CLAUDE.md",
+      "origin": "legacy working tree; untracked at capture",
+      "sha256": "fae4a6cec16f622c38d61f6b35b1fd7156c618cd895b1a797972b47eacd11e24"
+    },
+    {
+      "path": "docs/rewrite/README.md",
+      "origin": "legacy working tree; untracked at capture",
+      "sha256": "376e874cfb5e67e123fbbfbf971049e39e060cc358d866bcc1d728701b21d07f"
+    },
+    {
+      "path": "src/ezInvoice.Application/ViewModels/PmsViewModels/PmsInvoiceModels.cs",
+      "sha256": "358bdafea14062726fe0ddb066b68b5ff5a683f47e029d36f86f87ddcb9eb4ba"
+    },
+    {
+      "path": "src/ezInvoice.Application/ViewModels/ExtraDataMapViewModel.cs",
+      "sha256": "c762ef1f5457123ea3e37a01f1a88fe7c8398942e3d8a6892f7b73efc8e7e50a"
+    },
+    {
+      "path": "src/ezInvoice.Application/Services/CompanyAppService.cs",
+      "sha256": "3c622db11edd1e50b475479759bf3b84ac44ce1fb6e2e9082bcc3f4269598b20"
+    },
+    {
+      "path": "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Misa/MisaRepository.cs",
+      "sha256": "4646d295ce0ba0684d690e07bacdb2cdfc94417fc4dfa3d8aed3b9292bf2a925"
+    },
+    {
+      "path": "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Misa/Models/EndpointApi.cs",
+      "sha256": "b74276d1c68c003df826a85745f970f17b26422abc9c0103315a19e720ce2a3a"
+    },
+    {
+      "path": "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.Misa/Models/MisaResponseModel.cs",
+      "sha256": "11e1821dc6b7611c18ab8607ec2f2c3e25b309da4e333fc60d18c00a451fc3b8"
+    },
+    {
+      "path": "src/ezInvoice.Application/Helper/MoneyToText.cs",
+      "sha256": "678ec99d27815250f2f3a3374083affd6371391b6903af4680221483b774282b"
+    },
+    {
+      "path": "src/ezInvoice.Application/Helper/XmlHelper.cs",
+      "sha256": "e6ec321d9bf60f423857135f5b2e18e4ebae7b8402322de673ec18ebcf9897d6"
+    },
+    {
+      "path": "src/ezInvoice.Infra.ThirdParty/ezInvoice.Infra.ThirdParty.SunEInvoice/Services/NumberReader.cs",
+      "sha256": "f751d963cfea978eb4b5630f9ecf3f7b9397b414a38605d33bad63080e289a5e"
+    }
+  ]
+}

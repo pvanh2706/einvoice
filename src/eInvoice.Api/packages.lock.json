@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "Newtonsoft.Json": {
+        "type": "Transitive",
+        "resolved": "13.0.4",
+        "contentHash": "pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A=="
+      },
+      "System.ServiceModel.Http": {
+        "type": "Transitive",
+        "resolved": "10.0.652802",
+        "contentHash": "G02XZvmccf42QCU5MjviBIg69MSMAVHwL1inVPsNSpfp5g+t5BkQM3DyvWRLN4qmeFDWSF/mA1rIYONIDu/6Dg==",
+        "dependencies": {
+          "System.ServiceModel.Primitives": "10.0.652802"
+        }
+      },
+      "System.ServiceModel.Primitives": {
+        "type": "Transitive",
+        "resolved": "10.0.652802",
+        "contentHash": "ULfGNl75BNXkpF42wNV2CDXJ64dUZZEa8xO2mBsc4tqbW9QjruxjEB6bAr4Z/T1rNU+leOztIjCJQYsBGFWYlw=="
+      },
+      "einvoice.core": {
+        "type": "Project"
+      },
+      "einvoice.providers": {
+        "type": "Project",
+        "dependencies": {
+          "Newtonsoft.Json": "[13.0.4, )",
+          "System.ServiceModel.Http": "[10.0.652802, )",
+          "eInvoice.Core": "[1.0.0, )"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "baseline": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "culture": "Invariant",
+  "timezone": "UTC+7",
+  "note": "Offline synthetic characterization of pinned mapper. Explicit UTC+7 date and canonical DTO bridges; no runtime provider assembly."
+}

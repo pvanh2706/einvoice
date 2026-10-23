@@ -1,0 +1,524 @@
+{
+  "info": {
+    "name": "eInvoice EASY_INVOICE API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "14 baseline actions: 12 business actions plus Login/HealthCheck configuration validation with connectionVerified=false. Offline only, UAT required. Create and draft are the same unsigned import, choose one. Each adjustment/replacement needs its own newInvoiceId/key; do not run all with the same identity."
+  },
+  "item": [
+    {
+      "name": "Liveness",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/health/live",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests."
+      }
+    },
+    {
+      "name": "OpenAPI",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/openapi/einvoice.json",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests."
+      }
+    },
+    {
+      "name": "Capabilities",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/capabilities",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests."
+      }
+    },
+    {
+      "name": "Validate configuration - connectionVerified=false",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/health-check",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Create and publish",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{publishKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "create unsigned - choose ONE import route",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{createKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/create",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{draftInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "draft unsigned - choose ONE import route",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{draftKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/draft",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{draftInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Publish existing draft",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{signKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish-existing",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"invoiceId\": \"{{draftInvoiceId}}\",\n  \"serial\": \"{{serial}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "replace",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{replaceKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/replace",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{invoiceId}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"maCQT\": \"{{taxAuthorityCode}}\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/increase",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{increaseKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/increase",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{invoiceId}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"maCQT\": \"{{taxAuthorityCode}}\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/decrease",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{decreaseKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/decrease",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{invoiceId}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"maCQT\": \"{{taxAuthorityCode}}\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/information",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{informationKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/information",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{invoiceId}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"maCQT\": \"{{taxAuthorityCode}}\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Preview normal XML",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/preview",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"1\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"previewType\": 1\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Download issued PDF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/document",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"serial\": \"{{serial}}\",\n  \"typeFileDownload\": \"pdf\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Delete unsigned draft",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{deleteKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/delete",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"invoiceId\": \"{{draftInvoiceId}}\",\n  \"serial\": \"{{serial}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Void issued invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{voidKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/void",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"serial\": \"{{serial}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Read original publish attempt",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/operations/publish/{{publishKey}}",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests."
+      }
+    },
+    {
+      "name": "Read invoice publish claim",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/invoice-attempts?invoiceId={{invoiceId}}&phase=publish",
+        "description": "EasyInvoice synthetic sandbox example. Partner 9; configure allowed HTTPS host and credentials on server. Ikey is PMS invoiceId. Persist key/body; pending never authorizes retry. No real provider calls in capture/tests."
+      }
+    }
+  ]
+}

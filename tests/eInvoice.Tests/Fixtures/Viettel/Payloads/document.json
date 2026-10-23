@@ -1,0 +1,7 @@
+{
+  "supplierTaxCode": "TEST-TAX",
+  "invoiceNo": "000001",
+  "templateCode": "1",
+  "transactionUuid": "INV-001",
+  "fileType": "PDF"
+}

@@ -1,0 +1,415 @@
+{
+  "info": {
+    "name": "eInvoice SUN API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "10 baseline actions, offline tested, sandbox UAT still required. No status/form/batch. Draft and preview do not confirm publication."
+  },
+  "item": [
+    {
+      "name": "Liveness",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/health/live",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset."
+      }
+    },
+    {
+      "name": "OpenAPI",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/openapi/einvoice.json",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset."
+      }
+    },
+    {
+      "name": "Capabilities",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/capabilities",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset."
+      }
+    },
+    {
+      "name": "Fresh health check",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/health-check",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Publish one invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{publishKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Create draft - does not confirm publication",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{draftKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/draft",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{draftInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Preview existing draft",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/preview",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceType\": 0,\n    \"searchCode\": \"{{draftSearchCode}}\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/increase",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{increaseKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/increase",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{increaseInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"sid\": \"{{originalSid}}\",\n    \"searchCode\": \"{{originalSearchCode}}\"\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceNumber\": \"{{originalProviderInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/decrease",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{decreaseKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/decrease",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{decreaseInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"sid\": \"{{originalSid}}\",\n    \"searchCode\": \"{{originalSearchCode}}\"\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceNumber\": \"{{originalProviderInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "replace",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{replaceKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/replace",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{replaceInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0,\n    \"sid\": \"{{originalSid}}\",\n    \"searchCode\": \"{{originalSearchCode}}\"\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalProviderInvoiceNumber\": \"{{originalProviderInvoiceNumber}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Download issued PDF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/document",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"searchCode\": \"{{searchCode}}\",\n  \"typeFileDownload\": \"pdf\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Download draft PDF",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/document/draft",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"searchCode\": \"{{draftSearchCode}}\",\n  \"typeFileDownload\": \"pdf\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Void - sid comes from publish transactionId",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{voidKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/void",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"sid\": \"{{sid}}\",\n  \"reason\": \"Synthetic cancellation reason\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Read original publish attempt",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/operations/publish/{{publishKey}}",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset."
+      }
+    },
+    {
+      "name": "Read invoice publish claim",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/invoice-attempts?invoiceId={{invoiceId}}&phase=publish",
+        "description": "SUN synthetic sandbox example. Configure partner=3 and both endpoints/host allowlists separately. Keep invoice ID, key and body stable. No automatic retry or reset."
+      }
+    }
+  ]
+}

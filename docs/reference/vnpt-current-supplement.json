@@ -1,0 +1,8 @@
+{
+  "commit": "c09ad7d55d9f2314811e59c3a7f2c14b63c7166a",
+  "sourceHashes": {
+    "src/ezInvoice.Application/EventSourcedNormalizers/VnptNormalizes/VnptConvertRequest.cs": "637453e8780a10c6821edda347e3db2f0200a4425ba59f5da7c5ed0af3799804",
+    "src/ezInvoice.Application/EventSourcedNormalizers/VnptNormalizes/VnptMTTConvertRequest.cs": "9c37c92dd6849acbd96d93624bfd1c90085d8a882ef5bb1d91b15af97d34d775"
+  },
+  "review": "The only post-baseline changes in VNPT/PMS DTO sources are nullable IsItemSpecialTax and two IsSum=4 mappings. Imported additively; pinned baseline remains unchanged."
+}

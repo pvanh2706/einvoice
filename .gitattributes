@@ -1,0 +1,12 @@
+* text=auto
+*.cs text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.ps1 text eol=crlf
+
+# Imported WSDL proxies and frozen legacy sources retain their original trivia.
+# Keeping capture sources immutable also preserves literal XML whitespace.
+src/eInvoice.Providers/Vnpt/Generated/** linguist-generated=true whitespace=-blank-at-eol
+tools/RemainingFixtureCapture/Frozen/** linguist-generated=true whitespace=-blank-at-eol
+tools/RemainingFixtureCapture/Current/** linguist-generated=true whitespace=-blank-at-eol

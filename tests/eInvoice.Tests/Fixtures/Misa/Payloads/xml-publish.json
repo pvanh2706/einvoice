@@ -1,0 +1,11 @@
+[
+  {
+    "RefID": "INV-001",
+    "TransactionID": "transaction-001",
+    "InvoiceData": "<synthetic-signed-invoice/>",
+    "IsSendEmail": false,
+    "ReceiverEmail": "",
+    "ReceiverName": "",
+    "IsInvoiceSummary": false
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "baseline": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "culture": "",
+  "timezone": "SE Asia Standard Time",
+  "offsetAtInvoiceDate": "07:00:00",
+  "note": "Offline synthetic characterization. Frozen legacy mapper with canonical DTO type/property bridges; no runtime provider reference."
+}

@@ -1,0 +1,737 @@
+{
+  "info": {
+    "name": "eInvoice VNPT_V5 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Offline baseline port; sandbox UAT required. FAST: use a serial with M at the third position from the end for MTT."
+  },
+  "item": [
+    {
+      "name": "Capabilities",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/eInvoice/capabilities",
+        "header": [
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ]
+      }
+    },
+    {
+      "name": "health-check",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/health-check",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "form-serials",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/form-serials",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "certificate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/certificate",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "draft",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{draftKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/draft",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "draft/edit",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{draft_editKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/draft/edit",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{createKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/create",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "publish",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{publishKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"deleteExistingDraft\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "publish-batch",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{publish-batchKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish-batch",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoices\": [\n    {\n      \"invoice\": {\n        \"invoiceId\": \"{{invoiceId}}\",\n        \"invoiceType\": 0,\n        \"formNo\": \"{{formNo}}\",\n        \"serial\": \"{{serial}}\",\n        \"invoiceDate\": \"{{invoiceDate}}\",\n        \"customerName\": \"Khách thử nghiệm tích hợp\",\n        \"customerAddress\": \"Địa chỉ thử nghiệm\",\n        \"currencyCode\": \"VND\",\n        \"exchangeRate\": 1,\n        \"paymentMethod\": \"TM/CK\",\n        \"subAmount\": 100000,\n        \"serviceRate\": 0,\n        \"serviceCharge\": 0,\n        \"beforeTaxAmount\": 100000,\n        \"taxRate\": 10,\n        \"taxAmount\": 10000,\n        \"afterTaxAmount\": 110000,\n        \"isMultiVATRate\": false,\n        \"pricePrecision\": 0,\n        \"quantityPrecision\": 0,\n        \"amountPrecision\": 0\n      },\n      \"details\": [\n        {\n          \"itemCode\": \"SERVICE-TEST\",\n          \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n          \"unitName\": \"Lần\",\n          \"quantity\": 1,\n          \"price\": 100000,\n          \"subAmount\": 100000,\n          \"discountAmount\": 0,\n          \"discountPercent\": 0,\n          \"serviceRate\": 0,\n          \"serviceCharge\": 0,\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000,\n          \"afterTaxAmount\": 110000,\n          \"exciseTaxRate\": 0,\n          \"exciseTaxCharge\": 0,\n          \"itemType\": \"1\",\n          \"transactionDate\": \"{{invoiceDate}}\"\n        }\n      ],\n      \"taxSummaries\": [\n        {\n          \"beforeTaxAmount\": 100000,\n          \"taxRate\": 10,\n          \"taxAmount\": 10000\n        }\n      ],\n      \"serviceSummaries\": [],\n      \"specialTaxSummaries\": [],\n      \"extraData\": [],\n      \"electronicInvoiceType\": 0\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "publish-existing",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{publish-existingKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/publish-existing",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"serial\": \"{{serial}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "preview",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{previewKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/preview",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{invoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "replace",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{replaceKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/replace",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{originalInvoiceId}}\",\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{originalInvoiceId}}\",\n    \"serial\": \"{{serial}}\",\n    \"formNo\": \"{{formNo}}\",\n    \"invoiceDate\": \"01/10/2026\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{adjustKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{originalInvoiceId}}\",\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{originalInvoiceId}}\",\n    \"serial\": \"{{serial}}\",\n    \"formNo\": \"{{formNo}}\",\n    \"invoiceDate\": \"01/10/2026\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/increase",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{adjust_increaseKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/increase",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{originalInvoiceId}}\",\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{originalInvoiceId}}\",\n    \"serial\": \"{{serial}}\",\n    \"formNo\": \"{{formNo}}\",\n    \"invoiceDate\": \"01/10/2026\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/decrease",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{adjust_decreaseKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/decrease",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{originalInvoiceId}}\",\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{originalInvoiceId}}\",\n    \"serial\": \"{{serial}}\",\n    \"formNo\": \"{{formNo}}\",\n    \"invoiceDate\": \"01/10/2026\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust/information",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{adjust_informationKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/adjust/information",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoice\": {\n    \"invoiceId\": \"{{newInvoiceId}}\",\n    \"invoiceType\": 0,\n    \"formNo\": \"{{formNo}}\",\n    \"serial\": \"{{serial}}\",\n    \"invoiceDate\": \"{{invoiceDate}}\",\n    \"customerName\": \"Khách thử nghiệm tích hợp\",\n    \"customerAddress\": \"Địa chỉ thử nghiệm\",\n    \"currencyCode\": \"VND\",\n    \"exchangeRate\": 1,\n    \"paymentMethod\": \"TM/CK\",\n    \"subAmount\": 100000,\n    \"serviceRate\": 0,\n    \"serviceCharge\": 0,\n    \"beforeTaxAmount\": 100000,\n    \"taxRate\": 10,\n    \"taxAmount\": 10000,\n    \"afterTaxAmount\": 110000,\n    \"isMultiVATRate\": false,\n    \"pricePrecision\": 0,\n    \"quantityPrecision\": 0,\n    \"amountPrecision\": 0\n  },\n  \"details\": [\n    {\n      \"itemCode\": \"SERVICE-TEST\",\n      \"itemName\": \"Dịch vụ thử nghiệm tích hợp\",\n      \"unitName\": \"Lần\",\n      \"quantity\": 1,\n      \"price\": 100000,\n      \"subAmount\": 100000,\n      \"discountAmount\": 0,\n      \"discountPercent\": 0,\n      \"serviceRate\": 0,\n      \"serviceCharge\": 0,\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000,\n      \"afterTaxAmount\": 110000,\n      \"exciseTaxRate\": 0,\n      \"exciseTaxCharge\": 0,\n      \"itemType\": \"1\",\n      \"transactionDate\": \"{{invoiceDate}}\"\n    }\n  ],\n  \"taxSummaries\": [\n    {\n      \"beforeTaxAmount\": 100000,\n      \"taxRate\": 10,\n      \"taxAmount\": 10000\n    }\n  ],\n  \"serviceSummaries\": [],\n  \"specialTaxSummaries\": [],\n  \"extraData\": [],\n  \"electronicInvoiceType\": 0,\n  \"originalInvoiceId\": \"{{originalInvoiceId}}\",\n  \"originalProviderInvoiceNumber\": \"{{providerInvoiceNumber}}\",\n  \"originalInvoice\": {\n    \"invoiceId\": \"{{originalInvoiceId}}\",\n    \"serial\": \"{{serial}}\",\n    \"formNo\": \"{{formNo}}\",\n    \"invoiceDate\": \"01/10/2026\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "document",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/document",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"serial\": \"{{serial}}\",\n  \"invoiceDate\": \"{{invoiceDate}}\",\n  \"searchCode\": \"{{searchCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "document/draft",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/document/draft",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"serial\": \"{{serial}}\",\n  \"invoiceDate\": \"{{invoiceDate}}\",\n  \"searchCode\": \"{{searchCode}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "void",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{voidKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/void",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"serial\": \"{{serial}}\",\n  \"invoiceDate\": \"{{invoiceDate}}\",\n  \"searchCode\": \"{{searchCode}}\",\n  \"reason\": \"Synthetic sandbox cancellation\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "delete",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{deleteKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/delete",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"serial\": \"{{serial}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "status",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/status",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"serial\": \"{{serial}}\",\n  \"invoiceIds\": [\n    \"{{invoiceId}}\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "tax/send",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Api-Key",
+            "value": "{{apiKey}}"
+          },
+          {
+            "key": "X-Site-Id",
+            "value": "{{siteId}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{tax_sendKey}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/eInvoice/tax/send",
+        "description": "Synthetic example. Configure sandbox locally; execute selected operations individually. Keep invoiceId/key/body stable; pending requires reconciliation. FAST/EASY health only validates configuration. Cyberbill create is unsigned; use publish-existing to sign. VNPT preview writes a draft. Never run a collection blindly.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invoiceType\": 0,\n  \"formNo\": \"{{formNo}}\",\n  \"serial\": \"{{serial}}\",\n  \"invoiceIds\": [\n    \"{{invoiceId}}\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

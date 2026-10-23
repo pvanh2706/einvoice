@@ -1,0 +1,33 @@
+{
+  "baseline": "66a9c742d0f6fb692d339076e6cd82780e3476be",
+  "frozenFiles": {
+    "Fast\\Mapping\\FastMappingContext.cs": "55270ced15719e19ed7dd02824200d7a4bf4b3410e05e78fc4727cad67318e21",
+    "Fast\\Mapping\\FastRequestMapper.cs": "c40f121e7d4693ec4404f301b3909a9e1d44d19943d405ea552c2dbfc1a152e1",
+    "Fast\\Mapping\\Metadata.cs": "40d5f535afc0ad0f11a0e2c90b97b2501b35d422b666dff09fc323e2fc07cc9a",
+    "Fast\\Wire\\FastInvoiceModels.cs": "4c23a19ab0cf39f51004fb6f3fdac5fc5bb757bc720c9515c513487c8d996ea9",
+    "Fast\\Wire\\FastRequestModels.cs": "7371fe911abe1bb4c1b960b3ff0f9df95b791818910a53e981cf106f5f3b03d3",
+    "Vnpt\\Generated\\BusinessService_V5.cs": "7a8d4a51ad49c10baa5fd1be32004e3a81e55e2f32f941eee8adaaa5c147e14d",
+    "Vnpt\\Generated\\PortalService.cs": "e4a825a9496837a1defde1451f4c07f4e02588620ad3808d6fa4af9d1ec5502f",
+    "Vnpt\\Generated\\PortalService_V5.cs": "d79b6ee45a0ec60f6bbc0ee362e5e5b5c35f76bad240d00e3830b697bb721b46",
+    "Vnpt\\Generated\\PublishService.cs": "ef605b33a1be9b1d1f9338f8b7454f80505d352433a15c84ce87d496ce7602f3",
+    "Vnpt\\Generated\\PublishService_TLYT.cs": "7ea6d6f1c915f098818294525b2a65ff94dc09ad50ed25cae95279c893f69862",
+    "Vnpt\\Generated\\PublishService_V5.cs": "01bb3096576bbb68606f7b5dfa07432a9679a766ecc6f75678c1bb0732cd8094",
+    "Vnpt\\Baseline\\Wire\\AdjustInvoiceModelV5.cs": "badea4846895a3ba008f77565f90747187ee685911bc0741cc9216128cf3241b",
+    "Vnpt\\Baseline\\Wire\\AdjustInvoiceModel_MTT.cs": "d69060356831afad7703cddf5f52434f4cb8119beb546367f40a6c6439d9e66e",
+    "Vnpt\\Baseline\\Wire\\FormSerialModel.cs": "578a833e7771d202a30dfd6d5c78e95aaf821f883fbdf6fe486a979fa169e824",
+    "Vnpt\\Baseline\\Wire\\FormSerialVnptListResult.cs": "b5212c19793f32e3746ecee847ebbd73a0477b2d19470be895b902dfe556cc67",
+    "Vnpt\\Baseline\\Wire\\ReplaceInvoiceModelV5.cs": "bed7693df4fce49fd6231b42dbbe558144c5770ef92b1aa44c013279a61bf137",
+    "Vnpt\\Baseline\\Wire\\ReplaceInvoiceModel_MTT.cs": "803f13013cab29cdefc27c5121be1ed3ad1f248b1a62ad3227e06aaa61627543",
+    "Vnpt\\Baseline\\Wire\\ThirdPartyResponseModel.cs": "cd0cb2df1f2b7671e543bebfe012bf9add3ad892c56fd65b4d2605ba3d67307f",
+    "Vnpt\\Baseline\\Wire\\VnptInvoiceModel.cs": "383262c51efb03c89999fa82e03a27c854a8006ccd21a93442a7bf8e22e42a6a",
+    "Vnpt\\Baseline\\Wire\\VnptInvoiceModelV5.cs": "8e1b59666340b17f90ccb8d39629ea3ebbfbe237205bd8dff716f377afe18add",
+    "Vnpt\\Baseline\\Wire\\VnptInvoiceModel_MTT.cs": "284083a72cf4e0415f0a945980d4cef839ca5674918fb28acfd504580d7bf7a7",
+    "Vnpt\\Baseline\\Wire\\VnptResponseError.cs": "b40fe04c3e9b9d853a0de801d5c625cddc653cc66e84444e4a22bc1496964280",
+    "Vnpt\\Baseline\\VnptConvertRequest.cs": "be154f55b330c1e1dbd405f93ee36a863675e390df87e4c2ddb632696760be4c",
+    "Vnpt\\Baseline\\VnptMTTConvertRequest.cs": "cc6f573363f0e6ba4aaeb915951fc2db5ab733f2472ccd116ff0849bc8e75c12",
+    "Vnpt\\Baseline\\VnptMappingContext.cs": "078948669c03d519f01bb18a64f80c5d29dd2b94383f8ed596b0b0a737db08a6",
+    "Vnpt\\Baseline\\VnptConst.cs": "d8b86f1cba24cbd3c756c75192ee542b3a04acc9036379deef2d69e32cede1e3",
+    "Baseline\\Enums.cs": "e0d88ee40551c2eaad33256b603e8d36809b31e2a0fd593b014a7c6bf8aeae3d"
+  },
+  "note": "Pure baseline mapping and generated WSDL contracts only; no runtime provider reference, orchestration, configuration reads or network."
+}

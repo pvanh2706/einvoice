@@ -1,0 +1,47 @@
+[
+  {
+    "count": 0,
+    "serializer": "typed",
+    "expected": "\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-16\u0022?\u003E\r\n\u003CInvoice xmlns:xsi=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022 xmlns:xsd=\u0022http://www.w3.org/2001/XMLSchema\u0022\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CItems /\u003E\r\n\u003C/Invoice\u003E"
+  },
+  {
+    "count": 0,
+    "serializer": "object",
+    "expected": "\u003CInvoice\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CNote /\u003E\r\n\u003C/Invoice\u003E"
+  },
+  {
+    "count": 0,
+    "serializer": "batch",
+    "expected": "\u003CDSHDon\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CNote /\u003E\r\n\u003C/DSHDon\u003E"
+  },
+  {
+    "count": 1,
+    "serializer": "typed",
+    "expected": "\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-16\u0022?\u003E\r\n\u003CInvoice xmlns:xsi=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022 xmlns:xsd=\u0022http://www.w3.org/2001/XMLSchema\u0022\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CItems\u003E\r\n    \u003CItem\u003E\r\n      \u003CAmount\u003E12.5\u003C/Amount\u003E\r\n    \u003C/Item\u003E\r\n  \u003C/Items\u003E\r\n\u003C/Invoice\u003E"
+  },
+  {
+    "count": 1,
+    "serializer": "object",
+    "expected": "\u003CInvoice\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CNote /\u003E\r\n  \u003CItems\u003E\r\n    \u003CAmount\u003E12.5\u003C/Amount\u003E\r\n  \u003C/Items\u003E\r\n\u003C/Invoice\u003E"
+  },
+  {
+    "count": 1,
+    "serializer": "batch",
+    "expected": "\u003CDSHDon\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CNote /\u003E\r\n  \u003CItems\u003E\r\n    \u003CAmount\u003E12.5\u003C/Amount\u003E\r\n  \u003C/Items\u003E\r\n\u003C/DSHDon\u003E"
+  },
+  {
+    "count": 2,
+    "serializer": "typed",
+    "expected": "\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-16\u0022?\u003E\r\n\u003CInvoice xmlns:xsi=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022 xmlns:xsd=\u0022http://www.w3.org/2001/XMLSchema\u0022\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CItems\u003E\r\n    \u003CItem\u003E\r\n      \u003CAmount\u003E12.5\u003C/Amount\u003E\r\n    \u003C/Item\u003E\r\n    \u003CItem\u003E\r\n      \u003CAmount\u003E25.0\u003C/Amount\u003E\r\n    \u003C/Item\u003E\r\n  \u003C/Items\u003E\r\n\u003C/Invoice\u003E"
+  },
+  {
+    "count": 2,
+    "serializer": "object",
+    "expected": "\u003CInvoice\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CNote /\u003E\r\n  \u003CItems\u003E\r\n    \u003CAmount\u003E12.5\u003C/Amount\u003E\r\n  \u003C/Items\u003E\r\n  \u003CItems\u003E\r\n    \u003CAmount\u003E25\u003C/Amount\u003E\r\n  \u003C/Items\u003E\r\n\u003C/Invoice\u003E"
+  },
+  {
+    "count": 2,
+    "serializer": "batch",
+    "expected": "\u003CDSHDon\u003E\r\n  \u003CName\u003EKh\u00E1ch \u0026amp; \u0026lt;d\u1ECBch v\u1EE5\u0026gt;\u003C/Name\u003E\r\n  \u003CNote /\u003E\r\n  \u003CItems\u003E\r\n    \u003CAmount\u003E12.5\u003C/Amount\u003E\r\n  \u003C/Items\u003E\r\n  \u003CItems\u003E\r\n    \u003CAmount\u003E25\u003C/Amount\u003E\r\n  \u003C/Items\u003E\r\n\u003C/DSHDon\u003E"
+  }
+]

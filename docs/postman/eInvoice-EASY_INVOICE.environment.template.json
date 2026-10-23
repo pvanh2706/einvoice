@@ -1,0 +1,120 @@
+{
+  "name": "eInvoice EASY_INVOICE template - configure sandbox locally",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7150",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "enabled": true,
+      "type": "secret"
+    },
+    {
+      "key": "siteId",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceId",
+      "value": "EASY-SYNTHETIC-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftInvoiceId",
+      "value": "EASY-DRAFT-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "newInvoiceId",
+      "value": "EASY-NEW-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "serial",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "invoiceDate",
+      "value": "11/10/2026",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "taxAuthorityCode",
+      "value": "",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "publishKey",
+      "value": "easy-publishKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "createKey",
+      "value": "easy-createKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "draftKey",
+      "value": "easy-draftKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "signKey",
+      "value": "easy-signKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "replaceKey",
+      "value": "easy-replaceKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "increaseKey",
+      "value": "easy-increaseKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "decreaseKey",
+      "value": "easy-decreaseKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "informationKey",
+      "value": "easy-informationKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "deleteKey",
+      "value": "easy-deleteKey-001",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "voidKey",
+      "value": "easy-voidKey-001",
+      "enabled": true,
+      "type": "default"
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

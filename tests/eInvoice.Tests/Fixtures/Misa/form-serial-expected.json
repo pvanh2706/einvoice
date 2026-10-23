@@ -1,0 +1,26 @@
+[
+  {
+    "invoiceName": "Hóa đơn thử nghiệm",
+    "formNo": "1",
+    "serial": "C26TAA",
+    "quantity": 0,
+    "fromNo": 0,
+    "toNo": 0,
+    "currentNo": 0,
+    "status": 1,
+    "startDate": null,
+    "isMultipleTaxRates": true
+  },
+  {
+    "invoiceName": "1234567890123456789012345678901234567890",
+    "formNo": "2",
+    "serial": "C26TBB",
+    "quantity": 0,
+    "fromNo": 0,
+    "toNo": 0,
+    "currentNo": 0,
+    "status": 0,
+    "startDate": null,
+    "isMultipleTaxRates": false
+  }
+]
