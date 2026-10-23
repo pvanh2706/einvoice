@@ -1,5 +1,18 @@
 # Nhật ký checkpoint
 
+## 2026-10-24 — Lưu thay đổi và hợp nhất vào main
+
+- Người dùng yêu cầu commit toàn bộ thay đổi hiện có và merge `rewrite/foundation` vào `main` cục bộ; không push/deploy.
+- Kiểm tra JSON mẫu/workspace và diff whitespace đạt. Chạy lại scripts/verify.ps1 vẫn bị chặn ở restore bởi NU1902/NU1903 của System.Security.Cryptography.Pkcs/Xml 10.0.12; chưa chạy build/test, không sửa dependency hoặc tắt audit.
+- Không gọi NCC thật, không thay cấu hình/key/journal; các phần UAT/P3 và câu hỏi nghiệp vụ tiếp tục theo STATUS.
+
+## 2026-10-22 — Tài liệu thi công tích hợp cho AI dự án bên ngoài
+
+- Đối chiếu source checkpoint `1981f45` và các route/DTO/adapter thực tế; thêm EXTERNAL-INTEGRATION, prompt giao việc và JSON mẫu MISA HSM. Nội dung bao gồm chọn luồng đủ 9 NCC, data object/mảng, tạo/ký riêng, storage/key/snapshot/concurrency, timeout/journal/409, document/CQT và kiểm thử fake HTTP phía client.
+- Cập nhật README/API-CONTRACT và sửa thông tin mở đầu MISA guide đã lỗi thời. Kiểm tra JSON, OpenAPI, số tiền mẫu, route, link và diff whitespace đạt. Chỉ thay tài liệu; giữ nguyên thay đổi có sẵn của người dùng.
+- Chạy scripts/verify.ps1: restore thất bại NU1902/NU1903 do audit các gói System.Security.Cryptography.Pkcs/Xml 10.0.12; chưa chạy build/test, không thay dependency/tắt audit. Xem STATUS để tái hiện và tiếp tục.
+- Không gọi NCC thật, không đổi cấu hình/key/journal, không sửa repo cũ, không restart/deploy/push. UAT/cutover vẫn chưa hoàn thành.
+
 ## 2026-10-08 — P0 và kiểm tra kết nối MISA
 
 - Branch `rewrite/foundation`, baseline code cũ `66a9c74`.

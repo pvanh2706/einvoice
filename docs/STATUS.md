@@ -1,6 +1,20 @@
 # Trạng thái eInvoice — điểm bắt đầu phiên kế tiếp
 
-Ngày cập nhật: **2026-10-13**, Asia/Bangkok.
+Ngày cập nhật: **2026-10-24**, Asia/Bangkok.
+
+## Hợp nhất vào main — 24/10/2026
+
+- Theo yêu cầu người dùng, lưu toàn bộ thay đổi tài liệu/ví dụ tích hợp và hợp nhất nhánh `rewrite/foundation` vào `main` cục bộ. Nhánh làm việc tiếp theo là `main`; chưa push/deploy.
+- Kiểm tra lại JSON mẫu và workspace parse được, `git diff --check` đạt. Chạy lại `powershell -NoProfile -File scripts/verify.ps1`: restore vẫn thất bại NU1902/NU1903 trên System.Security.Cryptography.Pkcs/Xml 10.0.12; build/test chưa chạy. Không đổi dependency hoặc tắt audit.
+- Phần runtime/UAT/P3 và các quyết định đang chờ giữ nguyên; cần xử lý dependency trước khi xác nhận build hiện tại.
+
+## Bàn giao tích hợp bên ngoài — 22/10/2026
+
+- Hoàn thành [EXTERNAL-INTEGRATION](EXTERNAL-INTEGRATION.md) cho AI dự án nhận: cấu hình/auth/site, chọn luồng đủ 9 NCC, JSON/cURL, kiểu data object/mảng, tạo → ký, lưu snapshot/key, journal/timeout/409, document/CQT và tiêu chí kiểm thử. Kèm [prompt giao việc](examples/integration-agent-prompt.md) và [JSON MISA HSM](examples/integration-misa-hsm.json).
+- Cập nhật liên kết README/API-CONTRACT và phần mở đầu INTEGRATION-AGENT để không coi URL/key/catalog MISA lịch sử là trạng thái live. Không đổi runtime, hợp đồng API, credential, journal hoặc repo nguồn cũ.
+- Kiểm chứng tài liệu: 6 khối JSON parse được; body publish hợp schema OpenAPI 3.1, trùng JSON riêng; số tiền mẫu, route chính và liên kết tài liệu hợp lệ. `git diff --check` đạt.
+- `powershell -NoProfile -File scripts/verify.ps1` **không qua restore**: NU1902/NU1903 (warnings as errors) trên System.Security.Cryptography.Pkcs 10.0.12 và System.Security.Cryptography.Xml 10.0.12 do NuGet audit. Build/test chưa chạy trong phiên này; 569 tests bên dưới là kết quả checkpoint 13/10, không phải lần chạy mới. Không tắt audit hoặc tự đổi dependency trong tác vụ tài liệu. Tái hiện bằng lệnh verify trên; cần xử lý dependency có chủ đích trước lần verify tiếp theo.
+- Không gọi NCC thật, không phát hành/hủy/gửi email, không restart/deploy hoặc mở network. Bước tiếp theo vẫn là cấp URL/key/site/mẫu cho dự án nhận, sandbox/UAT và P3; xử lý audit dependency trước khi xác nhận build hiện tại. Quyết định nghiệp vụ/câu hỏi đang chờ giữ nguyên.
 
 ## Kết quả hiện tại
 
@@ -18,7 +32,7 @@ Bước tiếp theo: sandbox/UAT từng provider và biến thể; xử lý Q008
 
 Viết lại gateway bằng C#, tên eInvoice, chỉ hợp đồng PMS mới, giữ key/payload provider. Quyền và quy tắc nằm trong AGENTS.md, DECISIONS.md; không phụ thuộc lịch sử chat.
 
-- Branch: `rewrite/foundation`.
+- Branch: `main` (hợp nhất từ `rewrite/foundation` theo yêu cầu ngày 24/10/2026).
 - Checkpoint phiên 13/10: `Complete remaining invoice providers and baseline action coverage`; lấy hash bằng `git log -1 --oneline`. Không push/deploy hoặc restart API local trong phiên này.
 - Baseline repo cũ: `66a9c742d0f6fb692d339076e6cd82780e3476be` tại `D:\Code\25.ezInvoice`.
 - Checkpoint nền tảng `9316ec3`, FormSerial `92f9063`.

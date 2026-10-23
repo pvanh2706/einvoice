@@ -1,0 +1,58 @@
+{
+  "invoice": {
+    "invoiceId": "d0187db1-1679-44f5-a95d-ec0b8e72d865",
+    "invoiceType": 0,
+    "formNo": "1",
+    "serial": "C26TAA",
+    "invoiceDate": "22/10/2026",
+    "customerName": "Khách thử nghiệm tích hợp",
+    "customerAddress": "Địa chỉ thử nghiệm",
+    "currencyCode": "VND",
+    "exchangeRate": 1,
+    "paymentMethod": "TM/CK",
+    "subAmount": 100000,
+    "serviceRate": 0,
+    "serviceCharge": 0,
+    "beforeTaxAmount": 100000,
+    "taxRate": 10,
+    "taxAmount": 10000,
+    "afterTaxAmount": 110000,
+    "isMultiVATRate": false,
+    "pricePrecision": 0,
+    "quantityPrecision": 0,
+    "amountPrecision": 0
+  },
+  "details": [
+    {
+      "transactionDate": "22/10/2026",
+      "itemCode": "SERVICE-TEST",
+      "itemName": "Dịch vụ thử nghiệm tích hợp",
+      "unitName": "Lần",
+      "quantity": 1,
+      "price": 100000,
+      "discountAmount": 0,
+      "discountPercent": 0,
+      "subAmount": 100000,
+      "serviceRate": 0,
+      "serviceCharge": 0,
+      "beforeTaxAmount": 100000,
+      "taxRate": 10,
+      "taxAmount": 10000,
+      "afterTaxAmount": 110000,
+      "exciseTaxRate": 0,
+      "exciseTaxCharge": 0,
+      "itemType": "1"
+    }
+  ],
+  "taxSummaries": [
+    {
+      "beforeTaxAmount": 100000,
+      "taxRate": 10,
+      "taxAmount": 10000
+    }
+  ],
+  "serviceSummaries": [],
+  "specialTaxSummaries": [],
+  "extraData": [],
+  "electronicInvoiceType": 0
+}

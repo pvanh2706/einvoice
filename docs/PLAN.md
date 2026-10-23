@@ -22,6 +22,7 @@ Trạng thái chi tiết hiện tại: `STATUS.md`. Baseline và những thay đ
 - [x] Provider đầu tiên **MISA**: mapping request/response 19 action baseline, hai hệ credential, đọc/ghi, timeout và journal local chống trùng qua restart.
 - [x] Expose endpoint mới cho những luồng đã hoàn thành; OpenAPI 3.1 + Postman + tài liệu request/response.
 - [x] Bàn giao tài liệu INTEGRATION-AGENT và JSON mẫu cho phần mềm bên ngoài bắt đầu single HSM MISA sandbox; ghi rõ key test hết hạn, loopback và giới hạn trạng thái/đối soát. Chưa cấp key/URL mới hoặc xác nhận publish sandbox thành công.
+- [x] 22/10: mở rộng bàn giao EXTERNAL-INTEGRATION cho đủ 9 NCC, prompt AI và JSON MISA HSM hợp schema; cập nhật entry point và thông tin lịch sử. Tài liệu kiểm chứng đạt; verify runtime bị NuGet audit chặn ở restore, xem STATUS. Không đổi dependency trong tác vụ này.
 - [x] Kiểm thử payload provider theo 16 fixture độc lập và kiểm thử end-to-end qua HTTP giả lập; tổng 268 test Release đạt, gồm JSON store/API và durable diagnostics/redaction/lookup.
 - [ ] Sandbox/UAT từng variant và xử lý Q008/Q009/Q010 trước khi thay nghiệp vụ/cutover.
 

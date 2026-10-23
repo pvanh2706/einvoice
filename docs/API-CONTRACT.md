@@ -6,7 +6,7 @@ Route chung chọn adapter theo partner của SiteId. `GET /api/eInvoice/capabil
 
 Journal response thêm field nullable `provider`, record cũ không có thì null. Hash MISA giữ nguyên; các provider khác có attempt hash riêng nhưng claim site/invoice dùng chung. Không đổi key/ID hoặc site/provider để vượt khóa. Ngày/culture provider mới theo D021; không đổi các mapper MISA chưa được duyệt.
 
-Tài liệu bàn giao cho AI agent phía phần mềm tích hợp: [INTEGRATION-AGENT](INTEGRATION-AGENT.md). Bắt đầu với single HSM MISA trên môi trường test; hướng dẫn phản ánh trạng thái hiện tại, không giả định đã có API đối soát/mở khóa hoặc kết quả UAT các nhà cung cấp khác.
+Tài liệu bàn giao cho AI agent phía phần mềm tích hợp: [EXTERNAL-INTEGRATION — đủ 9 NCC](EXTERNAL-INTEGRATION.md), [prompt giao việc](examples/integration-agent-prompt.md) và [INTEGRATION-AGENT — ví dụ MISA HSM](INTEGRATION-AGENT.md). Chọn luồng theo capabilities của site; chưa có API đối soát/mở khóa tự động hoặc kết quả UAT phát hành đủ các nhà cung cấp. Một số mục MISA dưới đây là mô tả checkpoint ban đầu; danh sách provider/route hiện tại đối chiếu tài liệu NCC và runtime.
 
 - Base route: `/api/eInvoice`.
 - Chỉ tên mới, không alias route/key lịch sử.

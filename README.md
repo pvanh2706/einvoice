@@ -55,7 +55,7 @@ Endpoint hiện có:
 
 Hợp đồng mới, JSON mẫu và mã lỗi: [API-CONTRACT](docs/API-CONTRACT.md). Các route/key cũ không được hỗ trợ.
 
-Phần mềm bên ngoài bắt đầu tích hợp MISA: [Hướng dẫn cho AI agent](docs/INTEGRATION-AGENT.md), kèm body JSON và cURL, điều kiện truy cập/key còn hạn và xử lý kết quả chưa xác định.
+Phần mềm bên ngoài bắt đầu tích hợp: [Tài liệu thi công cho AI — đủ 9 NCC](docs/EXTERNAL-INTEGRATION.md), kèm hợp đồng HTTP, chọn luồng theo site, JSON/cURL, lưu key/body chống trùng và xử lý kết quả chưa xác định. [Prompt giao việc cho AI dự án nhận](docs/examples/integration-agent-prompt.md); [hướng dẫn MISA từng bước](docs/INTEGRATION-AGENT.md).
 
 ## Nguồn và fixture
 
